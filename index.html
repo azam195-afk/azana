@@ -15,21 +15,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+  .l<style>
   .logo-rgb-glow {
-    animation: rgbShadow 4s infinite alternate;
+    /* Animasi lebih kalem dan elegan */
+    animation: cyberGlow 3s infinite alternate ease-in-out;
     transition: transform 0.3s ease;
   }
   .logo-rgb-glow:hover {
     transform: scale(1.05);
   }
-  @keyframes rgbShadow {
-    0% { filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff0000); }
-    33% { filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00); }
-    66% { filter: drop-shadow(0 0 10px #0000ff) drop-shadow(0 0 20px #0000ff); }
-    100% { filter: drop-shadow(0 0 10px #ff00ea) drop-shadow(0 0 20px #ff00ea); }
+  
+  /* Racikan bayangan tipis (Cyan -> Ungu) + Pencerah Logo */
+  @keyframes cyberGlow {
+    0% { 
+      filter: drop-shadow(0 0 3px rgba(0, 242, 254, 0.8)) brightness(1.1); 
+    } 
+    100% { 
+      filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.9)) brightness(1.2); 
+    }
   }
-    </style>
-    
+</style>
 
     <!-- Tailwind Config -->
     <script>
