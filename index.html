@@ -116,51 +116,6 @@
     </nav>
 
     <!-- Hero Section -->
-    <style>
-  .neon-draw-text {
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 800;
-    font-size: 4rem; /* Ukuran teks */
-    fill: transparent; /* Awalnya teksnya kosong (tanpa warna) */
-    stroke: #00f2fe; /* Warna garis yang menggambar (Cyan) */
-    stroke-width: 1.5px;
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    /* Urutan Animasi: Gambar Garis -> Isi Warna -> Denyut Neon */
-    animation: 
-      drawOutline 2.5s ease-in-out forwards, 
-      fillColor 1s ease-in forwards 2s,
-      neonPulse 2s infinite alternate 3s;
-  }
-
-  /* Animasi 1: Menggambar garis tepi perlahan */
-  @keyframes drawOutline {
-    0% { stroke-dashoffset: 400; opacity: 0; }
-    10% { opacity: 1; }
-    100% { stroke-dashoffset: 0; opacity: 1; }
-  }
-
-  /* Animasi 2: Mengisi warna huruf jadi putih menyala */
-  @keyframes fillColor {
-    0% { fill: transparent; }
-    100% { fill: #ffffff; stroke: transparent; }
-  }
-
-  /* Animasi 3: Efek bayangan neon yang bernapas (Cyan ke Ungu) */
-  @keyframes neonPulse {
-    0% { filter: drop-shadow(0 0 5px #00f2fe) drop-shadow(0 0 10px #00f2fe); }
-    100% { filter: drop-shadow(0 0 10px #a855f7) drop-shadow(0 0 20px #a855f7) drop-shadow(0 0 30px #a855f7); }
-  }
-</style>
-
-<div class="flex justify-center items-center w-full my-8">
-  <svg width="400" height="100" viewBox="0 0 400 100" class="w-full max-w-md">
-    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="neon-draw-text tracking-widest uppercase">
-      AZANA
-    </text>
-  </svg>
-</div>
-    
     <section id="beranda" class="circuit-bg min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
         <!-- Efek Glow Latar Belakang -->
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse"></div>
@@ -171,8 +126,8 @@
                 <i class="fas fa-bolt mr-2"></i> CREATIVE DIGITAL STUDIO
             </span>
             <h1 class="text-5xl md:text-7xl font-tech font-bold text-white mb-6 leading-tight">
-                Tingkatkan Visual Anda <br />
-                Bersama <span class="gradient-text">AZANA DESIGN</span>
+                Tingkatkan Visual Anda Bersama <br />
+             <span class="gradient-text">AZANA DESIGN</span>
             </h1>
             <p class="text-lg md:text-xl text-slate-400 mb-10 max-w-3xl mx-auto font-light leading-relaxed">
                 Kami hadir dengan teknologi dan kreativitas untuk memenuhi segala kebutuhan visual Anda. Dari perbaikan foto, desain grafis profesional, hingga video editing sinematik.
