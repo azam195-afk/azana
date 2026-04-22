@@ -13,6 +13,23 @@
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+  .logo-rgb-glow {
+    animation: rgbShadow 4s infinite alternate;
+    transition: transform 0.3s ease;
+  }
+  .logo-rgb-glow:hover {
+    transform: scale(1.05);
+  }
+  @keyframes rgbShadow {
+    0% { filter: drop-shadow(0 0 10px #ff0000) drop-shadow(0 0 20px #ff0000); }
+    33% { filter: drop-shadow(0 0 10px #00ff00) drop-shadow(0 0 20px #00ff00); }
+    66% { filter: drop-shadow(0 0 10px #0000ff) drop-shadow(0 0 20px #0000ff); }
+    100% { filter: drop-shadow(0 0 10px #ff00ea) drop-shadow(0 0 20px #ff00ea); }
+  }
+    </style>
+    
 
     <!-- Tailwind Config -->
     <script>
@@ -75,13 +92,12 @@
                 
                 <!-- Logo Image Area -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="#">
-                        <!-- Tag Img ini akan memuat logo Anda. Pastikan nama file sesuai! -->
-                        <!-- Fallback jika gambar tidak ditemukan di preview: akan menampilkan teks -->
-                        <img src="41915.png" alt="AZANA DESIGN Logo" class="h-14 w-auto object-contain drop-shadow-[0_0_8px_rgba(0,242,254,0.4)]" 
-                             onerror="this.outerHTML='<span class=\'text-3xl font-tech font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple\'>AZANA DESIGN</span>'">
-                    </a>
-                </div>
+    <a href="#">
+        <img src="41915.png" alt="AZANA DESIGN Logo" class="h-14 w-auto object-contain logo-rgb-glow" 
+             onerror="this.outerHTML='<span class=\'text-3xl font-tech font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple\'>AZANA DESIGN</span>'">
+    </a>
+</div>
+
                 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
