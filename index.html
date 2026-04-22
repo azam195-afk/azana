@@ -15,24 +15,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-  /* Efek Kotak Kaca Neon untuk Logo */
-  .glass-logo-box {
-    background: rgba(255, 255, 255, 0.15); /* Warna kaca putih transparan */
-    backdrop-filter: blur(8px); /* Efek blur/embun di belakangnya */
-    border: 1px solid rgba(255, 255, 255, 0.2); /* Garis pinggir tipis banget */
-    border-radius: 12px; /* Bikin ujung kotaknya melengkung */
-    padding: 6px 14px; /* Jarak aman logo ke garis kotak */
-    animation: boxCyberGlow 2.5s infinite alternate ease-in-out;
+  .logo-neon-outline {
+    animation: cyberOutline 2s infinite alternate ease-in-out;
     transition: transform 0.3s ease;
   }
   
-  .glass-logo-box:hover {
-    transform: scale(1.05); /* Membesar dikit kalau disentuh */
+  .logo-neon-outline:hover {
+    transform: scale(1.05);
   }
   
-  @keyframes boxCyberGlow {
-    0% { box-shadow: 0 0 12px rgba(0, 242, 254, 0.5); border-color: rgba(0, 242, 254, 0.3); }
-    100% { box-shadow: 0 0 18px rgba(168, 85, 247, 0.5); border-color: rgba(168, 85, 247, 0.3); }
+  /* Trik Outline PNG: 2 lapis bayangan putih pekat tanpa blur + Aura Neon */
+  @keyframes cyberOutline {
+    0% {
+      filter: drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 8px #00f2fe);
+    }
+    100% {
+      filter: drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 2px #ffffff) drop-shadow(0 0 10px #a855f7);
+    }
   }
 </style>
 
@@ -97,11 +96,12 @@
                 
                 <!-- Logo Image Area -->
                 <div class="flex-shrink-0 flex items-center">
-    <a href="#" class="glass-logo-box flex items-center justify-center">
-        <img src="41915.png" alt="AZANA DESIGN Logo" class="h-10 w-auto object-contain" 
+    <a href="#">
+        <img src="41915.png" alt="AZANA DESIGN Logo" class="h-14 w-auto object-contain logo-neon-outline" 
              onerror="this.outerHTML='<span class=\'text-2xl font-tech font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple\'>AZANA DESIGN</span>'">
     </a>
 </div>
+
 
 
                 
