@@ -15,8 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+  .l<style>
   .logo-rgb-glow {
-    /* Animasi dipercepat sedikit biar lebih terasa efeknya */
     animation: cyberGlow 2s infinite alternate ease-in-out;
     transition: transform 0.3s ease;
   }
@@ -24,17 +24,16 @@
     transform: scale(1.05);
   }
   
-  /* Trik Double Shadow: Bayangan inti (2px) + Aura luar (8px/10px) */
+  /* Trik: Garis putih tipis (1px) + Aura Neon + Pencerah ekstra (1.3) */
   @keyframes cyberGlow {
     0% { 
-      filter: drop-shadow(0 0 2px #00f2fe) drop-shadow(0 0 8px #00f2fe) brightness(1.1); 
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 8px #00f2fe) brightness(1.3); 
     } 
     100% { 
-      filter: drop-shadow(0 0 2px #a855f7) drop-shadow(0 0 10px #a855f7) brightness(1.1); 
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.8)) drop-shadow(0 0 10px #a855f7) brightness(1.3); 
     }
   }
 </style>
-
 
     <!-- Tailwind Config -->
     <script>
