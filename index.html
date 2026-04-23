@@ -102,37 +102,8 @@
                              onerror="this.outerHTML='<span class=\'text-2xl font-tech font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple\'>AZANA DESIGN</span>'">
                     </a>
                 </div>
+
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#beranda" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Beranda</a>
-                    <a href="#layanan" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Layanan</a>
-                    <a href="#portofolio" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Tentang Kami</a>
-                    <a href="#kontak" class="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-6 py-2 rounded-full font-medium transition duration-300 shadow-[0_0_15px_rgba(0,242,254,0.3)] hover:shadow-[0_0_25px_rgba(0,242,254,0.6)]">
-                        Pesan Sekarang
-                    </a>
-                </div>
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-neon-cyan hover:text-white focus:outline-none">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <section id="beranda" class="circuit-bg min-h-screen flex items-center justify-center pt-32 pb-20 px-4 relative overflow-hidden">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse delay-1000"></div>
-
-        <div class="max-w-6xl mx-auto text-center relative z-10">
-            <span class="inline-block py-1 px-4 rounded-full bg-dark-800 border border-neon-cyan/30 text-neon-cyan text-sm font-semibold tracking-widest mb-6 backdrop-blur-sm shadow-[0_0_10px_rgba(0,242,254,0.2)]">
-                <i class="fas fa-bolt mr-2"></i> CREATIVE DIGITAL STUDIO
-            </span>
-            <h1 class="text-4xl md:text-6xl font-tech font-bold text-white mb-6 leading-tight">
-                Tingkatkan Visual Anda Bersama <br />
-                <span class="gradient-text">AZANA DESIGN</span>
-            </h1>
-            
-            <div class="hidden md:flex items-center space-x-8">
                     <a href="#beranda" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Beranda</a>
                     <a href="#layanan" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Layanan</a>
                     <a href="#portofolio" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Portofolio</a>
@@ -347,3 +318,63 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 border-t border-dark-700 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <img src="41905.png" alt="AZANA DESIGN" class="h-10 w-auto mb-6"
+                         onerror="this.outerHTML='<span class=\'text-2xl font-tech font-bold text-white\'>AZANA DESIGN</span>'">
+                    <p class="text-slate-500 text-xs leading-relaxed max-w-xs">
+                        Studio kreatif profesional yang berfokus pada kualitas visual tingkat tinggi untuk desain grafis dan video produksi.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-tech tracking-wider font-bold mb-6 uppercase text-xs">Layanan</h4>
+                    <ul class="space-y-3 text-xs text-slate-500">
+                        <li><i class="fas fa-angle-right text-neon-purple mr-2"></i> Penjernihan Foto AI</li>
+                        <li><i class="fas fa-angle-right text-neon-purple mr-2"></i> Desain Logo Profesional</li>
+                        <li><i class="fas fa-angle-right text-neon-purple mr-2"></i> Video Editing Sinematik</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-tech tracking-wider font-bold mb-6 uppercase text-xs">Kontak Kami</h4>
+                    <ul class="space-y-4 text-xs text-slate-500">
+                        <li class="flex items-center gap-3"><i class="fas fa-envelope text-neon-cyan"></i> maulanaazam195@gmail.com</li>
+                        <li class="flex items-center gap-3"><i class="fab fa-whatsapp text-neon-cyan"></i> +62 822-4399-5410</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-map-marker-alt text-neon-cyan"></i> Melayani secara online di semua negara</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-dark-700 pt-8 text-center">
+                <p class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.3em]">
+                    &copy; <span id="year"></span> AZANA DESIGN — Visual Revolution.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+        menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => menu.classList.add('hidden')));
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-2xl', 'bg-dark-900/95');
+                nav.classList.add('border-neon-cyan/10');
+            } else {
+                nav.classList.remove('shadow-2xl', 'bg-dark-900/95');
+                nav.classList.remove('border-neon-cyan/10');
+            }
+        });
+    </script>
+</body>
+                        
