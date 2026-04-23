@@ -1,27 +1,30 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AZANA DESIGN - Jasa Edit Foto & Video Editing</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
   .logo-neon-outline {
     animation: cyberOutline 2.5s infinite alternate ease-in-out;
     transition: transform 0.3s ease;
+    
+    /* --- BUMBU ANTI-LAG (GPU ACCELERATION) --- */
+    will-change: filter, transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
   
   .logo-neon-outline:hover {
-    transform: scale(1.05);
+    transform: scale(1.05) translateZ(0);
   }
   
   /* Outline putih ditipisin sisa 20-40% aja + Aura Neon */
@@ -37,7 +40,6 @@
 </style>
 
 
-    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
             theme: {
@@ -85,18 +87,16 @@
             background-image: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            /* background-attachment: fixed; <-- INI YANG BIKIN NGELAG UDAH SAYA HAPUS */
         }
     </style>
 </head>
 <body class="text-slate-300 font-sans antialiased selection:bg-neon-cyan selection:text-dark-900">
 
-    <!-- Navbar -->
     <nav class="fixed w-full z-50 transition-all duration-300 bg-dark-900/80 backdrop-blur-md border-b border-dark-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 
-                <!-- Logo Image Area -->
                 <div class="flex-shrink-0 flex items-center">
     <a href="#">
         <img src="41955.png" alt="AZANA DESIGN Logo" class="h-14 w-auto object-contain logo-neon-outline" 
@@ -107,7 +107,6 @@
 
 
                 
-                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#beranda" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Beranda</a>
                     <a href="#layanan" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Layanan</a>
@@ -117,7 +116,6 @@
                     </a>
                 </div>
 
-                <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
                     <button id="mobile-menu-button" class="text-neon-cyan hover:text-white focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
@@ -126,7 +124,6 @@
             </div>
         </div>
 
-        <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-dark-900 border-t border-dark-700 absolute w-full">
             <div class="px-4 pt-2 pb-6 space-y-2 shadow-2xl">
                 <a href="#beranda" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300 hover:text-neon-cyan hover:bg-dark-800">Beranda</a>
@@ -138,6 +135,7 @@
             </div>
         </div>
     </nav>
+
 
     <!-- Hero Section -->
     <section id="beranda" class="circuit-bg min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
