@@ -6,56 +6,25 @@
     <title>AZANA DESIGN - Jasa Edit Foto & Video Editing</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <style>
-  .logo-neon-outline {
-    animation: cyberOutline 2.5s infinite alternate ease-in-out;
-    transition: transform 0.3s ease;
-    
-    /* --- BUMBU ANTI-LAG (GPU ACCELERATION) --- */
-    will-change: filter, transform;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
-  
-  .logo-neon-outline:hover {
-    transform: scale(1.05) translateZ(0);
-  }
-  
-  /* Outline putih ditipisin sisa 20-40% aja + Aura Neon */
-  @keyframes cyberOutline {
-    0% {
-      /* Cuma pakai 1px putih transparan */
-      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 6px #00f2fe);
-    }
-    100% {
-      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 8px #a855f7);
-    }
-  }
-</style>
-
-
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Poppins', 'sans-serif'],
-                        tech: ['Rajdhani', 'sans-serif'], // Font bernuansa teknologi untuk heading
+                        tech: ['Rajdhani', 'sans-serif'],
                     },
                     colors: {
                         neon: {
-                            cyan: '#00f2fe',   // Warna biru neon dari logo
-                            purple: '#a855f7', // Warna ungu dari logo
-                            magenta: '#d946ef', // Warna pinggiran logo
+                            cyan: '#00f2fe',
+                            purple: '#a855f7',
+                            magenta: '#d946ef',
                         },
                         dark: {
-                            900: '#0a0a0f', // Latar belakang sangat gelap mirip logo
+                            900: '#0a0a0f',
                             800: '#13131a',
                             700: '#1c1c26',
                         }
@@ -64,6 +33,7 @@
             }
         }
     </script>
+
     <style>
         body {
             background-color: #0a0a0f;
@@ -76,356 +46,154 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .glow-button {
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        .logo-neon-outline {
+            animation: cyberOutline 2.5s infinite alternate ease-in-out;
+            will-change: filter;
         }
-        .glow-button:hover {
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+        @keyframes cyberOutline {
+            0% { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 6px #00f2fe); }
+            100% { filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 8px #a855f7); }
         }
-        /* Motif garis sirkuit halus di background hero */
         .circuit-bg {
             background-image: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
-            /* background-attachment: fixed; <-- INI YANG BIKIN NGELAG UDAH SAYA HAPUS */
+        }
+        .glow-button {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
         }
     </style>
 </head>
-<body class="text-slate-300 font-sans antialiased selection:bg-neon-cyan selection:text-dark-900">
+<body class="text-slate-300 font-sans antialiased">
 
     <nav class="fixed w-full z-50 transition-all duration-300 bg-dark-900/80 backdrop-blur-md border-b border-dark-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                
-                <div class="flex-shrink-0 flex items-center">
-    <a href="#">
-        <img src="41955.png" alt="AZANA DESIGN Logo" class="h-14 w-auto object-contain logo-neon-outline" 
-             onerror="this.outerHTML='<span class=\'text-2xl font-tech font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple\'>AZANA DESIGN</span>'">
-    </a>
-</div>
-
-
-
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#beranda" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Beranda</a>
-                    <a href="#layanan" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Layanan</a>
-                    <a href="#portofolio" class="text-slate-300 hover:text-neon-cyan transition font-medium text-sm uppercase tracking-wide">Tentang Kami</a>
-                    <a href="#kontak" class="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-6 py-2 rounded-full font-medium transition duration-300 glow-button">
-                        Pesan Sekarang
-                    </a>
-                </div>
-
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-neon-cyan hover:text-white focus:outline-none">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="41955.png" alt="Logo" class="h-12 w-auto object-contain logo-neon-outline">
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#beranda" class="hover:text-neon-cyan transition text-sm uppercase font-medium">Beranda</a>
+                <a href="#layanan" class="hover:text-neon-cyan transition text-sm uppercase font-medium">Layanan</a>
+                <a href="#kontak" class="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-6 py-2 rounded-full font-medium glow-button">Pesan</a>
             </div>
+
+            <button id="mobile-menu-button" class="md:hidden text-neon-cyan text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-
-        <div id="mobile-menu" class="hidden md:hidden bg-dark-900 border-t border-dark-700 absolute w-full">
-            <div class="px-4 pt-2 pb-6 space-y-2 shadow-2xl">
-                <a href="#beranda" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300 hover:text-neon-cyan hover:bg-dark-800">Beranda</a>
-                <a href="#layanan" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300 hover:text-neon-cyan hover:bg-dark-800">Layanan</a>
-                <a href="https://azana-studio.vercel.app" target="_blank" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300 hover:text-neon-cyan hover:bg-dark-800">Penjernih Foto</a>
-                <a href="https://azana-design.vercel.app" target="_blank" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300 hover:text-neon-cyan hover:bg-dark-800">Penghapus background</a>
-                <a href="#portofolio" class="block px-3 py-3 rounded-md text-base font-medium text-slate-300 hover:text-neon-cyan hover:bg-dark-800">Tentang Kami</a>
-                <a href="#kontak" class="block px-3 py-3 mt-4 text-center rounded-md text-base font-bold text-white bg-gradient-to-r from-neon-cyan to-neon-purple glow-button">Pesan Sekarang</a>
-            </div>
+        <div id="mobile-menu" class="hidden bg-dark-900 border-t border-dark-700 px-4 py-6 space-y-4">
+            <a href="#beranda" class="block hover:text-neon-cyan">Beranda</a>
+            <a href="#layanan" class="block hover:text-neon-cyan">Layanan</a>
+            <a href="#kontak" class="block text-center bg-gradient-to-r from-neon-cyan to-neon-purple p-2 rounded-lg text-white">Pesan Sekarang</a>
         </div>
     </nav>
 
-
-    <!-- Hero Section -->
-    <section id="beranda" class="circuit-bg min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
-        <!-- Efek Glow Latar Belakang -->
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse delay-1000"></div>
-
-        <div class="max-w-5xl mx-auto text-center relative z-10 mt-10">
-            <span class="inline-block py-1 px-4 rounded-full bg-dark-800 border border-neon-cyan/30 text-neon-cyan text-sm font-semibold tracking-widest mb-6 backdrop-blur-sm shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+    <section id="beranda" class="circuit-bg min-h-screen flex items-center justify-center pt-24 pb-12 px-4 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <span class="inline-block py-1 px-4 rounded-full bg-dark-800 border border-neon-cyan/30 text-neon-cyan text-xs font-semibold tracking-widest mb-6">
                 <i class="fas fa-bolt mr-2"></i> CREATIVE DIGITAL STUDIO
             </span>
-            <h1 class="text-5xl md:text-7xl font-tech font-bold text-white mb-6 leading-tight">
+            <h1 class="text-4xl md:text-6xl font-tech font-bold text-white mb-6">
                 Tingkatkan Visual Anda Bersama <br />
-             <span class="gradient-text">AZANA DESIGN</span>
+                <span class="gradient-text uppercase">Azana Design</span>
             </h1>
-            <p class="text-lg md:text-xl text-slate-400 mb-10 max-w-3xl mx-auto font-light leading-relaxed">
-                Kami hadir dengan teknologi dan kreativitas untuk memenuhi segala kebutuhan visual Anda. Dari perbaikan foto, desain grafis profesional, hingga video editing sinematik.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-6">
-                <a href="#layanan" class="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-8 py-4 rounded-full font-semibold transition duration-300 glow-button flex items-center justify-center gap-2">
-                    Jasa Editing <i class="fas fa-arrow-right"></i>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-12 max-w-5xl mx-auto">
+                
+                <a href="https://azana-studio.vercel.app" target="_blank" class="group bg-dark-800 rounded-2xl overflow-hidden border border-dark-700 hover:border-neon-cyan transition-all duration-300 hover:-translate-y-1">
+                    <div class="h-24 md:h-32 overflow-hidden bg-black">
+                        <img src="41955.png" class="w-full h-full object-contain opacity-70 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-4 text-left border-t border-dark-700">
+                        <p class="text-[10px] font-tech text-neon-cyan tracking-widest uppercase mb-1">AI Studio</p>
+                        <h4 class="text-xs md:text-sm font-bold text-white uppercase">Penjernih Foto</h4>
+                    </div>
                 </a>
-                <a href="https://azana-studio.vercel.app" target="_blank" class="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-8 py-4 rounded-full font-semibold transition duration-300 glow-button flex items-center justify-center gap-2">
-    <i class="fas fa-wand-magic-sparkles mr-2"></i>Penjernih Foto AI
+
+                <a href="https://azana-design.vercel.app" target="_blank" class="group bg-dark-800 rounded-2xl overflow-hidden border border-dark-700 hover:border-neon-purple transition-all duration-300 hover:-translate-y-1">
+                    <div class="h-24 md:h-32 overflow-hidden bg-black">
+                        <img src="41955.png" class="w-full h-full object-contain opacity-70 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-4 text-left border-t border-dark-700">
+                        <p class="text-[10px] font-tech text-neon-purple tracking-widest uppercase mb-1">AI Studio</p>
+                        <h4 class="text-xs md:text-sm font-bold text-white uppercase">Hapus Background</h4>
+                    </div>
                 </a>
-                <a href="https://azana-design.vercel.app" target="_blank" class="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-8 py-4 rounded-full font-semibold transition duration-300 glow-button flex items-center justify-center gap-2">
-    <i class="fas fa-cut mr-2"></i>Penghapus Background AI
+
+                <a href="https://azana-magic-eraser.vercel.app" target="_blank" class="group bg-dark-800 rounded-2xl overflow-hidden border border-dark-700 hover:border-neon-magenta transition-all duration-300 hover:-translate-y-1">
+                    <div class="h-24 md:h-32 overflow-hidden bg-black">
+                        <img src="41955.png" class="w-full h-full object-contain opacity-70 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="p-4 text-left border-t border-dark-700">
+                        <p class="text-[10px] font-tech text-neon-magenta tracking-widest uppercase mb-1">AI Studio</p>
+                        <h4 class="text-xs md:text-sm font-bold text-white uppercase">Magic Eraser</h4>
+                    </div>
                 </a>
-                <a href="https://azana-magic-eraser.vercel.app" target="_blank" class="bg-gradient-to-r from-neon-cyan to-neon-purple text-white px-8 py-4 rounded-full font-semibold transition duration-300 glow-button flex items-center justify-center gap-2">
-    <i class="fas fa-eraser mr-2"></i>Magic Eraser AI
-                <a href="#kontak" class="bg-dark-800 text-neon-cyan border border-neon-cyan/50 hover:bg-neon-cyan/10 px-8 py-4 rounded-full font-semibold transition duration-300 flex items-center justify-center shadow-[0_0_15px_rgba(0,242,254,0.1)]">
-                    Konsultasi Gratis
+
+                <a href="#kontak" class="group bg-dark-800 rounded-2xl overflow-hidden border border-dark-700 hover:border-white transition-all duration-300 hover:-translate-y-1">
+                    <div class="h-24 md:h-32 overflow-hidden bg-black">
+                        <img src="41955.png" class="w-full h-full object-contain opacity-40 group-hover:opacity-80 transition duration-500">
+                    </div>
+                    <div class="p-4 text-left border-t border-dark-700">
+                        <p class="text-[10px] font-tech text-slate-400 tracking-widest uppercase mb-1">Pro Service</p>
+                        <h4 class="text-xs md:text-sm font-bold text-white uppercase">Konsultasi Gratis</h4>
+                    </div>
                 </a>
+
             </div>
         </div>
     </section>
 
-    <!-- Layanan Section -->
-    <section id="layanan" class="py-24 relative bg-dark-900 border-t border-dark-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="layanan" class="py-24 bg-dark-900 border-t border-dark-700">
+        <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-sm font-bold text-neon-cyan tracking-widest uppercase mb-2 font-tech">Layanan Utama</h2>
-                <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">Solusi Editing & Desain</h3>
-                <div class="h-1 w-20 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto rounded-full mb-6"></div>
+                <h2 class="text-neon-cyan font-tech tracking-widest uppercase text-sm mb-2">Layanan Kami</h2>
+                <h3 class="text-3xl font-bold text-white">Solusi Visual Kreatif</h3>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-cyan transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-16 h-16 bg-dark-900 border border-dark-700 rounded-xl flex items-center justify-center text-3xl mb-6 text-neon-cyan group-hover:shadow-[0_0_15px_rgba(0,242,254,0.4)] transition-all duration-300">
-                        <i class="fas fa-image"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3 font-tech tracking-wide">Edit & Retouch Foto</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">Menjernihkan foto buram/pecah (AI Enhance), restorasi foto jadul, hapus background, manipulasi objek, dan koreksi warna.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-cyan transition-all group">
+                    <i class="fas fa-image text-3xl text-neon-cyan mb-6 block"></i>
+                    <h4 class="text-xl font-bold text-white mb-2">Edit Foto</h4>
+                    <p class="text-slate-400 text-sm">Retouching, restorasi, dan manipulasi foto dengan kualitas tinggi.</p>
                 </div>
-
-                <!-- Card 2 -->
-                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-purple transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-16 h-16 bg-dark-900 border border-dark-700 rounded-xl flex items-center justify-center text-3xl mb-6 text-neon-purple group-hover:shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all duration-300">
-                        <i class="fas fa-bezier-curve"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3 font-tech tracking-wide">Desain Logo</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">Penciptaan identitas visual yang kuat, profesional, dan unik (Esports, Bisnis, Perusahaan, atau Personal Brand).</p>
+                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-purple transition-all group">
+                    <i class="fas fa-bezier-curve text-3xl text-neon-purple mb-6 block"></i>
+                    <h4 class="text-xl font-bold text-white mb-2">Desain Logo</h4>
+                    <p class="text-slate-400 text-sm">Branding profesional untuk bisnis maupun profil esports Anda.</p>
                 </div>
-
-                <!-- Card 3 -->
-                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-magenta transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-magenta to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-16 h-16 bg-dark-900 border border-dark-700 rounded-xl flex items-center justify-center text-3xl mb-6 text-neon-magenta group-hover:shadow-[0_0_15px_rgba(217,70,239,0.4)] transition-all duration-300">
-                        <i class="fas fa-scroll"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3 font-tech tracking-wide">Banner & Pamflet</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">Desain media promosi yang *eye-catching* seperti spanduk cetak, banner sosial media, poster event, dan brosur bisnis.</p>
-                </div>
-
-                <!-- Card 4 -->
-                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-magenta transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-magenta to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-16 h-16 bg-dark-900 border border-dark-700 rounded-xl flex items-center justify-center text-3xl mb-6 text-neon-magenta group-hover:shadow-[0_0_15px_rgba(217,70,239,0.4)] transition-all duration-300">
-                        <i class="fas fa-envelope-open-text"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3 font-tech tracking-wide">Undangan Spesial</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">Pembuatan desain undangan digital interaktif atau desain siap cetak untuk pernikahan, ulang tahun, dan acara penting lainnya.</p>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-cyan transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-cyan to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-16 h-16 bg-dark-900 border border-dark-700 rounded-xl flex items-center justify-center text-3xl mb-6 text-neon-cyan group-hover:shadow-[0_0_15px_rgba(0,242,254,0.4)] transition-all duration-300">
-                        <i class="fas fa-film"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3 font-tech tracking-wide">Video Editing</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">Jasa potong sambung video, *color grading*, penambahan efek/transisi, video TikTok/Reels, hingga video presentasi sinematik.</p>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-purple transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-neon-purple to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-16 h-16 bg-dark-900 border border-dark-700 rounded-xl flex items-center justify-center text-3xl mb-6 text-neon-purple group-hover:shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all duration-300">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h4 class="text-xl font-bold text-white mb-3 font-tech tracking-wide">Custom Project</h4>
-                    <p class="text-slate-400 text-sm leading-relaxed">Memiliki kebutuhan desain lain? Kami melayani berbagai kategori foto/video editing sesuai dengan instruksi khusus Anda.</p>
+                <div class="bg-dark-800 p-8 rounded-2xl border border-dark-700 hover:border-neon-magenta transition-all group">
+                    <i class="fas fa-film text-3xl text-neon-magenta mb-6 block"></i>
+                    <h4 class="text-xl font-bold text-white mb-2">Video Editing</h4>
+                    <p class="text-slate-400 text-sm">Editing video TikTok, Reels, hingga kebutuhan promosi bisnis.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Mini Portofolio / Proses Section -->
-    <section id="portofolio" class="py-20 bg-dark-800 border-y border-dark-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <!-- Teks -->
-                <div>
-                    <h2 class="text-sm font-bold text-neon-purple tracking-widest uppercase mb-2 font-tech">Tentang Kualitas Kami</h2>
-                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-6">Estetika Futuristik dengan Hasil Presisi</h3>
-                    <p class="text-slate-400 mb-8 leading-relaxed">
-                        Desain yang baik bukan hanya tentang warna yang indah, tapi tentang pesan yang tersampaikan. Di <span class="text-neon-cyan font-semibold">AZANA DESIGN</span>, kami menggabungkan *software* editing terbaik dengan sentuhan kreativitas manusia untuk menghasilkan karya yang *stand out*.
-                    </p>
-                    
-                    <ul class="space-y-5 mb-8">
-                        <li class="flex items-center p-3 bg-dark-900 rounded-lg border border-dark-700 hover:border-neon-cyan/50 transition">
-                            <span class="flex-shrink-0 w-10 h-10 rounded bg-neon-cyan/10 text-neon-cyan flex items-center justify-center mr-4 shadow-[0_0_10px_rgba(0,242,254,0.2)]"><i class="fas fa-check"></i></span>
-                            <span class="text-slate-300 font-medium">Resolusi Tinggi & File Master Lengkap</span>
-                        </li>
-                        <li class="flex items-center p-3 bg-dark-900 rounded-lg border border-dark-700 hover:border-neon-purple/50 transition">
-                            <span class="flex-shrink-0 w-10 h-10 rounded bg-neon-purple/10 text-neon-purple flex items-center justify-center mr-4 shadow-[0_0_10px_rgba(168,85,247,0.2)]"><i class="fas fa-clock"></i></span>
-                            <span class="text-slate-300 font-medium">Pengerjaan Super Cepat Sesuai Deadline</span>
-                        </li>
-                        <li class="flex items-center p-3 bg-dark-900 rounded-lg border border-dark-700 hover:border-neon-magenta/50 transition">
-                            <span class="flex-shrink-0 w-10 h-10 rounded bg-neon-magenta/10 text-neon-magenta flex items-center justify-center mr-4 shadow-[0_0_10px_rgba(217,70,239,0.2)]"><i class="fas fa-sync-alt"></i></span>
-                            <span class="text-slate-300 font-medium">Revisi Fleksibel Sampai Anda Puas</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <!-- Visual / Gambar Mockup -->
-                <div class="relative group">
-                    <div class="absolute inset-0 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-3xl transform rotate-3 scale-105 opacity-30 blur-xl group-hover:opacity-50 transition duration-500"></div>
-                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Proses Desain" class="relative rounded-3xl shadow-2xl border border-dark-700 z-10 w-full object-cover h-[400px] grayscale-[30%] hover:grayscale-0 transition duration-500">
-                    
-                    <!-- Floating badge -->
-                    <div class="absolute -bottom-6 -left-6 bg-dark-900 p-4 rounded-xl shadow-2xl border border-neon-cyan/50 z-20 flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
-                        <div class="w-12 h-12 bg-neon-cyan/20 text-neon-cyan rounded-full flex items-center justify-center text-xl shadow-[0_0_15px_rgba(0,242,254,0.3)]">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div>
-                            <p class="text-white font-bold font-tech text-xl">100%</p>
-                            <p class="text-neon-cyan text-xs tracking-wider">KLIEN PUAS</p>
-                        </div>
-                    </div>
-                </div>
+    <section id="kontak" class="py-24 bg-dark-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-5xl font-bold text-white mb-8 font-tech uppercase">Siap Mulai Project?</h2>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="https://wa.me/6282243995410" target="_blank" class="bg-[#1DB954] text-white px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:scale-105 transition">
+                    <i class="fab fa-whatsapp text-2xl"></i> Chat WhatsApp
+                </a>
+                <a href="mailto:maulanaazam195@gmail.com" class="bg-dark-900 border border-dark-700 text-white px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-dark-700 transition">
+                    <i class="far fa-envelope text-xl"></i> Email Kami
+                </a>
             </div>
         </div>
     </section>
 
-    <!-- Kontak / CTA Section -->
-    <section id="kontak" class="py-24 relative bg-dark-900 overflow-hidden">
-        <!-- Latar Belakang Garis Sirkuit Halus -->
-        <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#00f2fe 1px, transparent 1px), linear-gradient(90deg, #00f2fe 1px, transparent 1px); background-size: 40px 40px;"></div>
-        
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="bg-dark-800/80 backdrop-blur-xl border border-dark-700 rounded-3xl p-8 md:p-12 shadow-[0_0_30px_rgba(0,0,0,0.5)] text-center relative">
-                <!-- Border Top Glow -->
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-neon-cyan to-transparent"></div>
-
-                <div class="w-20 h-20 bg-dark-900 border border-neon-cyan/50 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-[0_0_20px_rgba(0,242,254,0.2)]">
-                    <span class="text-neon-cyan"><i class="fas fa-headset"></i></span>
-                </div>
-                <h2 class="text-3xl md:text-5xl font-bold text-white mb-6 font-tech">Mulai Proyek Digital Anda</h2>
-                <p class="text-slate-400 mb-10 text-lg max-w-2xl mx-auto">
-                    Diskusikan ide dan kebutuhan desain Anda bersama tim kami. Klik tombol di bawah untuk terhubung langsung dengan Admin <span class="text-neon-purple font-semibold">AZANA DESIGN</span> via WhatsApp atau Email.
-                </p>
-                
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-                    <!-- Tombol WhatsApp Langsung -->
-                    <a href="https://wa.me/6282243995410?text=Halo%20AZANA%20DESIGN,%20saya%20tertarik%20dengan%20jasa%20Anda%20dan%20ingin%20berkonsultasi." target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-[#00E676] to-[#1DB954] hover:brightness-110 text-white px-8 py-4 rounded-full font-bold text-lg transition duration-300 shadow-[0_0_20px_rgba(0,230,118,0.4)] flex items-center justify-center gap-3 w-full sm:w-auto transform hover:scale-105">
-                        <i class="fab fa-whatsapp text-2xl"></i> Chat WhatsApp
-                    </a>
-                    
-                    <!-- Tombol Email Langsung (mailto) -->
-                    <a href="mailto: maulanaazam195@gmail.com?subject=Konsultasi%20Desain%20AZANA%20DESIGN&body=Halo%20Admin%20AZANA%20DESIGN,%0D%0A%0D%0ASaya%20ingin%20berkonsultasi%20mengenai%20project%20berikut:%0D%0A..." class="bg-dark-900 hover:bg-dark-700 border border-dark-600 text-slate-300 px-8 py-4 rounded-full font-bold text-lg transition duration-300 flex items-center justify-center gap-3 w-full sm:w-auto">
-                        <i class="far fa-envelope text-xl"></i> Kirim Email
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-dark-900 border-t border-dark-700 pt-16 pb-8 relative overflow-hidden">
-        <!-- Glow dari bawah -->
-        <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-neon-purple/5 filter blur-[100px]"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-                <!-- Info Brand -->
-                <div>
-                    <div class="flex items-center mb-6">
-                        <!-- Menggunakan file logo yang diupload -->
-                        <img src="41905.png" alt="AZANA DESIGN" class="h-10 w-auto object-contain"
-                             onerror="this.outerHTML='<span class=\'text-2xl font-tech font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-purple\'>AZANA DESIGN</span>'">
-                    </div>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                        Studio kreatif profesional yang berfokus pada kualitas visual tingkat tinggi untuk desain grafis, editing foto, dan video produksi.
-                    </p>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded bg-dark-800 border border-dark-700 flex items-center justify-center text-slate-400 hover:border-neon-magenta hover:text-neon-magenta hover:shadow-[0_0_10px_rgba(217,70,239,0.3)] transition-all"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 rounded bg-dark-800 border border-dark-700 flex items-center justify-center text-slate-400 hover:border-neon-cyan hover:text-neon-cyan hover:shadow-[0_0_10px_rgba(0,242,254,0.3)] transition-all"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-10 h-10 rounded bg-dark-800 border border-dark-700 flex items-center justify-center text-slate-400 hover:border-red-500 hover:text-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.3)] transition-all"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-
-                <!-- Link Cepat -->
-                <div>
-                    <h4 class="text-white font-tech tracking-wider font-bold mb-6">LAYANAN EDITING</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-slate-400 hover:text-neon-cyan text-sm transition-colors flex items-center gap-2"><i class="fas fa-angle-right text-xs text-neon-purple"></i> Penjernihan Foto</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-neon-cyan text-sm transition-colors flex items-center gap-2"><i class="fas fa-angle-right text-xs text-neon-purple"></i> Desain Logo Esports & Bisnis</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-neon-cyan text-sm transition-colors flex items-center gap-2"><i class="fas fa-angle-right text-xs text-neon-purple"></i> Banner & Pamflet Digital</a></li>
-                        <li><a href="#" class="text-slate-400 hover:text-neon-cyan text-sm transition-colors flex items-center gap-2"><i class="fas fa-angle-right text-xs text-neon-purple"></i> Video Editing Sinematik</a></li>
-                    </ul>
-                </div>
-
-                <!-- Kontak Detail -->
-                <div>
-                    <h4 class="text-white font-tech tracking-wider font-bold mb-6">HUBUNGI KAMI</h4>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3 text-slate-400 text-sm">
-                            <i class="fas fa-map-marker-alt mt-1 text-neon-cyan"></i>
-                            <span>Melayani pemesanan online untuk seluruh wilayah Indonesia.</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-slate-400 text-sm">
-                            <i class="fas fa-envelope text-neon-cyan"></i>
-                            <span>maulanaazam195@gmail.com</span>
-                        </li>
-                        <li class="flex items-center gap-3 text-slate-400 text-sm">
-                            <i class="fab fa-whatsapp text-neon-cyan"></i>
-                            <span>+62 822-4399-5410</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="border-t border-dark-700 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-slate-500 text-sm text-center md:text-left">
-                    &copy; <span id="year"></span> AZANA DESIGN. All Rights Reserved.
-                </p>
-                <div class="flex gap-4 text-sm font-tech">
-                    <span class="text-neon-cyan">SYSTEM ONLINE</span>
-                </div>
-            </div>
-        </div>
+    <footer class="py-8 text-center border-t border-dark-700 text-slate-500 text-sm">
+        <p>&copy; 2026 AZANA DESIGN. All Rights Reserved.</p>
     </footer>
 
-    <!-- Script -->
     <script>
-        // Set dynamic year
-        document.getElementById('year').textContent = new Date().getFullYear();
-
         // Mobile Menu Toggle
         const btn = document.getElementById('mobile-menu-button');
         const menu = document.getElementById('mobile-menu');
-
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        // Close menu on link click
-        menu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.add('hidden');
-            });
-        });
-
-        // Change Navbar background on scroll
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
-                nav.classList.remove('border-dark-700');
-                nav.classList.add('border-neon-cyan/20');
-            } else {
-                nav.classList.remove('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
-                nav.classList.add('border-dark-700');
-                nav.classList.remove('border-neon-cyan/20');
-            }
-        });
+        btn.addEventListener('click', () => menu.classList.toggle('hidden'));
     </script>
 </body>
 </html>
