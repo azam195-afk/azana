@@ -26,13 +26,15 @@
 
         .header { text-align: center; margin-bottom: 10px; }
         
-        /* Ukuran Logo */
-        .logo-azana {
-            height: 40px; 
-            width: auto;
-            margin-bottom: 10px;
-            display: block;
-        }
+        /* Ukuran Logo Disesuaikan dengan Bingkai Game */
+.logo-azana {
+    width: 256px; /* Lebar canvas 240px + padding bingkai */
+    height: auto; /* Biar tetap proporsional (gak gepeng) */
+    display: block;
+    margin-bottom: 15px; /* Kasih jarak ke tulisan status */
+    object-fit: contain;
+}
+
 
         .offline-status {
             background-color: var(--alert-red);
