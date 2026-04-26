@@ -3,177 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Azana Offline - Final</title>
-<style>
-    :root {
-        --neon-cyan: #00ffff;
-        --dark-bg: #0a0a0c;
-        --button-bg: #1e1e22;
-        --alert-red: #ff3333;
-    }
-
-    body {
-        background-color: var(--dark-bg);
-        color: white;
-        font-family: Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start; /* Tetap flex-start agar rapat ke atas */
-        min-height: 100vh;
-        margin: 0;
-        padding-top: 10px;
-        touch-action: none;
-        overflow: hidden;
-    }
-
-    /* --- LOGO & HEADER --- */
-    .header {
-        text-align: center;
-        margin-bottom: 5px;
-    }
-
-    .logo-azana {
-        width: 240px; /* Pas dengan canvas */
-        height: auto;
-        margin-bottom: 5px;
-        display: block;
-    }
-
-    .offline-status {
-        background-color: var(--alert-red);
-        color: white;
-        font-size: 10px;
-        font-weight: bold;
-        padding: 3px 10px;
-        border-radius: 4px;
-        animation: blink 1s infinite;
-        margin-bottom: 5px;
-        display: inline-block;
-    }
-
-    @keyframes blink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
-    }
-
-    #score-val {
-        color: var(--neon-cyan);
-        font-size: 14px;
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    /* --- GAME CANVAS --- */
-    #game-wrapper {
-    position: relative;
-    padding: 4px;
-    background: #18181b;
-    border: 2px solid #333;
-    border-radius: 8px;
-    /* KUNCI RESPONSIVE: */
-    width: 90vw; /* Lebar 90% dari lebar layar HP */
-    max-width: 320px; /* Tapi jangan lebih dari 320px di komputer agar tetap estetik */
-    margin: 0 auto;
-}
-
-canvas {
-    background-color: #000;
-    display: block;
-    width: 100%; /* Canvas akan memenuhi kotak wrapper-nya */
-    height: auto; /* Tinggi mengikuti proporsi */
-    background-image: 
-        linear-gradient(rgba(40, 40, 40, 0.5) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(40, 40, 40, 0.5) 1px, transparent 1px);
-    /* Ukuran grid otomatis menyesuaikan lebar canvas */
-    background-size: 8.33% 5%; 
-}
-
-.logo-azana {
-    width: 90vw; /* Logo juga ikut lebar layar */
-    max-width: 320px; /* Sama dengan batas maksimal game */
-    height: auto;
-    margin-bottom: 5px;
-}
-
-
-    /* --- TOMBOL ESTETIK (KEMBALI KE SEMULA) --- */
-    .controls-container {
-        margin-top: 15px; /* Kasih jarak dikit di HP normal */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .row { display: flex; gap: 15px; }
-
-    .btn {
-        background: var(--button-bg);
-        color: var(--neon-cyan);
-        border: 2px solid #444;
-        border-radius: 50%; /* Bulat sempurna */
-        /* KEMBALI KE UKURAN ESTETIK AWAL */
-        width: 72px; 
-        height: 72px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        cursor: pointer;
-        user-select: none;
-        box-shadow: 0 5px 0 #000; /* Efek timbul */
-        transition: all 0.1s;
-    }
-
-    .btn:active {
-        transform: translateY(3px);
-        box-shadow: 0 1px 0 #000;
-    }
-
-    .btn-ok {
-        background: var(--neon-cyan);
-        color: black;
-        font-size: 14px;
-        font-weight: bold;
-        border: none;
-        text-transform: uppercase;
-    }
-
-    /* =========================================================
-       TRIK KHUSUS: HANYA AKTIF DI HP LAYAR KECIL/PENDEK 
-       ========================================================= */
-    @media (max-height: 660px) {
-        body { padding-top: 5px; }
-        .logo-azana { width: 160px; margin-bottom: 2px; } /* Kecilkan logo */
-        .offline-status, #score-val { margin-bottom: 2px; font-size: 9px; }
-        .controls-container { margin-top: 5px; gap: 5px; }
-        .row { gap: 8px; }
-        
-        /* Kecilkan tombol HANYA di layar pendek */
-        .btn { 
-            width: 52px; 
-            height: 52px; 
-            font-size: 18px; 
-            box-shadow: 0 3px 0 #000; 
+    <title>Azana Offline - Responsive Pro</title>
+    <style>
+        :root {
+            --neon-cyan: #00ffff;
+            --dark-bg: #0a0a0c;
+            --button-bg: #1e1e22;
+            --alert-red: #ff3333;
         }
-        .btn-ok { font-size: 10px; }
-    }
-</style>
+
+        body {
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; 
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 10px;
+            touch-action: none;
+            overflow: hidden;
+        }
+
+        /* --- LOGO & HEADER RESPONSIVE --- */
+        .header { text-align: center; margin-bottom: 5px; }
+        
+        .logo-azana {
+            width: 90vw;
+            max-width: 300px; /* Batas maksimal di komputer */
+            height: auto;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .offline-status {
+            background-color: var(--alert-red);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 4px;
+            animation: blink 1s infinite;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        #score-val { color: var(--neon-cyan); font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+
+        /* --- GAME WRAPPER RESPONSIVE --- */
+        #game-wrapper {
+            position: relative;
+            padding: 4px;
+            background: #18181b;
+            border: 2px solid #333;
+            border-radius: 8px;
+            width: 85vw; /* 85% lebar layar HP */
+            max-width: 280px; /* Ukuran pas di komputer */
+        }
+
+        canvas {
+            background-color: #000;
+            display: block;
+            width: 100%; /* Mengikuti lebar wrapper */
+            height: auto;
+            /* Grid samar yang ikut skala */
+            background-image: 
+                linear-gradient(rgba(40, 40, 40, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(40, 40, 40, 0.5) 1px, transparent 1px);
+            background-size: 8.33% 5%; 
+        }
+
+        /* --- TOMBOL ESTETIK --- */
+        .controls-container {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .row { display: flex; gap: 15px; }
+
+        .btn {
+            background: var(--button-bg);
+            color: var(--neon-cyan);
+            border: 2px solid #444;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: 0 5px 0 #000;
+        }
+        .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #000; }
+        .btn-ok { background: var(--neon-cyan); color: black; font-size: 12px; font-weight: bold; border: none; }
+
+        /* Khusus HP sangat pendek */
+        @media (max-height: 650px) {
+            .logo-azana { width: 150px; }
+            .btn { width: 55px; height: 55px; font-size: 20px; }
+            .btn-ok { font-size: 10px; }
+            .controls-container { margin-top: 5px; gap: 5px; }
+        }
+    </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="41955.png" alt="Azana Logo" class="logo-azana">
+        <img src="logo.png?v=1" alt="Azana Logo" class="logo-azana">
         <div class="offline-status">ANDA OFFLINE</div>
-        <div id="score" style="color: var(--neon-cyan); font-weight: bold;">Score: 0</div>
+        <div id="score-val">Score: 0</div>
     </div>
 
     <div id="game-wrapper">
         <canvas id="tetris" width="240" height="400"></canvas>
     </div>
 
-    <div class="controls">
+    <div class="controls-container">
         <div class="row">
             <div class="btn" onclick="playerMove(-1)">◀</div>
             <div class="btn btn-ok" onclick="playerRotate(1)">ROTATE</div>
@@ -183,47 +136,14 @@ canvas {
     </div>
 
     <script>
+        // DI SINI LETAK "const canvas" NYA:
         const canvas = document.getElementById('tetris');
         const context = canvas.getContext('2d');
-        const scoreElement = document.getElementById('score');
+        const scoreElement = document.getElementById('score-val');
 
         context.scale(20, 20);
 
-        // Fungsi gambar grid kotak-kotak
-        function drawGrid() {
-            context.strokeStyle = '#222'; // Warna garis kotak
-            context.lineWidth = 0.05;
-            for (let i = 0; i < 12; i++) {
-                for (let j = 0; j < 20; j++) {
-                    context.strokeRect(i, j, 1, 1);
-                }
-            }
-        }
-
-        function draw() {
-            context.fillStyle = '#000';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            
-            drawGrid(); // Panggil grid di sini agar muncul di latar
-            drawMatrix(arena, {x: 0, y: 0});
-            drawMatrix(player.matrix, player.pos);
-        }
-
-        function drawMatrix(matrix, offset) {
-            matrix.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if (value !== 0) {
-                        context.fillStyle = colors[value];
-                        context.fillRect(x + offset.x, y + offset.y, 1, 1);
-                        context.strokeStyle = '#000';
-                        context.lineWidth = 0.05;
-                        context.strokeRect(x + offset.x, y + offset.y, 1, 1);
-                    }
-                });
-            });
-        }
-
-        // --- Logika Game (Sama seperti sebelumnya) ---
+        // --- Logika Game ---
         function arenaSweep() {
             let rowCount = 1;
             outer: for (let y = arena.length - 1; y > 0; --y) {
@@ -263,6 +183,27 @@ canvas {
             if (type === 'Z') return [[5, 5, 0], [0, 5, 5], [0, 0, 0]];
             if (type === 'S') return [[0, 6, 6], [6, 6, 0], [0, 0, 0]];
             if (type === 'T') return [[0, 7, 0], [7, 7, 7], [0, 0, 0]];
+        }
+
+        function draw() {
+            context.fillStyle = '#000';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            drawMatrix(arena, {x: 0, y: 0});
+            drawMatrix(player.matrix, player.pos);
+        }
+
+        function drawMatrix(matrix, offset) {
+            matrix.forEach((row, y) => {
+                row.forEach((value, x) => {
+                    if (value !== 0) {
+                        context.fillStyle = colors[value];
+                        context.fillRect(x + offset.x, y + offset.y, 1, 1);
+                        context.strokeStyle = '#000';
+                        context.lineWidth = 0.05;
+                        context.strokeRect(x + offset.x, y + offset.y, 1, 1);
+                    }
+                });
+            });
         }
 
         function merge(arena, player) {
@@ -348,22 +289,17 @@ canvas {
             requestAnimationFrame(update);
         }
 
-        function updateScore() {
-            scoreElement.innerText = "Score: " + player.score;
-        }
+        function updateScore() { scoreElement.innerText = "Score: " + player.score; }
 
         const colors = [null, '#00ffff', '#ff00ff', '#ffff00', '#00ff00', '#ff0000', '#0000ff', '#ff8800'];
         const arena = createMatrix(12, 20);
         const player = { pos: {x: 0, y: 0}, matrix: null, score: 0 };
 
+        window.addEventListener('online', () => { window.location.href = 'index.html'; });
+
         playerReset();
         updateScore();
         update();
-
-        // JIKA INTERNET NYALA LAGI, OTOMATIS KEMBALI KE WEB AZANA
-window.addEventListener('online', () => {
-  window.location.href = 'index.html';
-});
     </script>
 </body>
 </html>
