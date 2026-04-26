@@ -24,26 +24,47 @@
             touch-action: none;
             overflow: hidden;
         }
-        .header { text-align: center; margin-bottom: 15px; }
-        .logo-azana {
-            width: 200px; /* Ukuran pas biar estetik */
-            height: auto;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .offline-status {
-            background-color: var(--alert-red);
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 4px;
-            animation: blink 1s infinite;
-            margin-bottom: 8px;
-            display: inline-block;
-        }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        #score-val { color: var(--neon-cyan); font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        /* --- HEADER AREA --- */
+.header { 
+    text-align: center; 
+    margin-bottom: 10px; /* Jarak ke kotak game dipersempit */
+    width: 250px; /* Samakan dengan lebar game agar sejajar */
+}
+
+.logo-azana {
+    width: 180px;
+    height: auto;
+    margin: 0 auto 10px;
+    display: block;
+}
+
+/* Container untuk menyejajarkan Offline & Score */
+.info-bar {
+    display: flex;
+    justify-content: space-between; /* Kiri dan Kanan */
+    align-items: center;
+    width: 100%;
+}
+
+.offline-status {
+    background-color: var(--alert-red);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    animation: blink 1s infinite;
+}
+
+#score-val { 
+    color: var(--neon-cyan); 
+    font-size: 14px; 
+    font-weight: bold;
+    margin: 0; /* Hapus margin agar sejajar sempurna */
+}
+
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
         #game-wrapper {
             position: relative;
             padding: 6px;
@@ -80,7 +101,8 @@
 </head>
 <body>
     <div class="header">
-        <img src="41955.png" alt="Azana Logo" class="logo-azana">
+    <img src="41955.png" alt="Azana Logo" class="logo-azana">
+    <div class="info-bar">
         <div class="offline-status">ANDA OFFLINE</div>
         <div id="score-val">Score: 0</div>
     </div>
