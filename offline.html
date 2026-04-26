@@ -289,6 +289,11 @@
         playerReset();
         updateScore();
         update();
+
+        // JIKA INTERNET NYALA LAGI, OTOMATIS KEMBALI KE WEB AZANA
+window.addEventListener('online', () => {
+  window.location.href = 'index.html';
+});
     </script>
 </body>
 </html>
