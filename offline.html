@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Azana Offline - Final Banget</title>
+    <title>Azana Offline - Versi Estetik Balik</title>
     <style>
         :root {
             --neon-cyan: #00ffff;
@@ -19,67 +19,65 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            height: 100vh;
+            justify-content: center;
+            min-height: 100vh;
             margin: 0;
-            padding-top: 5px;
             touch-action: none;
             overflow: hidden;
         }
 
         /* --- LOGO AREA --- */
-        .header { text-align: center; margin-bottom: 5px; }
+        .header { text-align: center; margin-bottom: 15px; }
         
         .logo-azana {
-            width: 250px; /* Lebar mantap sesuai bingkai */
+            width: 180px; /* Ukuran estetik seperti di foto */
             height: auto;
-            margin: 0 auto 5px;
+            margin-bottom: 10px;
             display: block;
         }
 
         .offline-status {
             background-color: var(--alert-red);
             color: white;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: bold;
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 4px;
-            animation: blink 1.5s infinite;
-            margin-bottom: 5px;
+            animation: blink 1s infinite;
+            margin-bottom: 8px;
             display: inline-block;
         }
 
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-        #score-val { color: var(--neon-cyan); font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+        #score-val { color: var(--neon-cyan); font-size: 18px; font-weight: bold; margin-bottom: 10px; }
 
         /* --- GAME DENGAN GRID KOTAK --- */
         #game-wrapper {
             position: relative;
-            padding: 5px;
+            padding: 6px;
             background: #18181b;
-            border: 2px solid #444;
+            border: 2px solid #333;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
         }
 
         canvas {
             background-color: #000;
             display: block;
-            /* INI GRIDNYA BANG */
+            /* GRID KOTAK VERSI STABIL */
             background-image: 
                 linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 20px 20px;
         }
 
-        /* --- TOMBOL NEON BULAT ESTETIK --- */
+        /* --- TOMBOL BULAT NEON (ESTETIK) --- */
         .controls-container {
-            margin-top: 15px;
+            margin-top: 25px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
         }
         .row { display: flex; gap: 15px; }
 
@@ -88,33 +86,37 @@
             color: var(--neon-cyan);
             border: 2px solid #444;
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             cursor: pointer;
-            box-shadow: 0 5px 0 #000;
+            user-select: none;
+            box-shadow: 0 6px 0 #000;
         }
 
-        .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #000; background: #333; }
-        .btn-ok { background: var(--neon-cyan); color: black; font-size: 12px; font-weight: bold; border: none; }
+        .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #000; background: #333; }
+        
+        .btn-ok { 
+            background: var(--neon-cyan); 
+            color: black; 
+            font-size: 14px; 
+            font-weight: bold; 
+            border: none; 
+        }
 
-        /* FIX BUAT HP KECIL BIAR GAK KEGULUNG */
-        @media (max-height: 700px) {
-            .logo-azana { width: 180px; }
-            canvas { width: 210px; height: 350px; background-size: 17.5px 17.5px; }
-            .btn { width: 58px; height: 58px; font-size: 20px; }
-            .btn-ok { font-size: 10px; }
-            .controls-container { margin-top: 8px; gap: 8px; }
+        .btn-drop {
+            width: 75px;
+            height: 75px;
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="logo.png?v=5" alt="Azana Logo" class="logo-azana">
+        <img src="logo.png" alt="Azana Logo" class="logo-azana">
         <div class="offline-status">ANDA OFFLINE</div>
         <div id="score-val">Score: 0</div>
     </div>
@@ -129,7 +131,7 @@
             <div class="btn btn-ok" onclick="playerRotate(1)">ROTATE</div>
             <div class="btn" onclick="playerMove(1)">▶</div>
         </div>
-        <div class="btn" onclick="playerHardDrop()">▼</div>
+        <div class="btn btn-drop" onclick="playerHardDrop()">▼</div>
     </div>
 
     <script>
@@ -222,7 +224,9 @@
         const colors = [null, '#00ffff', '#ff00ff', '#ffff00', '#00ff00', '#ff0000', '#0000ff', '#ff8800'];
         const arena = createMatrix(12, 20);
         const player = { pos: {x: 0, y: 0}, matrix: null, score: 0 };
+        
         window.addEventListener('online', () => { window.location.href = 'index.html'; });
+
         playerReset(); updateScore(); update();
     </script>
 </body>
