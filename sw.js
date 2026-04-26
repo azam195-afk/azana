@@ -1,9 +1,10 @@
-const CACHE_NAME = 'azana-cache-v4'; // Versi v4 agar browser update otomatis
+const CACHE_NAME = 'azana-cache-final-v5'; // Ubah v4 ke v5
 const ASSETS_TO_CACHE = [
   'offline.html',
   'index.html',
-  '41955.png' // Pastikan file logo.png ada di folder yang sama
+  '41955.png?v=1' // Tambahkan ?v=1 di belakang nama logo
 ];
+
 
 // Tahap Install: Simpan logo dan file utama ke memori browser
 self.addEventListener('install', (event) => {
