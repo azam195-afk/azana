@@ -26,20 +26,58 @@
     touch-action: none;
     overflow: hidden;
 }
-
+/* --- HEADER AREA --- */
 .header { 
     text-align: center; 
-    margin-bottom: 15px; /* Memberi jarak agar tidak terlalu nempel (panah merah) */
+    margin-bottom: 10px; /* Jarak ke game dipersempit */
     width: 250px; 
 }
 
 .logo-azana {
-    width: 170px; /* Sedikit dikecilkan agar hemat ruang vertikal */
+    width: 170px;
     height: auto;
-    margin: 0 auto 5px; /* Rapatkan jarak logo dengan teks offline */
+    margin: 0 auto 5px;
     display: block;
 }
 
+/* Balik ke tengah dan estetik merah kedip */
+.offline-status {
+    background-color: var(--alert-red);
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: blink-red 1.5s infinite;
+    display: inline-block;
+}
+
+@keyframes blink-red {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* --- SCORE DI POJOK (PANAH HIJAU) --- */
+#score-val { 
+    position: absolute;
+    bottom: -22px; /* Taruh tepat di bawah pojok kanan bingkai game */
+    right: 5px;
+    color: var(--neon-cyan); 
+    font-size: 13px; 
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+/* Bingkai Game */
+#game-wrapper {
+    position: relative; /* Wajib agar score bisa nempel di pojok */
+    padding: 5px;
+    background: #18181b;
+    border: 2px solid #333;
+    border-radius: 10px;
+}
 .info-bar {
     display: flex;
     justify-content: space-between;
@@ -98,12 +136,11 @@ canvas {
 </head>
 <body>
     <div class="header">
-    <img src="41955.png" alt="Azana Logo" class="logo-azana">
-    <div class="info-bar">
-        <div class="offline-status">ANDA OFFLINE</div>
-        <div id="score-val">Score: 0</div>
-    </div>
+    <img src="logo.png" alt="Azana Logo" class="logo-azana">
+    <div class="offline-status">ANDA OFFLINE</div>
+</div>
 <div id="game-wrapper">
+    <div id="score-val">Score: 0</div>
     <canvas id="tetris" width="240" height="400"></canvas>
 </div>
     <div class="controls-container">
