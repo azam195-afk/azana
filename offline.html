@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Azana Offline - Final</title>
- <style>
+<style>
     :root {
         --neon-cyan: #00ffff;
         --dark-bg: #0a0a0c;
@@ -19,11 +19,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        /* KUNCI: flex-start agar mulai dari atas dan muat semua */
-        justify-content: flex-start; 
+        justify-content: flex-start; /* Tetap flex-start agar rapat ke atas */
         min-height: 100vh;
         margin: 0;
-        padding-top: 10px; /* Jarak dikit dari atas layar */
+        padding-top: 10px;
         touch-action: none;
         overflow: hidden;
     }
@@ -35,7 +34,7 @@
     }
 
     .logo-azana {
-        width: 240px; /* Lebar pas dengan canvas */
+        width: 240px; /* Pas dengan canvas */
         height: auto;
         margin-bottom: 5px;
         display: block;
@@ -67,69 +66,100 @@
 
     /* --- GAME CANVAS --- */
     #game-wrapper {
-        position: relative;
-        padding: 4px;
-        background: #18181b;
-        border: 2px solid #333;
-        border-radius: 8px;
-    }
+    position: relative;
+    padding: 4px;
+    background: #18181b;
+    border: 2px solid #333;
+    border-radius: 8px;
+    /* KUNCI RESPONSIVE: */
+    width: 90vw; /* Lebar 90% dari lebar layar HP */
+    max-width: 320px; /* Tapi jangan lebih dari 320px di komputer agar tetap estetik */
+    margin: 0 auto;
+}
 
-    canvas {
-        background-color: #000;
-        display: block;
-        /* Grid samar */
-        background-image: 
-            linear-gradient(rgba(40, 40, 40, 0.5) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(40, 40, 40, 0.5) 1px, transparent 1px);
-        background-size: 20px 20px;
-    }
+canvas {
+    background-color: #000;
+    display: block;
+    width: 100%; /* Canvas akan memenuhi kotak wrapper-nya */
+    height: auto; /* Tinggi mengikuti proporsi */
+    background-image: 
+        linear-gradient(rgba(40, 40, 40, 0.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(40, 40, 40, 0.5) 1px, transparent 1px);
+    /* Ukuran grid otomatis menyesuaikan lebar canvas */
+    background-size: 8.33% 5%; 
+}
 
-    /* --- TOMBOL (DIPERKETAT) --- */
+.logo-azana {
+    width: 90vw; /* Logo juga ikut lebar layar */
+    max-width: 320px; /* Sama dengan batas maksimal game */
+    height: auto;
+    margin-bottom: 5px;
+}
+
+
+    /* --- TOMBOL ESTETIK (KEMBALI KE SEMULA) --- */
     .controls-container {
-        margin-top: 10px; /* Jarak game ke tombol dipersempit */
+        margin-top: 15px; /* Kasih jarak dikit di HP normal */
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 8px; /* Jarak antar baris tombol diperapat */
+        gap: 10px;
     }
 
-    .row { display: flex; gap: 12px; }
+    .row { display: flex; gap: 15px; }
 
     .btn {
         background: var(--button-bg);
         color: var(--neon-cyan);
         border: 2px solid #444;
-        border-radius: 50%;
-        /* Ukuran diperkecil agar tidak makan ruang bawah */
-        width: 62px; 
-        height: 62px;
+        border-radius: 50%; /* Bulat sempurna */
+        /* KEMBALI KE UKURAN ESTETIK AWAL */
+        width: 72px; 
+        height: 72px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
+        font-size: 24px;
         cursor: pointer;
-        box-shadow: 0 4px 0 #000;
+        user-select: none;
+        box-shadow: 0 5px 0 #000; /* Efek timbul */
+        transition: all 0.1s;
     }
 
     .btn:active {
-        transform: translateY(2px);
+        transform: translateY(3px);
         box-shadow: 0 1px 0 #000;
     }
 
     .btn-ok {
         background: var(--neon-cyan);
         color: black;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: bold;
         border: none;
+        text-transform: uppercase;
     }
 
-    /* Trik buat HP layar pendek */
-    @media (max-height: 650px) {
-        .logo-azana { width: 180px; }
-        .btn { width: 55px; height: 55px; font-size: 18px; }
+    /* =========================================================
+       TRIK KHUSUS: HANYA AKTIF DI HP LAYAR KECIL/PENDEK 
+       ========================================================= */
+    @media (max-height: 660px) {
+        body { padding-top: 5px; }
+        .logo-azana { width: 160px; margin-bottom: 2px; } /* Kecilkan logo */
+        .offline-status, #score-val { margin-bottom: 2px; font-size: 9px; }
+        .controls-container { margin-top: 5px; gap: 5px; }
+        .row { gap: 8px; }
+        
+        /* Kecilkan tombol HANYA di layar pendek */
+        .btn { 
+            width: 52px; 
+            height: 52px; 
+            font-size: 18px; 
+            box-shadow: 0 3px 0 #000; 
+        }
+        .btn-ok { font-size: 10px; }
     }
- </style>
+</style>
 </head>
 <body>
 
