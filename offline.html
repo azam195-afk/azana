@@ -58,59 +58,38 @@
     0%, 100% { opacity: 1; }
     50% { opacity: 0.3; }
 }
-
-/* --- SCORE DI POJOK (PANAH HIJAU) --- */
+/* --- SCORE DI TENGAH (DI ATAS ROTATE) --- */
 #score-val { 
     position: absolute;
-    bottom: -22px; /* Taruh tepat di bawah pojok kanan bingkai game */
-    right: 5px;
+    bottom: -35px; /* Jarak pas di atas tombol Rotate */
+    left: 50%;
+    transform: translateX(-50%); /* Kunci posisi tepat di tengah */
     color: var(--neon-cyan); 
-    font-size: 13px; 
+    font-size: 14px; 
     font-weight: bold;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    white-space: nowrap;
 }
 
 /* Bingkai Game */
 #game-wrapper {
-    position: relative; /* Wajib agar score bisa nempel di pojok */
+    position: relative;
     padding: 5px;
     background: #18181b;
     border: 2px solid #333;
     border-radius: 10px;
-}
-.info-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 5px;
-    margin-bottom: 5px; /* Jarak ke bingkai game */
+    margin-bottom: 10px; /* Tambah jarak dikit biar tombol gak nempel bgt */
 }
 
-/* Ukuran Game disesuaikan agar tombol bawah aman */
-#game-wrapper {
-    position: relative;
-    padding: 4px;
-    background: #18181b;
-    border: 2px solid #333;
-    border-radius: 8px;
-    width: 240px;
-    height: 380px; /* Dikurangi 20px dari sebelumnya biar tombol naik */
-}
-
-canvas {
-    width: 100%;
-    height: 100%;
-}
-
+/* --- CONTROLS --- */
 .controls-container {
-    margin-top: 10px; /* Rapatkan jarak game ke tombol */
+    margin-top: 25px; /* Nurunin tombol dikit saja agar Score punya ruang */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 }
-
+        
 .btn {
     width: 68px; /* Ukuran tombol dioptimalkan sedikit */
     height: 68px;
@@ -136,7 +115,7 @@ canvas {
 </head>
 <body>
     <div class="header">
-    <img src="41955.png" alt="Azana Logo" class="logo-azana">
+    <img src="logo.png" alt="Azana Logo" class="logo-azana">
     <div class="offline-status">ANDA OFFLINE</div>
 </div>
 <div id="game-wrapper">
