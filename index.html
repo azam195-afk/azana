@@ -460,16 +460,18 @@
                 nav.classList.remove('border-neon-cyan/20');
             }
         });
-    
-  // Ini adalah kode untuk mendaftarkan 'Satpam' (Service Worker) 
-  // agar web bisa diakses saat offline
+
+  // Registrasi Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('Azana Offline Ready!'))
-        .catch(err => console.log('Gagal daftar:', err));
+      navigator.serviceWorker.register('sw.js');
     });
   }
-    </script>
+
+  // JIKA INTERNET PUTUS, OTOMATIS KE GAME
+  window.addEventListener('offline', () => {
+    window.location.href = 'offline.html';
+  });
+  </script>
 </body>
 </html>
