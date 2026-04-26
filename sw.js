@@ -1,21 +1,26 @@
 const CACHE_NAME = 'azana-cache-v1';
-const OFFLINE_URL = 'offline.html';
+const ASSETS_TO_CACHE = [
+  'offline.html',
+  'index.html',
+  '41955.png' // Ganti sesuai nama file logo kamu, atau hapus baris ini kalau gak ada
+];
 
-// Tahap Install: Simpan halaman game ke memori browser
+// Tahap Install: Simpan semua aset ke memori
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll([OFFLINE_URL]);
+      // Kita pakai .addAll untuk borongan simpan filenya
+      return cache.addAll(ASSETS_TO_CACHE);
     })
   );
 });
 
-// Tahap Fetch: Cek koneksi, jika gagal (offline), kasih halaman game
+// Tahap Fetch tetap sama seperti sebelumnya
 self.addEventListener('fetch', (event) => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request).catch(() => {
-        return caches.match(OFFLINE_URL);
+        return caches.match('offline.html');
       })
     );
   }
