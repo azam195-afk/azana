@@ -2,7 +2,7 @@ const CACHE_NAME = 'azana-cache-final-v5'; // Ubah v4 ke v5
 const ASSETS_TO_CACHE = [
   'offline.html',
   'index.html',
-  '41955.png?v=1' // Tambahkan ?v=1 di belakang nama logo
+  '41955.png' // Tambahkan ?v=1 di belakang nama logo
 ];
 
 
