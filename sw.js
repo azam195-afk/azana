@@ -1,9 +1,5 @@
 const CACHE_NAME = 'azana-cache-v1';
-const ASSETS_TO_CACHE = [
-  'offline.html',
-  'index.html',
-  '41955.png' // Ganti sesuai nama file logo kamu, atau hapus baris ini kalau gak ada
-];
+const ASSETS_TO_CACHE = ['41955.png','offline.html'];
 
 // Tahap Install: Simpan semua aset ke memori
 self.addEventListener('install', (event) => {
