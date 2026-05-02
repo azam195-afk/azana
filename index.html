@@ -460,6 +460,17 @@
                 nav.classList.remove('border-neon-cyan/20');
             }
         });
+          // Registrasi Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js');
+    });
+  }
+
+  // JIKA INTERNET PUTUS, OTOMATIS KE GAME
+  window.addEventListener('offline', () => {
+    window.location.href = 'offline.html';
+  });
     </script>
 </body>
 </html>
