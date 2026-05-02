@@ -471,6 +471,9 @@ window.addEventListener('offline', () => {
         window.addEventListener('online', () => {
     window.location.href = 'index.html';
 });
+        if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+        }
         
     </script>
 </body>
