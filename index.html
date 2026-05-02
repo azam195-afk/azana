@@ -463,6 +463,15 @@
                 nav.classList.remove('border-neon-cyan/20');
             }
         });
+
+        // JIKA INTERNET PUTUS, OTOMATIS KE GAME/OFFLINE.HTML
+window.addEventListener('offline', () => {
+    window.location.href = 'offline.html';
+});
+        window.addEventListener('online', () => {
+    window.location.href = 'index.html';
+});
+        
     </script>
 </body>
 </html>
