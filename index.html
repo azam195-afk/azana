@@ -473,49 +473,37 @@
 window.addEventListener('offline', () => {
     window.location.href = 'offline.html';
 });
-        window.addEventListener('online', () => {
+window.addEventListener('online', () => {
     window.location.href = 'index.html';
 });
-        if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-        }
-        const username = 'azam195-afk';
-const repo = 'azana'; // Pastikan ini hanya 'azana' sesuai nama folder di GitHub kamu
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+}
+
+const username = 'azam195-afk';
+const repo = 'azana';
 const folder = 'portfolio';
 
 fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
-    .then(res => {
-        if (!res.ok) throw new Error('Folder tidak ditemukan');
-        return res.json();
-    })
+    .then(res => res.json())
     .then(files => {
         const container = document.getElementById('otomatis-portfolio');
-        container.innerHTML = ''; // Bersihkan wadah sebelum isi foto
-        
+        container.innerHTML = '';
         files.forEach(file => {
-            if(file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
-                                container.innerHTML += `
-                    <div class="swiper-slide">
-                        <img src="${file.download_url}" class="w-full h-full object-cover" alt="Portfolio">
-                    </div>`;
-            
-                
+            if (file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
+                container.innerHTML += `<div class="swiper-slide"><img src="${file.download_url}" class="w-full h-full object-cover" alt="Portfolio"></div>`;
             }
         });
 
-        // Inisialisasi Swiper
         new Swiper(".mySwiper", {
             loop: true,
             autoplay: { delay: 3000 },
             pagination: { el: ".swiper-pagination", clickable: true },
         });
     })
-    .catch(err => {
-        console.error(err);
-        // Jika gagal ambil dari folder, tampilkan pesan atau gambar default
-        document.getElementById('otomatis-portfolio').innerHTML = '<p class="text-center p-10">Gagal memuat foto portfolio.</p>';
-    });
-        
+    .catch(err => console.error(err));
+    
     </script>
 </body>
 </html>
