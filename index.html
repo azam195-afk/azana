@@ -469,30 +469,37 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js');
 }
 
-const username = 'azam195-afk';
-const repo = 'azana';
-const folder = 'portfolio';
+// Script Portfolio & Menu Fix
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Inisialisasi Slider Portfolio
+    fetch('https://api.github.com/repos/azam195-afk/azana/contents/portfolio')
+        .then(res => res.json())
+        .then(files => {
+            const container = document.getElementById('otomatis-portfolio');
+            if(!container) return;
+            container.innerHTML = '';
+              files.forEach(file => {
+                if (file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
+                    container.innerHTML += '<div class="swiper-slide h-full w-full"><img src="' + file.download_url + '" class="w-full h-full object-contain bg-black" alt="Portfolio"></div>';
+                }
+            });
+            
+            });
+            new Swiper(".mySwiper", {
+                loop: true,
+                autoplay: { delay: 3000 },
+                pagination: { el: ".swiper-pagination", clickable: true },
+            });
+        }).catch(err => console.log("Portfolio Error: ", err));
 
-fetch('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + folder)
-    .then(res => res.json())
-    .then(files => {
-        const container = document.getElementById('otomatis-portfolio');
-        container.innerHTML = '';
-        files.forEach(file => {
-            if (file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
-                // Pakai kutip biasa agar tidak error spasi di HP
-                container.innerHTML += '<div class="swiper-slide h-full w-full"><img src="' + file.download_url + '" class="w-full h-full object-contain bg-black"></div>';
-        });
-
-        new Swiper(".mySwiper", {
-            loop: true,
-            autoplay: { delay: 3000 },
-            pagination: { el: ".swiper-pagination", clickable: true },
-        });
-    })
-    .catch(err => console.error(err));
+    // 2. Fix Tombol Garis Tiga (Mobile Menu)
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if(btn && menu) {
+        btn.onclick = () => menu.classList.toggle('hidden');
+    }
+});
         
-    
     </script>
 </body>
 </html>
