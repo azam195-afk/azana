@@ -494,10 +494,11 @@ fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
         
         files.forEach(file => {
             if(file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
-                container.innerHTML += `
-    <div class="swiper-slide">
-        <img src="${file.download_url}" class="w-full h-full object-cover" alt="Portfolio">
-    </div>`;
+                                container.innerHTML += `
+                    <div class="swiper-slide">
+                        <img src="${file.download_url}" class="w-full h-full object-cover" alt="Portfolio">
+                    </div>`;
+            
                 
             }
         });
