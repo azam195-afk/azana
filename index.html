@@ -481,8 +481,6 @@ document.addEventListener('DOMContentLoaded', function() {
               files.forEach(file => {
                 if (file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
                     container.innerHTML += '<div class="swiper-slide h-full w-full"><img src="' + file.download_url + '" class="w-full h-full object-contain bg-black" alt="Portfolio"></div>';
-                }
-            });
             
             });
             new Swiper(".mySwiper", {
