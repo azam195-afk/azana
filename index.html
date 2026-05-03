@@ -313,19 +313,17 @@
                 </div>
                 
                 <!-- Visual / Gambar Mockup -->
-                <div class="relative w-full max-w-md mx-auto mb-20 px-4">
-    <div class="relative group">
-                        <div class="swiper mySwiper rounded-3xl overflow-hidden shadow-2xl bg-dark-800 aspect-[4/3]">
-            <div id="otomatis-portfolio" class="swiper-wrapper"></div>
-            <div class="swiper-pagination"></div>
+        <div class="relative w-full max-w-md mx-auto mb-20 px-4">
+            <div class="swiper mySwiper rounded-3xl overflow-hidden shadow-2xl bg-dark-800 aspect-[4/3]">
+                <div id="otomatis-portfolio" class="swiper-wrapper"></div>
+                <div class="swiper-pagination"></div>
+            </div>
         </div>
-    </div>
-</div>
             </section>
                 
+                
 
-    <!-- Kontak / CTA Section -->
-    <section id="kontak" class="py-24 relative bg-dark-900 overflow-hidden">
+<section id="kontak" class="py-24 relative bg-dark-900 overflow-hidden">
         <!-- Latar Belakang Garis Sirkuit Halus -->
         <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#00f2fe 1px, transparent 1px), linear-gradient(90deg, #00f2fe 1px, transparent 1px); background-size: 40px 40px;"></div>
         
@@ -483,7 +481,7 @@ fetch('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + f
         files.forEach(file => {
             if (file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
                 // Pakai kutip biasa agar tidak error spasi di HP
-                container.innerHTML += '<div class="swiper-slide"><img src="' + file.download_url + '" class="w-full h-full object-contain bg-black" alt="Portfolio"></div>';
+                container.innerHTML += '<div class="swiper-slide h-full w-full"><img src="' + file.download_url + '" class="w-full h-full object-contain bg-black"></div>';
         });
 
         new Swiper(".mySwiper", {
