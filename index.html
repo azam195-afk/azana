@@ -8,6 +8,9 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -310,10 +313,12 @@
                 </div>
                 
                 <!-- Visual / Gambar Mockup -->
-                <div class="relative group">
-                    <div class="absolute inset-0 bg-gradient-to-r from-neon-cyan to-neon-purple rounded-3xl transform rotate-3 scale-105 opacity-30 blur-xl group-hover:opacity-50 transition duration-500"></div>
-                    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Proses Desain" class="relative rounded-3xl shadow-2xl border border-dark-700 z-10 w-full object-cover h-[400px] grayscale-[30%] hover:grayscale-0 transition duration-500">
-                    
+                <div class="swiper mySwiper rounded-3xl overflow-hidden shadow-2xl">
+    <div id="otomatis-portfolio" class="swiper-wrapper">
+        </div>
+    <div class="swiper-pagination"></div>
+                </div>
+                
                     <!-- Floating badge -->
                     <div class="absolute -bottom-6 -left-6 bg-dark-900 p-4 rounded-xl shadow-2xl border border-neon-cyan/50 z-20 flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
                         <div class="w-12 h-12 bg-neon-cyan/20 text-neon-cyan rounded-full flex items-center justify-center text-xl shadow-[0_0_15px_rgba(0,242,254,0.3)]">
@@ -474,6 +479,30 @@ window.addEventListener('offline', () => {
         if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
         }
+        const username = 'azam195-afk';
+const repo = 'azana';
+const folder = 'portfolio';
+
+fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
+    .then(res => res.json())
+    .then(files => {
+        const container = document.getElementById('otomatis-portfolio');
+        files.forEach(file => {
+            if(file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
+                container.innerHTML += `
+                    <div class="swiper-slide">
+                        <img src="${file.download_url}" class="w-full h-auto object-cover" alt="Portfolio">
+                    </div>`;
+            }
+        });
+
+        new Swiper(".mySwiper", {
+            loop: true,
+            autoplay: { delay: 3000 },
+            pagination: { el: ".swiper-pagination", clickable: true },
+        });
+    });
+        
         
     </script>
 </body>
