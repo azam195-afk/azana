@@ -463,9 +463,9 @@
             navigator.serviceWorker.register('sw.js');
         }
 
-        // Script Portfolio & Menu Fix Utama
-        document.addEventListener('DOMContentLoaded', function() {
-    // 1. Inisialisasi Slider Portfolio
+        // Fix Script Portfolio & Menu
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Slider Portfolio
     fetch('https://api.github.com/repos/azam195-afk/azana/contents/portfolio')
         .then(res => res.json())
         .then(files => {
@@ -484,18 +484,20 @@
                 autoplay: { delay: 3000 },
                 pagination: { el: ".swiper-pagination", clickable: true },
             });
-        }).catch(err => console.log("Error: ", err));
+        }).catch(err => console.log("Error:", err));
 
-    // 2. Fix Tombol Garis Tiga (SAMAIN ID-NYA)
+    // 2. Fix Tombol Garis Tiga (Mobile Menu)
     const btn = document.getElementById('mobile-menu-button');
     const menu = document.getElementById('mobile-menu');
+    
     if(btn && menu) {
         btn.onclick = (e) => {
-            e.preventDefault();
+            e.stopPropagation(); // Biar gak ketutup sendiri
             menu.classList.toggle('hidden');
         };
     }
 });
+        
     </script>
 </body>
 </html>
