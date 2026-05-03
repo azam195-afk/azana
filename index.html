@@ -488,14 +488,15 @@ const username = 'azam195-afk';
 const repo = 'azana';
 const folder = 'portfolio';
 
-fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
+fetch('https://api.github.com/repos/' + username + '/' + repo + '/contents/' + folder)
     .then(res => res.json())
     .then(files => {
         const container = document.getElementById('otomatis-portfolio');
         container.innerHTML = '';
         files.forEach(file => {
             if (file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
-                container.innerHTML += `<div class="swiper-slide"><img src="${file.download_url}" class="w-full h-full object-cover" alt="Portfolio"></div>`;
+                // Pakai kutip biasa agar tidak error spasi di HP
+                container.innerHTML += '<div class="swiper-slide"><img src="' + file.download_url + '" class="w-full h-full object-cover"></div>';
             }
         });
 
@@ -506,6 +507,7 @@ fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
         });
     })
     .catch(err => console.error(err));
+        
     
     </script>
 </body>
