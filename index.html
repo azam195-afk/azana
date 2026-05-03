@@ -423,24 +423,7 @@
 
     <!-- Script -->
     <script>
-        // Set dynamic year
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Mobile Menu Toggle
-        const btn = document.getElementById('mobile-menu-button');
-        const menu = document.getElementById('mobile-menu');
-
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        // Close menu on link click
-        menu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.add('hidden');
-            });
-        });
-
+        
                 // Change Navbar background on scroll
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
