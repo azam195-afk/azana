@@ -313,25 +313,27 @@
                 </div>
                 
                 <!-- Visual / Gambar Mockup -->
-                <div class="relative w-full mb-16"> 
-    <div class="swiper mySwiper rounded-3xl overflow-hidden shadow-2xl h-64 md:h-96 bg-dark-800">
-        <div id="otomatis-portfolio" class="swiper-wrapper">
-            </div>
-        <div class="swiper-pagination"></div>
-    </div>
+                <div class="w-full mb-20"> <div class="relative w-full">
+        <div class="swiper mySwiper rounded-3xl overflow-hidden shadow-2xl h-64 md:h-96 bg-dark-800">
+            <div id="otomatis-portfolio" class="swiper-wrapper">
+                </div>
+            <div class="swiper-pagination"></div>
+        </div>
 
-    <div class="absolute -bottom-6 -left-4 bg-dark-900 p-4 rounded-xl shadow-2xl border border-neon-cyan/20 z-10">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-neon-cyan/20 text-neon-cyan rounded-full flex items-center justify-center">
-                <i class="fas fa-star"></i>
-            </div>
-            <div>
-                <p class="text-white font-bold font-tech text-xl">100%</p>
-                <p class="text-neon-cyan text-xs tracking-wider">KLIEN PUAS</p>
+        <div class="absolute -bottom-6 -left-4 bg-dark-900 p-4 rounded-xl shadow-2xl border border-neon-cyan/20 z-20">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-neon-cyan/20 text-neon-cyan rounded-full flex items-center justify-center">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <p class="text-white font-bold font-tech text-xl">100%</p>
+                    <p class="text-neon-cyan text-xs tracking-wider">KLIEN PUAS</p>
+                </div>
             </div>
         </div>
     </div>
-  </div>
+                </div>
+                
     </section>
 
     <!-- Kontak / CTA Section -->
@@ -480,29 +482,39 @@ window.addEventListener('offline', () => {
   navigator.serviceWorker.register('sw.js');
         }
         const username = 'azam195-afk';
-const repo = 'azana';
+const repo = 'azana'; // Pastikan ini hanya 'azana' sesuai nama folder di GitHub kamu
 const folder = 'portfolio';
 
 fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) throw new Error('Folder tidak ditemukan');
+        return res.json();
+    })
     .then(files => {
         const container = document.getElementById('otomatis-portfolio');
+        container.innerHTML = ''; // Bersihkan wadah sebelum isi foto
+        
         files.forEach(file => {
             if(file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
                 container.innerHTML += `
                     <div class="swiper-slide">
-                        <img src="${file.download_url}" class="w-full h-auto object-cover" alt="Portfolio">
+                        <img src="${file.download_url}" class="w-full h-full object-cover" alt="Portfolio Azana">
                     </div>`;
             }
         });
 
+        // Inisialisasi Swiper
         new Swiper(".mySwiper", {
             loop: true,
             autoplay: { delay: 3000 },
             pagination: { el: ".swiper-pagination", clickable: true },
         });
+    })
+    .catch(err => {
+        console.error(err);
+        // Jika gagal ambil dari folder, tampilkan pesan atau gambar default
+        document.getElementById('otomatis-portfolio').innerHTML = '<p class="text-center p-10">Gagal memuat foto portfolio.</p>';
     });
-        
         
     </script>
 </body>
