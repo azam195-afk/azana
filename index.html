@@ -313,24 +313,30 @@
                 </div>
                 
                 <!-- Visual / Gambar Mockup -->
-        <div class="relative w-full mx-auto mb-16">
-    <div class="text-center mb-6 px-4">
+<div class="relative w-full max-w-[320px] mx-auto mb-16 px-4">
+    <div class="text-center mb-6">
         <h4 class="text-xs font-tech text-neon-cyan tracking-[0.3em] uppercase mb-1">Portofolio</h4>
         <h3 class="text-xl font-bold text-white uppercase italic">Hasil Editing</h3>
         <div class="h-[2px] w-10 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto mt-2"></div>
     </div>
 
-    <div class="relative w-full">
-        <div class="swiper mySwiper w-full h-[250px] md:h-[400px] shadow-[0_0_20px_rgba(0,242,254,0.1)]">
+    <div class="relative p-[2px] rounded-2xl bg-gradient-to-b from-neon-cyan/30 to-transparent shadow-[0_0_20px_rgba(0,242,254,0.1)]">
+        <div class="swiper mySwiper rounded-2xl overflow-hidden bg-dark-800 aspect-video">
             <div id="otomatis-portfolio" class="swiper-wrapper"></div>
             <div class="swiper-pagination"></div>
         </div>
     </div>
     
-    <p class="text-[10px] text-slate-500 text-center mt-4 italic font-light tracking-widest px-4 uppercase">
-        <i class="fas fa-hand-pointer mr-1 animate-pulse"></i> Geser untuk melihat lainnya
+    <p class="text-[10px] text-slate-500 text-center mt-4 italic font-light tracking-widest uppercase">
+        <i class="fas fa-hand-pointer mr-1"></i> Geser untuk melihat lainnya
     </p>
 </div> ```
+
+### Kenapa ini solusinya?
+* **Mengurung Batas**: Dengan menaruh `</div>` tepat setelah paragraf "Geser untuk melihat", lo memberitahu browser kalau batasan `max-w-[320px]` itu cuma buat area slider saja.
+* **Membebaskan Footer**: Begitu batasan itu ditutup, seksi "HUBUNGI KAMI" dan footer lo nggak akan lagi punya rongga di kanan-kiri dan bakal balik lebar ngepas layar HP lo.
+
+Langsung **Commit**, Zam! Kalau lo pasang penutupnya persis kayak di atas, slider lo tetep bakal cakep ukurannya, dan bagian bawahnya nggak akan menciut lagi. Gas!)
         
 <section id="kontak" class="py-24 relative bg-dark-900 overflow-hidden">
         <!-- Latar Belakang Garis Sirkuit Halus -->
