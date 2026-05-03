@@ -443,7 +443,7 @@
             });
         });
 
-        // Change Navbar background on scroll
+                // Change Navbar background on scroll
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
             if (window.scrollY > 50) {
@@ -457,47 +457,42 @@
             }
         });
 
-        // JIKA INTERNET PUTUS, OTOMATIS KE GAME/OFFLINE.HTML
-window.addEventListener('offline', () => {
-    window.location.href = 'offline.html';
-});
-window.addEventListener('online', () => {
-    window.location.href = 'index.html';
-});
+        // Offline / Online Logic
+        window.addEventListener('offline', () => { window.location.href = 'offline.html'; });
+        window.addEventListener('online', () => { window.location.href = 'index.html'; });
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-}
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
 
-// Script Portfolio & Menu Fix
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Inisialisasi Slider Portfolio
-    fetch('https://api.github.com/repos/azam195-afk/azana/contents/portfolio')
-        .then(res => res.json())
-        .then(files => {
-            const container = document.getElementById('otomatis-portfolio');
-            if(!container) return;
-            container.innerHTML = '';
-              files.forEach(file => {
-                if (file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
-                    container.innerHTML += '<div class="swiper-slide h-full w-full"><img src="' + file.download_url + '" class="w-full h-full object-contain bg-black" alt="Portfolio"></div>';
-            
-            });
-            new Swiper(".mySwiper", {
-                loop: true,
-                autoplay: { delay: 3000 },
-                pagination: { el: ".swiper-pagination", clickable: true },
-            });
-        }).catch(err => console.log("Portfolio Error: ", err));
+        // Script Portfolio & Menu Fix Utama
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Inisialisasi Slider Portfolio
+            fetch('https://api.github.com/repos/azam195-afk/azana/contents/portfolio')
+                .then(res => res.json())
+                .then(files => {
+                    const container = document.getElementById('otomatis-portfolio');
+                    if(!container) return;
+                    container.innerHTML = '';
+                    files.forEach(file => {
+                        if (file.name.match(/\.(jpg|jpeg|png|webp)$/i)) {
+                            container.innerHTML += '<div class="swiper-slide h-full w-full"><img src="' + file.download_url + '" class="w-full h-full object-contain bg-black" alt="Portfolio"></div>';
+                        }
+                    });
+                    new Swiper(".mySwiper", {
+                        loop: true,
+                        autoplay: { delay: 3000 },
+                        pagination: { el: ".swiper-pagination", clickable: true },
+                    });
+                }).catch(err => console.log("Portfolio Error: ", err));
 
-    // 2. Fix Tombol Garis Tiga (Mobile Menu)
-    const btn = document.getElementById('menu-btn');
-    const menu = document.getElementById('mobile-menu');
-    if(btn && menu) {
-        btn.onclick = () => menu.classList.toggle('hidden');
-    }
-});
-        
+            // 2. Fix Tombol Garis Tiga (Mobile Menu)
+            const btn = document.getElementById('mobile-menu-button');
+            const menu = document.getElementById('mobile-menu');
+            if(btn && menu) {
+                btn.onclick = () => menu.classList.toggle('hidden');
+            }
+        });
     </script>
 </body>
 </html>
