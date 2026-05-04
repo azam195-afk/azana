@@ -1,50 +1,177 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - Azana Design</title>
+    <title>Privacy Policy - AZANA DESIGN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Rajdhani:wght@500;700&display=swap');
+        
+        :root {
+            --neon-cyan: #00f2fe;
+            --neon-purple: #bc13fe;
+            --dark-bg: #050505;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #e0e0e0;
-            background-color: #0f172a; /* Warna gelap senada desainmu */
-            margin: 0;
-            padding: 40px 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--dark-bg);
+            color: #94a3b8;
         }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+        .font-tech { font-family: 'Rajdhani', sans-serif; }
+
+        .neon-border {
+            border: 1px solid rgba(0, 242, 254, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
-        h1 { color: #38bdf8; border-bottom: 2px solid #38bdf8; padding-bottom: 10px; }
-        h2 { color: #38bdf8; margin-top: 25px; }
-        p { margin-bottom: 15px; }
-        .footer { text-align: center; margin-top: 40px; font-size: 0.9em; color: #94a3b8; }
+
+        .neon-text-cyan {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #00f2fe, #bc13fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding-right: 10px; /* Menambah ruang agar huruf Y tidak kepotong */
+            padding-bottom: 5px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #00f2fe, #bc13fe);
+            border-radius: 10px;
+        }
+
+        .bg-dark-950 { background-color: #070708; }
+        .bg-dark-800 { background-color: #121214; }
+        .border-dark-700 { border-color: #1f1f23; }
+        .border-dark-800 { border-color: #16161a; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Kebijakan Privasi</h1>
-        <p>Terakhir diperbarui: 3 Mei 2026</p>
-        
-        <p>Di <strong>Azana Design</strong> (azana.my.id), privasi pengunjung adalah prioritas kami. Dokumen ini menjelaskan informasi apa yang kami kumpulkan dan bagaimana kami menggunakannya.</p>
+<body class="antialiased">
 
-        <h2>1. Informasi yang Kami Kumpulkan</h2>
-        <p>Kami menggunakan file log standar yang mencatat data anonim seperti alamat IP, jenis browser, dan waktu kunjungan untuk keperluan analisis statistik guna meningkatkan layanan kami.</p>
+    <!-- Header Section -->
+    <header class="py-20 px-6 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent opacity-50"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <!-- Menambahkan padding-right agar huruf Y yang miring tidak terpotong -->
+            <h1 class="text-5xl md:text-6xl font-bold font-tech tracking-tighter italic mb-4 leading-tight pr-4">
+                PRIVACY <span class="gradient-text">POLICY</span>
+            </h1>
+            <p class="text-slate-400 text-sm uppercase tracking-[0.3em] font-tech">AZANA DESIGN &bull; DOKUMEN LEGAL</p>
+        </div>
+    </header>
 
-        <h2>2. Cookies dan Iklan</h2>
-        <p>Situs ini mungkin menggunakan cookies untuk menyimpan preferensi pengunjung. Google, sebagai vendor pihak ketiga, menggunakan cookies untuk menayangkan iklan berdasarkan kunjungan Anda ke situs ini.</p>
+    <!-- Content Card -->
+    <main class="max-w-4xl mx-auto px-6 pb-20">
+        <div class="bg-dark-950/50 backdrop-blur-xl rounded-[2.5rem] p-8 md:p-12 neon-border border border-white/5 relative">
+            
+            <div class="space-y-12 text-sm md:text-base leading-relaxed">
+                <!-- Section 1 -->
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center border border-cyan-500/20">
+                            <i class="fas fa-shield-alt neon-text-cyan"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white font-tech uppercase tracking-wider">Pendahuluan</h2>
+                    </div>
+                    <p>Di <strong>AZANA DESIGN</strong>, yang dapat diakses dari <span class="text-cyan-400">azana.my.id</span>, privasi pengunjung adalah prioritas utama kami. Dokumen ini menjelaskan informasi apa yang kami kumpulkan dan bagaimana kami menggunakannya.</p>
+                </section>
 
-        <h2>3. Persetujuan</h2>
-        <p>Dengan menggunakan situs web kami, Anda dengan ini menyetujui Kebijakan Privasi kami dan menyetujui ketentuan-ketentuannya.</p>
-    </div>
-    <div class="footer">
-        &copy; 2026 Azana Design - Creative Digital Studio
-    </div>
+                <!-- Section 2: Log Files -->
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                            <i class="fas fa-file-code text-purple-400"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white font-tech uppercase tracking-wider">File Log</h2>
+                    </div>
+                    <p>Kami menggunakan file log standar yang mencatat pengunjung saat mereka mengunjungi situs web. Informasi ini mencakup alamat IP, jenis browser, ISP, stempel waktu, dan halaman rujukan untuk keperluan analisis tren dan manajemen situs.</p>
+                </section>
+
+                <!-- Section 3: Cookies & Ads -->
+                <section class="bg-white/5 p-8 rounded-3xl border border-white/5">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center border border-yellow-500/20">
+                            <i class="fas fa-ad text-yellow-400"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white font-tech uppercase tracking-wider text-yellow-400">Kebijakan Iklan</h2>
+                    </div>
+                    <p class="mb-4">Google, sebagai vendor pihak ketiga, menggunakan cookie (DART Cookie) untuk menayangkan iklan kepada pengunjung situs kami berdasarkan kunjungan mereka ke <span class="text-white">azana.my.id</span>.</p>
+                    <p>Kami menggunakan <strong>Google AdSense</strong> untuk menayangkan iklan. Mitra iklan ini dapat menggunakan teknologi seperti cookie untuk mempersonalisasi konten iklan yang Anda lihat di situs ini.</p>
+                </section>
+
+                <!-- Section 4: Persetujuan -->
+                <section>
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center border border-green-500/20">
+                            <i class="fas fa-check-circle text-green-400"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white font-tech uppercase tracking-wider">Persetujuan</h2>
+                    </div>
+                    <p>Dengan menggunakan situs kami, Anda dengan ini menyetujui Kebijakan Privasi kami. Pertanyaan lebih lanjut dapat diajukan ke <span class="text-cyan-400 italic">maulanaazam195@gmail.com</span>.</p>
+                </section>
+            </div>
+
+            <div class="absolute bottom-0 right-0 p-8 opacity-10 hidden md:block">
+                <i class="fas fa-fingerprint text-8xl text-white"></i>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER EKOSISTEM (Sesuai Catatan Lo) -->
+    <footer class="bg-dark-950 pt-16 pb-8 border-t border-dark-700 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 text-left">
+                
+                <div class="col-span-2 md:col-span-1">
+                    <h3 class="text-xl font-bold text-white mb-4 font-tech tracking-wider uppercase">AZANA<span class="text-[#bc13fe]"> DESIGN</span></h3>
+                    <p class="text-[10px] text-slate-500 leading-relaxed mb-6 font-tech">Kembali ke pusat layanan desain dan editing profesional.</p>
+                    <a href="https://azana.my.id" class="inline-flex items-center gap-2 bg-dark-800 border border-cyan-500/30 px-4 py-2 rounded-lg text-[10px] text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all font-tech uppercase tracking-widest">
+                        <i class="fas fa-home text-xs"></i> Back to Main Site
+                    </a>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4 font-tech">Tools Lainnya</h4>
+                    <ul class="text-[10px] space-y-2 text-slate-500 font-tech uppercase">
+                        <li><a href="https://azana-studio.vercel.app" target="_blank" class="hover:text-cyan-400 transition">AI Enhancer</a></li>
+                        <li><a href="https://azana-design.vercel.app" target="_blank" class="hover:text-cyan-400 transition">Remove BG</a></li>
+                        <li><a href="https://azana-magic-eraser.vercel.app" target="_blank" class="hover:text-cyan-400 transition">Magic Eraser</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4 font-tech">Legal</h4>
+                    <ul class="text-[10px] space-y-2 text-slate-500 font-tech uppercase">
+                        <li><a href="https://azana.my.id/privacy-policy.html" class="hover:text-cyan-400 transition">Privacy Policy</a></li>
+                        <li><a href="mailto:maulanaazam195@gmail.com" class="hover:text-cyan-400 transition">Email Admin</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4 font-tech">Follow Us</h4>
+                    <div class="flex gap-3">
+                        <a href="https://www.instagram.com/zamm_azana" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-instagram text-lg"></i></a>
+                        <a href="https://www.facebook.com/maulana.azam.165" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-facebook-f text-lg"></i></a>
+                        <a href="https://youtube.com/@azanaastory" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-youtube text-lg"></i></a>
+                        <a href="https://www.tiktok.com/@azam.195" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-tiktok text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-dark-800 text-center text-[9px] text-slate-600 font-tech uppercase tracking-widest">
+                © 2026 AZANA DESIGN. Connected Ecosystem.
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
