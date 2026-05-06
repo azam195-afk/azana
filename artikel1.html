@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cara Memperjernih Foto Buram dengan AI - AZANA DESIGN</title>
+
+<meta name="description" content="Pelajari cara memperjernih foto buram dengan AI secara gratis dan cepat tanpa aplikasi tambahan.">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    background:#050508;
+    color:#cbd5e1;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    position: relative;
+    overflow-x: hidden;
+}
+
+h1,h2 {
+    font-family:'Rajdhani', sans-serif;
+}
+
+/* NEURAL BACKGROUND */
+#neural-canvas {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+
+.vignette {
+    position:fixed;
+    inset:0;
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
+    z-index:0;
+    pointer-events:none;
+}
+</style>
+</head>
+
+<body class="px-6 py-10">
+
+<!-- BACKGROUND -->
+<canvas id="neural-canvas"></canvas>
+<div class="vignette"></div>
+
+<div class="max-w-3xl mx-auto relative z-10">
+
+<h1 class="text-3xl md:text-4xl text-white font-bold mb-4">
+    Cara Memperjernih Foto Buram dengan AI (Gratis & Cepat)
+</h1>
+
+<p class="text-sm text-slate-400 mb-6">
+    Dipublikasikan oleh AZANA DESIGN • 2026
+</p>
+
+<img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7" class="rounded-xl mb-6">
+
+<p class="mb-4 text-sm leading-relaxed">
+    Foto buram sering terjadi karena kamera yang kurang fokus atau kualitas rendah. 
+    Sekarang, dengan teknologi Artificial Intelligence (AI), Anda bisa memperjernih foto hanya dalam hitungan detik tanpa perlu skill editing.
+</p>
+
+<h2 class="text-xl text-white mt-6 mb-2">Kenapa Foto Bisa Buram?</h2>
+<p class="text-sm mb-4">
+    Foto buram biasanya disebabkan oleh:
+    - Kamera goyang  
+    - Resolusi rendah  
+    - Pencahayaan buruk  
+</p>
+
+<h2 class="text-xl text-white mt-6 mb-2">Cara Memperjernih Foto</h2>
+<p class="text-sm mb-4">
+    Berikut langkah mudah yang bisa Anda lakukan:
+</p>
+
+<ul class="list-disc ml-6 text-sm mb-6 space-y-2">
+    <li>Upload foto ke tools AI</li>
+    <li>Tunggu proses enhance</li>
+    <li>Download hasil HD</li>
+</ul>
+
+<h2 class="text-xl text-white mt-6 mb-2">Gunakan Tools Gratis</h2>
+<p class="text-sm mb-6">
+    Anda bisa langsung menggunakan fitur penjernih foto di AZANA DESIGN untuk hasil terbaik tanpa ribet.
+</p>
+
+<a href="index.html" class="inline-block bg-gradient-to-r from-cyan-400 to-purple-500 text-white px-6 py-3 rounded-lg text-sm font-semibold">
+    Coba Sekarang →
+</a>
+
+</div>
+
+<!-- NEURAL SCRIPT -->
+<script>
+const canvas = document.getElementById('neural-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function init(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particles=[];
+    let count = (canvas.width * canvas.height) / 6000;
+
+    for(let i=0;i<count;i++){
+        particles.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height,
+            vx:(Math.random()-0.5)*0.4,
+            vy:(Math.random()-0.5)*0.4
+        });
+    }
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach(p=>{
+        p.x+=p.vx;
+        p.y+=p.vy;
+
+        if(p.x<0||p.x>canvas.width)p.vx*=-1;
+        if(p.y<0||p.y>canvas.height)p.vy*=-1;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,1,0,Math.PI*2);
+        ctx.fillStyle="#00f2fe";
+        ctx.fill();
+    });
+
+    requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', init);
+
+init();
+animate();
+</script>
+
+</body>
+</html>
