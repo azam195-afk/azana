@@ -1,83 +1,60 @@
 <nav class="fixed top-0 left-0 w-full z-50 bg-dark-950/70 backdrop-blur-xl border-b border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20"> <a href="index.html" class="relative group flex items-center gap-3">
+                
+                <div class="absolute -inset-3 bg-gradient-to-r from-neon-cyan to-neon-purple opacity-30 blur-2xl group-hover:opacity-70 transition duration-500 rounded-full"></div>
+                
+                <div class="relative">
+                    <div class="absolute -inset-px bg-gradient-to-r from-neon-cyan to-neon-purple rounded-full opacity-50 blur-sm"></div>
+                    <img src="41955.png" 
+                         class="relative w-11 h-11 rounded-full border border-white/20 object-cover shadow-[0_0_15px_rgba(0,242,254,0.3)] group-hover:shadow-[0_0_20px_rgba(188,19,254,0.5)] transition" 
+                         alt="AZANA Logo">
+                </div>
 
-        <div class="flex items-center justify-between h-16">
+                <div class="relative flex flex-col">
+                    <span class="text-white font-bold tracking-tighter text-xl leading-none font-tech">AZANA</span>
+                    <span class="text-[10px] text-neon-cyan font-tech uppercase tracking-[0.3em] leading-none">Design Studio</span>
+                </div>
+            </a>
 
-            <!-- LOGO -->
-            <a href="index.html" class="flex items-center">
-    <img src="41955.png" alt="AZANA LOGO" class="h-8 w-auto"> 
-    <span class="ml-2 text-xl font-bold text-white tracking-tight md:block hidden">
-        AZANA<span class="text-neon-purple"> DESIGN</span>
-    </span>
-</a>
-
-
-            <!-- MENU DESKTOP -->
-            <div class="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-semibold text-slate-400">
-
-                <a href="index.html" class="hover:text-neon-cyan transition">
-                    Home
+            <div class="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-tech text-slate-400">
+                <a href="index.html" class="hover:text-neon-cyan transition relative group">
+                    <span>Beranda</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-neon-cyan group-hover:w-full transition-all"></span>
                 </a>
-
-                <a href="blogs.html" class="hover:text-neon-cyan transition">
-                    Blog
+                <a href="#layanan" class="hover:text-neon-cyan transition relative group">
+                    <span>Layanan</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-neon-cyan group-hover:w-full transition-all"></span>
                 </a>
-
-                <a href="about.html" class="hover:text-neon-cyan transition">
-                    About
+                <a href="blogs.html" class="hover:text-neon-cyan transition relative group">
+                    <span>Blog</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-neon-cyan group-hover:w-full transition-all"></span>
                 </a>
-
-                <a href="privacy.html" class="hover:text-neon-cyan transition">
-                    Privacy
+                <a href="privacy-policy.html" class="hover:text-neon-cyan transition relative group">
+                    <span>Privacy</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-neon-cyan group-hover:w-full transition-all"></span>
                 </a>
-
+                <a href="about.html" class="hover:text-neon-cyan transition relative group">
+                    <span>Tentang</span>
+                    <span class="absolute -bottom-1 left-0 w-0 h-px bg-neon-cyan group-hover:w-full transition-all"></span>
+                </a>
             </div>
 
-            <!-- BUTTON MOBILE -->
-            <button id="menu-btn"
-                class="md:hidden w-10 h-10 rounded-xl bg-dark-800 border border-white/10 text-white flex items-center justify-center">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-5 h-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-
+            <button id="menu-btn" class="md:hidden w-12 h-12 rounded-2xl bg-white/5 border border-white/10 text-white flex items-center justify-center hover:border-neon-cyan/50 transition">
+                <i class="fas fa-bars text-xl"></i>
             </button>
-
         </div>
-
     </div>
 
-    <!-- MOBILE MENU -->
-    <div id="mobile-menu"
-        class="hidden md:hidden border-t border-white/5 bg-dark-950/95 backdrop-blur-xl">
-
-        <div class="flex flex-col p-6 gap-4 text-sm uppercase tracking-widest text-slate-400">
-
-            <a href="index.html" class="hover:text-neon-cyan transition">
-                Home
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-dark-950/95 backdrop-blur-2xl">
+        <div class="flex flex-col p-8 gap-6 text-[11px] uppercase tracking-[0.3em] font-tech text-slate-400">
+            <a href="index.html" class="hover:text-neon-cyan transition">Beranda</a>
+            <a href="blogs.html" class="hover:text-neon-cyan transition">Layanan</a>
+            <a href="blogs.html" class="hover:text-neon-cyan transition">Blog</a>
+            <a href="about.html" class="hover:text-neon-cyan transition">Tentang</a>
+            <a href="https://wa.me/6282243995410" class="mt-4 bg-gradient-to-r from-neon-cyan to-neon-purple text-dark-950 py-4 rounded-xl text-center font-bold text-xs hover:scale-[1.02] transition">
+                Pesan Sekarang
             </a>
-
-            <a href="blogs.html" class="hover:text-neon-cyan transition">
-                Blog
-            </a>
-
-            <a href="about.html" class="hover:text-neon-cyan transition">
-                About
-            </a>
-
-            <a href="privacy.html" class="hover:text-neon-cyan transition">
-                Privacy
-            </a>
-
         </div>
-
     </div>
 </nav>
