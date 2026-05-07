@@ -1,29 +1,58 @@
-const CACHE_NAME = 'azana-v2'; // Ganti v1 ke v2 biar browser anggap ini file baru
-const assets = [
+const CACHE_NAME = 'azana-cache-v1';
+
+// Daftar semua file yang akan di-download otomatis saat pertama buka web
+const urlsToCache = [
   './',
   'index.html',
-  'manifest.json',
+  'blogs.html',
   'offline.html',
+  'penjernih.html',
+  'eraser.html',
+  'removebg.html',
+  'privacy-policy.html',
+  'terms.html',
+  'about.html',
+  'artikel1.html',
+  'artikel2.html',
+  'artikel3.html',
   'components/navbar.html',
   'components/footer-main.html',
-  'assets/img/globe.png',
+  'asset/img/globe.png',
+  'manifest.json',
+  'https://cdn.tailwindcss.com'
 ];
 
-  'manifest.json'
-];
-
-self.addEventListener('install', e => {
-  e.waitUntil(
+// Tahap Install: Download semua file di atas ke memori HP
+self.addEventListener('install', event => {
+  event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(assets);
+      console.log('Sistem Azana: Sedang mendownload aset...');
+      return cache.addAll(urlsToCache);
     })
   );
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(res => {
-      return res || fetch(e.request);
+// Tahap Fetch: Ambil data dari memori kalau internet mati
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+// Tahap Activate: Bersihkan cache lama kalau ada versi baru
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Menghapus cache lama...');
+            return caches.delete(cacheName);
+          }
+        })
+      );
     })
   );
 });
