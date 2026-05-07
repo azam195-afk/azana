@@ -2,11 +2,7 @@ const CACHE_NAME = 'azana-v2'; // Ganti v1 ke v2 biar browser anggap ini file ba
 const assets = [
   './',
   'index.html',
-  'manifest.json',
-  'offline.html',
-  'components/navbar.html',
-  'components/footer-main.html',
-  'assets/img/globe.png'
+  'manifest.json'
 ];
 
 self.addEventListener('install', e => {
