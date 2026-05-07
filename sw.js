@@ -1,9 +1,8 @@
-const CACHE_NAME = 'azana-v1';
+const CACHE_NAME = 'azana-v2'; // Ganti v1 ke v2 biar browser anggap ini file baru
 const assets = [
-  '/',
+  './',
   'index.html',
-  'manifest.json',
-  'assets/img/globe.png'
+  'manifest.json'
 ];
 
 self.addEventListener('install', e => {
