@@ -6,8 +6,7 @@ const assets = [
   'offline.html',
   'components/navbar.html',
   'components/footer-main.html',
-  'assets/img/globe.png', // Ikon utama aja
-  'https://cdn.tailwindcss.com'
+  'assets/img/globe.png',
 ];
 
   'manifest.json'
