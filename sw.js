@@ -7,7 +7,7 @@ const assets = [
   'components/footer-ai.html',
   'components/footer-main.html',
   'asset/img/globe.png',
-  'https://cdn.tailwindcss.com'
+  'offline.html'
 ];
 
 self.addEventListener('install', e => {
