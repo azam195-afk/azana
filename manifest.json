@@ -1,11 +1,9 @@
 {
-  "id": "azana-studio-pwa",
+  "id": "/azana-pwa",
   "name": "Azana Design Studio",
   "short_name": "Azana",
-  "description": "AI-Powered Creative Digital Studio",
   "start_url": "index.html",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#050508",
   "theme_color": "#00f2fe",
   "icons": [
@@ -13,13 +11,13 @@
       "src": "asset/img/globe.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "asset/img/globe.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
