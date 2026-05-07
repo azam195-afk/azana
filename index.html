@@ -480,12 +480,19 @@
     </script>
     <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(() => console.log("Service Worker Terdaftar!"))
-      .catch((err) => console.log("Gagal Daftar:", err));
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js').then(function(registration) {
+        console.log('ServiceWorker registration successful');
+        // Hapus alert ini kalau sudah berhasil
+        alert('Service Worker Aktif!'); 
+      }, function(err) {
+        alert('Gagal Daftar Service Worker: ' + err);
+      });
+    });
+  } else {
+    alert('Browser lu gak dukung Service Worker (PWA)');
   }
     </script>
-            
 </body>
 </html>
             
