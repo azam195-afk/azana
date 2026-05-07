@@ -1,33 +1,58 @@
-const CACHE_NAME = 'azana-v6';
-const assets = [
+const CACHE_NAME = 'azana-cache-v8'; // Gue naikin ke v8 biar fresh
+
+// Daftar semua file (Tanpa Tailwind dan Folder sudah 'asset')
+const urlsToCache = [
   './',
   'index.html',
-  'manifest.json',
+  'blogs.html',
+  'offline.html',
+  'penjernih.html',
+  'eraser.html',
+  'removebg.html',
+  'privacy-policy.html',
+  'terms.html',
+  'about.html',
+  'artikel1.html',
+  'artikel2.html',
+  'artikel3.html',
   'components/navbar.html',
-  'components/footer-ai.html',
   'components/footer-main.html',
+  'asset/img/41955.png', 
   'asset/img/globe.png',
-  'offline.html'
+  'manifest.json'
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
+// Tahap Install
+self.addEventListener('install', event => {
+  event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      // Teknik map ini biar kalau satu file gagal download, 
-      // proses install PWA-nya tetep lanjut jalan
-      return Promise.all(
-        assets.map(url => {
-          return cache.add(url).catch(err => console.log('Aset skip (error/404):', url));
-        })
-      );
+      console.log('Sistem Azana: Sedang mendownload aset...');
+      return cache.addAll(urlsToCache);
     })
   );
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(res => {
-      return res || fetch(e.request);
+// Tahap Fetch
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+// Tahap Activate
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Menghapus cache lama...');
+            return caches.delete(cacheName);
+          }
+        })
+      );
     })
   );
 });
