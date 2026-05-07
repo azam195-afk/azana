@@ -4,23 +4,14 @@ const CACHE_NAME = 'azana-cache-v1';
 const urlsToCache = [
   './',
   'index.html',
-  'blogs.html',
+  'manifest.json',
   'offline.html',
-  'penjernih.html',
-  'eraser.html',
-  'removebg.html',
-  'privacy-policy.html',
-  'terms.html',
-  'about.html',
-  'artikel1.html',
-  'artikel2.html',
-  'artikel3.html',
   'components/navbar.html',
   'components/footer-main.html',
-  'assets/img/globe.png',
-  'manifest.json',
+  'assets/img/globe.png', // Ikon utama aja
   'https://cdn.tailwindcss.com'
 ];
+
 
 // Tahap Install: Download semua file di atas ke memori HP
 self.addEventListener('install', event => {
@@ -35,11 +26,18 @@ self.addEventListener('install', event => {
 // Tahap Fetch: Ambil data dari memori kalau internet mati
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+    caches.match(event.request).then(cachedResponse => {
+      const fetchPromise = fetch(event.request).then(networkResponse => {
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, networkResponse.clone());
+        });
+        return networkResponse;
+      });
+      return cachedResponse || fetchPromise;
     })
   );
 });
+
 
 // Tahap Activate: Bersihkan cache lama kalau ada versi baru
 self.addEventListener('activate', event => {
