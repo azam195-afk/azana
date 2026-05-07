@@ -19,7 +19,7 @@
                     },
                     colors: { 
                         neon: { cyan: '#00f2fe', purple: '#bc13fe' }, 
-                        dark: { 950: '#050508', 900: '#0a0a14', 800: '#13131a' } 
+                        dark: { 950: '#050508', 900: '#0a0a14', 800: '#13131a', 700: '#1e1e2e' } 
                     }
                 }
             }
@@ -27,27 +27,47 @@
     </script>
 
     <style>
-        body {
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; min-height: 100vh;
             background-color: #050508;
             color: #cbd5e1;
-            min-height: 100vh;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
-            margin: 0;
-            overflow-x: hidden;
         }
 
-        #neural-canvas {
+        /* Efek cahaya neon halus di pojok layar */
+        body::before {
+            content: "";
             position: fixed;
             inset: 0;
-            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(188, 19, 254, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(0, 242, 254, 0.12) 0%, transparent 45%);
+            z-index: 1;
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        /* Canvas utama */
+        #neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            display: block;
+            opacity: 0.7;
         }
 
         .vignette {
             position: fixed;
             inset: 0;
             background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
-            z-index: 0;
+            z-index: 2;
+            pointer-events: none;
         }
 
         .glass-card {
@@ -67,22 +87,23 @@
 
 <body>
 
-<canvas id="neural-canvas"></canvas>
+<canvas id="neural-bg"></canvas>
 <div class="vignette"></div>
 
 <div class="flex-grow flex flex-col items-center p-6 w-full relative z-10">
 
     <!-- HEADER -->
     <header class="text-center w-full max-w-3xl mt-10 mb-12">
-        <div class="inline-flex w-14 h-14 rounded-2xl bg-dark-900/60 border border-neon-cyan/30 items-center justify-center text-neon-cyan mb-4">
+        <div class="inline-flex w-14 h-14 rounded-2xl bg-dark-900/60 border border-neon-cyan/30 items-center justify-center text-neon-cyan mb-4 shadow-[0_0_15px_rgba(0,242,254,0.2)]">
             <i class="fas fa-blog text-2xl"></i>
         </div>
 
-        <h1 class="text-3xl md:text-5xl font-tech font-bold text-white uppercase italic">
+        <!-- SUDAH TIDAK MIRING -->
+        <h1 class="text-3xl md:text-5xl font-tech font-bold text-white uppercase tracking-tight">
             AZANA <span class="bg-gradient-to-r from-neon-purple to-neon-cyan text-transparent bg-clip-text">BLOG</span>
         </h1>
 
-        <p class="text-slate-500 text-xs mt-4 uppercase tracking-[0.3em] font-tech">
+        <p class="text-slate-500 text-[10px] mt-4 uppercase tracking-[0.3em] font-tech">
             Tips Editing • AI Tools • Tutorial
         </p>
     </header>
@@ -91,36 +112,42 @@
     <main class="w-full max-w-5xl grid md:grid-cols-3 gap-6 mb-16">
 
         <!-- Artikel 1 -->
-        <a href="artikel1.html" class="glass-card p-4 block">
-            <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7" class="rounded-xl mb-3">
+        <a href="artikel1.html" class="glass-card p-4 block group">
+            <div class="overflow-hidden rounded-xl mb-3 border border-white/5">
+                <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7" class="w-full h-40 object-cover group-hover:scale-105 transition duration-500">
+            </div>
             <h3 class="text-white text-sm font-bold">Cara Memperjernih Foto Buram dengan AI</h3>
-            <p class="text-slate-400 text-xs mt-2">Gunakan teknologi AI untuk meningkatkan kualitas foto hanya dalam sekali klik.</p>
+            <p class="text-slate-400 text-[11px] mt-2 leading-relaxed">Gunakan teknologi AI untuk meningkatkan kualitas foto hanya dalam sekali klik.</p>
         </a>
 
         <!-- Artikel 2 -->
-        <a href="artikel2.html" class="glass-card p-4 block">
-            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" class="rounded-xl mb-3">
+        <a href="artikel2.html" class="glass-card p-4 block group">
+            <div class="overflow-hidden rounded-xl mb-3 border border-white/5">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" class="w-full h-40 object-cover group-hover:scale-105 transition duration-500">
+            </div>
             <h3 class="text-white text-sm font-bold">Cara Hapus Background Tanpa Aplikasi</h3>
-            <p class="text-slate-400 text-xs mt-2">Tanpa Photoshop, tanpa ribet. Semua bisa langsung di browser.</p>
+            <p class="text-slate-400 text-[11px] mt-2 leading-relaxed">Tanpa Photoshop, tanpa ribet. Semua bisa langsung di browser.</p>
         </a>
 
         <!-- Artikel 3 -->
-        <a href="artikel3.html" class="glass-card p-4 block">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" class="rounded-xl mb-3">
+        <a href="artikel3.html" class="glass-card p-4 block group">
+            <div class="overflow-hidden rounded-xl mb-3 border border-white/5">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" class="w-full h-40 object-cover group-hover:scale-105 transition duration-500">
+            </div>
             <h3 class="text-white text-sm font-bold">Cara Hapus Object Yang Mengganggu</h3>
-            <p class="text-slate-400 text-xs mt-2">Gunakan Teknologi Ai Untuk Menghilangkan Objek Yang Menggangu Dengan Sekali Klik.</p>
+            <p class="text-slate-400 text-[11px] mt-2 leading-relaxed">Gunakan Teknologi AI Untuk Menghilangkan Objek Dengan Sekali Klik.</p>
         </a>
 
     </main>
 
     <!-- BACK BUTTON -->
-    <a href="index.html" class="mb-12 inline-flex items-center gap-3 bg-dark-800 border border-neon-cyan/30 px-8 py-3 rounded-xl text-[10px] text-neon-cyan font-bold uppercase font-tech tracking-[0.3em] hover:bg-neon-cyan hover:text-dark-950 transition">
+    <a href="index.html" class="mb-12 inline-flex items-center gap-3 bg-dark-800 border border-neon-cyan/30 px-8 py-3 rounded-xl text-[10px] text-neon-cyan font-bold uppercase font-tech tracking-[0.3em] hover:bg-neon-cyan hover:text-dark-950 transition shadow-lg shadow-neon-cyan/10">
         <i class="fas fa-arrow-left"></i> Kembali
     </a>
 
 </div>
 
-<!-- FOOTER (SAMA PERSIS PUNYA LU) -->
+<!-- FOOTER -->
 <footer class="bg-dark-950 pt-16 pb-8 border-t border-dark-700 mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 text-left">
@@ -175,41 +202,87 @@
     </div>
 </footer>
 
-<!-- NEURAL SCRIPT (SAMA) -->
 <script>
-const canvas = document.getElementById('neural-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-
-function init(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    particles = [];
-    let count = Math.min((canvas.width*canvas.height)/7000,120);
-
-    for(let i=0;i<count;i++){
-        particles.push({
-            x:Math.random()*canvas.width,
-            y:Math.random()*canvas.height,
-            vx:(Math.random()-0.5)*0.4,
-            vy:(Math.random()-0.5)*0.4
-        });
+    const canvas = document.getElementById('neural-bg');
+    const ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
-}
-
-function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p=>{
-        p.x+=p.vx;
-        p.y+=p.vy;
-        ctx.fillStyle="#00f2fe";
-        ctx.fillRect(p.x,p.y,1,1);
+    
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        initNodes();
     });
-    requestAnimationFrame(animate);
-}
+    
+    resizeCanvas();
 
-window.addEventListener('resize',init);
-init(); animate();
+    const particlesArray = [];
+    const colors = ['#00f2fe', '#bc13fe'];
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 1.5 + 0.5;
+            this.speedX = (Math.random() * 0.5) - 0.25;
+            this.speedY = (Math.random() * 0.5) - 0.25;
+            this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+
+        draw() {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function initNodes() {
+        particlesArray.length = 0;
+        let numberOfParticles = (canvas.height * canvas.width) / 9500;
+        if (numberOfParticles > 130) numberOfParticles = 130;
+        for (let i = 0; i < numberOfParticles; i++) {
+            particlesArray.push(new Particle());
+        }
+    }
+
+    function animateNodes() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw();
+            for (let j = i; j < particlesArray.length; j++) {
+                const dx = particlesArray[i].x - particlesArray[j].x;
+                const dy = particlesArray[i].y - particlesArray[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 150) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = particlesArray[i].color;
+                    ctx.globalAlpha = 1 - (distance / 150);
+                    ctx.lineWidth = 0.6;
+                    ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                    ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                    ctx.stroke();
+                    ctx.globalAlpha = 1;
+                }
+            }
+        }
+        requestAnimationFrame(animateNodes);
+    }
+
+    window.onload = function() {
+        initNodes();
+        animateNodes();
+    };
 </script>
 
 </body>
