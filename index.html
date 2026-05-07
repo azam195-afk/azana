@@ -478,19 +478,17 @@
                 }).catch(err => console.log("Portfolio Error:", err));
         });
     </script>
+
     <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
       navigator.serviceWorker.register('sw.js').then(function(registration) {
+        // Cukup log di console saja, gak bakal kelihatan sama orang awam
         console.log('ServiceWorker registration successful');
-        // Hapus alert ini kalau sudah berhasil
-        alert('Service Worker Aktif!'); 
       }, function(err) {
-        alert('Gagal Daftar Service Worker: ' + err);
+        console.log('Gagal Daftar Service Worker:', err);
       });
     });
-  } else {
-    alert('Browser lu gak dukung Service Worker (PWA)');
   }
     </script>
 </body>
