@@ -1,50 +1,50 @@
-const CACHE_NAME = 'azana-cache-final-v5'; // Ubah v4 ke v5
-const ASSETS_TO_CACHE = [
-  'offline.html',
-  'index.html',
-  '41955.png' // Tambahkan ?v=1 di belakang nama logo
+const CACHE_NAME = 'azana-cache-v1';
+// Daftar file yang mau disimpan biar pas offline tetep muncul
+const urlsToCache = [
+  '/',
+  '/index.html',
+  '/blogs.html',
+  '/offline.html',
+  '/components/navbar.html',
+  '/components/footer-main.html',
+  '/assets/img/41955.png',
+  'https://cdn.tailwindcss.com'
 ];
 
-
-// Tahap Install: Simpan logo dan file utama ke memori browser
-self.addEventListener('install', (event) => {
+// Install Service Worker
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('Azana Cache: Menyimpan aset...');
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
-// Tahap Aktivasi: Hapus versi cache lama (v1, v2, v3)
-self.addEventListener('activate', (event) => {
+// Ambil data dari Cache pas Offline
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        // Balikin file dari cache kalau ada, kalau nggak ambil dari internet
+        return response || fetch(event.request);
+      })
+  );
+});
+
+// Update Service Worker kalau ada perubahan
+self.addEventListener('activate', event => {
+  const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
           }
         })
       );
-    })
-  );
-});
-
-// Tahap Fetch: Mengambil data dari internet, jika gagal ambil dari Cache
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    fetch(event.request).catch(() => {
-      return caches.match(event.request).then((response) => {
-        // Jika file diminta ada di cache (seperti logo.png), tampilkan
-        if (response) {
-          return response;
-        }
-        // Jika navigasi halaman gagal (offline), berikan game tetris
-        if (event.request.mode === 'navigate') {
-          return caches.match('offline.html');
-        }
-      });
     })
   );
 });
