@@ -1,5 +1,4 @@
 {
-  "id": "/azana-pwa",
   "name": "Azana Design Studio",
   "short_name": "Azana",
   "start_url": "index.html",
@@ -17,7 +16,7 @@
       "src": "asset/img/globe.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "maskable"
     }
   ]
 }
