@@ -5,10 +5,19 @@ const urlsToCache = [
   '/index.html',
   '/blogs.html',
   '/offline.html',
+  '/penjernih.html',
+  '/eraser.html',
+  '/removebg.html',
+  '/privacy-policy.html',
+  '/terms.html',
+  '/about.html',
+  '/artikel1.html',
+  '/artikel2.html',
+  '/artikel3.html',
   '/components/navbar.html',
   '/components/footer-main.html',
   '/assets/img/41955.png',
-  'https://cdn.tailwindcss.com'
+  'https://cdn.tailwindcss.com',
 ];
 
 // Install Service Worker
