@@ -32,6 +32,13 @@
     transform: translateZ(0);
     backface-visibility: hidden;
   }
+
+  html {
+    /* Sesuaikan angkanya dengan tinggi navbar lu (sekitar 80px - 100px) */
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px; 
+  }
+        
   
   .logo-neon-outline:hover {
     transform: scale(1.05) translateZ(0);
@@ -85,11 +92,6 @@
             background: linear-gradient(to right, #00f2fe, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-        }
-        html {
-    /* Sesuaikan angkanya dengan tinggi navbar lu (sekitar 80px - 100px) */
-    scroll-behavior: smooth;
-    scroll-padding-top: 100px; 
         }
         
         .glow-button {
