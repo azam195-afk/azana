@@ -1,17 +1,40 @@
 <nav class="fixed top-0 left-0 w-full z-50 bg-dark-950/70 backdrop-blur-xl border-b border-white/5">
+    
+    <style>
+        /* Animasi Kunci buat Gonta-ganti Warna drop-shadow */
+        @keyframes aurora-glow {
+            0% {
+                filter: drop-shadow(0 0 5px rgba(0, 242, 254, 0.6)) drop-shadow(0 0 12px rgba(0, 242, 254, 0.4));
+            }
+            50% {
+                filter: drop-shadow(0 0 7px rgba(188, 19, 254, 0.7)) drop-shadow(0 0 15px rgba(188, 19, 254, 0.5));
+            }
+            100% {
+                filter: drop-shadow(0 0 5px rgba(0, 242, 254, 0.6)) drop-shadow(0 0 12px rgba(0, 242, 254, 0.4));
+            }
+        }
+
+        /* Class buat nerapin animasinya ke logo */
+        .neon-avatar {
+            /* Kita pake drop-shadow, bukan box-shadow, biar ngikutin bentuk transparan */
+            animation: aurora-glow 4s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        /* Efek pas kursor di atas logo (jadi lebih terang) */
+        .neon-avatar:hover {
+            animation-duration: 2s; /* Percepat animasinya pas hover */
+            transform: scale(1.05); /* Gedein dikit */
+        }
+    </style>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20"> 
             
-            <a href="index.html" class="relative group">
-                
-                <div class="absolute -inset-3 bg-gradient-to-r from-neon-cyan to-neon-purple opacity-30 blur-2xl group-hover:opacity-60 transition duration-500 rounded-full"></div>
-                
-                <div class="relative w-12 h-12 rounded-full border-2 border-white/10 group-hover:border-neon-cyan/50 transition p-0.5 shadow-[0_0_15px_rgba(0,242,254,0.3)] group-hover:shadow-[0_0_20px_rgba(188,19,254,0.5)]">
-                    
-                    <img src="41955.png" 
-                         class="w-full h-full rounded-full object-cover shadow-inner" 
-                         alt="AZANA Logo">
-                </div>
+            <a href="index.html" class="flex items-center justify-center p-1">
+                <img src="41955.png" 
+                     class="w-12 h-12 object-contain neon-avatar" 
+                     alt="AZANA Logo">
             </a>
 
             <div class="hidden md:flex items-center gap-8 text-[11px] uppercase tracking-[0.2em] font-tech text-slate-400">
@@ -32,5 +55,10 @@
             <a href="index.html" class="hover:text-neon-cyan transition">Beranda</a>
             <a href="blogs.html" class="hover:text-neon-cyan transition">Layanan</a>
             <a href="blogs.html" class="hover:text-neon-cyan transition">Blog</a>
-            <a href="about.html" class="hover:text-neon-cyan transition">Tentang
-                
+            <a href="about.html" class="hover:text-neon-cyan transition">Tentang</a>
+            <a href="https://wa.me/6282243995410" class="mt-4 bg-gradient-to-r from-neon-cyan to-neon-purple text-dark-950 py-4 rounded-xl text-center font-bold text-xs hover:scale-[1.02] transition">
+                Pesan Sekarang
+            </a>
+        </div>
+    </div>
+</nav>
