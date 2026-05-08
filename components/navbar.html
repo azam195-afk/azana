@@ -62,22 +62,25 @@
     </div>
 
     <script>
-        function manageDownloadButtons() {
-            // Deteksi apakah dibuka di mode aplikasi (PWA/Standalone)
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
-                                 || window.navigator.standalone;
-
-            if (isStandalone) {
-                // HANYA jika dibuka di aplikasi, kita hilangkan tombolnya
-                const btnDesktop = document.getElementById('apk-download-desktop');
-                const btnMobile = document.getElementById('apk-download-mobile');
-                
-                if(btnDesktop) btnDesktop.remove();
-                if(btnMobile) btnMobile.remove();
-            }
-        }
+    function checkAppMode() {
+        // Cek mode standalone
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+                             || window.navigator.standalone;
         
-        // Jalankan fungsi
-        manageDownloadButtons();
+        // Cek apakah ada parameter 'utm_source=pwa' (opsional tapi kuat)
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPWAUrl = urlParams.get('utm_source') === 'pwa';
+
+        if (isStandalone || isPWAUrl) {
+            const btnD = document.getElementById('apk-download-desktop');
+            const btnM = document.getElementById('apk-download-mobile');
+            if(btnD) btnD.style.display = 'none';
+            if(btnM) btnM.style.display = 'none';
+        }
+    }
+
+    // Jalankan langsung dan kasih jeda dikit biar sinkron
+    checkAppMode();
+    setTimeout(checkAppMode, 1000); 
     </script>
 </nav>
