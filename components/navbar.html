@@ -8,6 +8,18 @@
         }
         .neon-avatar { animation: aurora-glow 4s ease-in-out infinite; transition: all 0.3s ease; }
         .neon-avatar:hover { animation-duration: 2s; transform: scale(1.05); }
+        /* SECARA DEFAULT TOMBOL MUNCUL */
+#apk-download-desktop, #apk-download-mobile {
+    display: flex !important;
+}
+
+/* TAPI KALAU DIBUKA DI MODE APLIKASI (STANDALONE), PAKSA HILANG */
+@media (display-mode: standalone) {
+    #apk-download-desktop, #apk-download-mobile {
+        display: none !important;
+    }
+}
+        
     </style>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
