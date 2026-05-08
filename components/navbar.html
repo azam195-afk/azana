@@ -8,6 +8,9 @@
         }
         .neon-avatar { animation: aurora-glow 4s ease-in-out infinite; transition: all 0.3s ease; }
         .neon-avatar:hover { animation-duration: 2s; transform: scale(1.05); }
+        
+        /* Sembunyikan tombol download pas awal loading biar gak kedip */
+        #apk-download-desktop, #apk-download-mobile { display: none; }
     </style>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,7 +27,7 @@
                 <a href="privacy-policy.html" class="hover:text-neon-cyan transition relative group">Privasi</a>
                 <a href="about.html" class="hover:text-neon-cyan transition relative group">Tentang</a>
                 
-                <a href="https://github.com/azam195-afk/azana/raw/main/apks/Azana_v1.0.apk" 
+                <a id="apk-download-desktop" href="https://github.com/azam195-afk/azana/raw/main/apks/Azana_v1.0.apk" 
                    download="Azana_v1.0.apk"
                    class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 border border-white/10 text-white hover:from-neon-cyan hover:to-neon-purple hover:text-dark-950 transition-all duration-300">
                     <i class="fas fa-download text-[10px]"></i>
@@ -33,9 +36,9 @@
             </div>
 
             <div class="flex items-center gap-3 md:hidden">
-                <a href="https://github.com/azam195-afk/azana/raw/main/apks/Azana_v1.0.apk" 
+                <a id="apk-download-mobile" href="https://github.com/azam195-afk/azana/raw/main/apks/Azana_v1.0.apk" 
                    download="Azana_v1.0.apk"
-                   class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white active:scale-95 transition-all">
+                   class="items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white active:scale-95 transition-all">
                     <i class="fas fa-download text-xs text-neon-cyan"></i>
                     <span class="text-[9px] font-bold tracking-tighter">APK</span>
                 </a>
@@ -60,4 +63,28 @@
             </a>
         </div>
     </div>
+
+    <script>
+        // Fungsi deteksi mode buka
+        function hideDownloadBtnIfApp() {
+            const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+            const isWebview = window.navigator.userAgent.includes('wv') || window.navigator.userAgent.includes('Android');
+            
+            const btnDesktop = document.getElementById('apk-download-desktop');
+            const btnMobile = document.getElementById('apk-download-mobile');
+
+            // Jika dibuka lewat browser BIASA (bukan mode standalone PWA)
+            if (!isPWA) {
+                if(btnDesktop) btnDesktop.style.display = 'flex';
+                if(btnMobile) btnMobile.style.display = 'flex';
+            } else {
+                // Jika di dalam App/APK, pastikan tetap hilang
+                if(btnDesktop) btnDesktop.style.display = 'none';
+                if(btnMobile) btnMobile.style.display = 'none';
+            }
+        }
+        
+        // Jalankan saat halaman siap
+        document.addEventListener('DOMContentLoaded', hideDownloadBtnIfApp);
+    </script>
 </nav>
