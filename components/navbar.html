@@ -8,9 +8,6 @@
         }
         .neon-avatar { animation: aurora-glow 4s ease-in-out infinite; transition: all 0.3s ease; }
         .neon-avatar:hover { animation-duration: 2s; transform: scale(1.05); }
-        
-        /* Sembunyikan tombol download pas awal loading biar gak kedip */
-        #apk-download-desktop, #apk-download-mobile { display: none; }
     </style>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,7 +35,7 @@
             <div class="flex items-center gap-3 md:hidden">
                 <a id="apk-download-mobile" href="https://github.com/azam195-afk/azana/raw/main/apks/Azana_v1.0.apk" 
                    download="Azana_v1.0.apk"
-                   class="items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white active:scale-95 transition-all">
+                   class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white active:scale-95 transition-all">
                     <i class="fas fa-download text-xs text-neon-cyan"></i>
                     <span class="text-[9px] font-bold tracking-tighter">APK</span>
                 </a>
@@ -65,36 +62,22 @@
     </div>
 
     <script>
-    function handleDownloadBtn() {
-        // Cek apakah web dibuka dalam mode 'standalone' (Aplikasi terinstal)
-        const isPWA = window.matchMedia('(display-mode: standalone)').matches 
-                      || window.navigator.standalone 
-                      || document.referrer.includes('android-app://');
+        function manageDownloadButtons() {
+            // Deteksi apakah dibuka di mode aplikasi (PWA/Standalone)
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+                                 || window.navigator.standalone;
 
-        const btnDesktop = document.getElementById('apk-download-desktop');
-        const btnMobile = document.getElementById('apk-download-mobile');
-
-        // LOGIKA: Jika TIDAK dalam mode PWA/Instalasi, maka munculkan tombol
-        if (!isPWA) {
-            if(btnDesktop) {
-                btnDesktop.style.setProperty('display', 'flex', 'important');
+            if (isStandalone) {
+                // HANYA jika dibuka di aplikasi, kita hilangkan tombolnya
+                const btnDesktop = document.getElementById('apk-download-desktop');
+                const btnMobile = document.getElementById('apk-download-mobile');
+                
+                if(btnDesktop) btnDesktop.remove();
+                if(btnMobile) btnMobile.remove();
             }
-            if(btnMobile) {
-                btnMobile.style.setProperty('display', 'flex', 'important');
-            }
-        } else {
-            // Jika sudah di dalam aplikasi, pastikan beneran ilang
-            if(btnDesktop) btnDesktop.style.display = 'none';
-            if(btnMobile) btnMobile.style.display = 'none';
         }
-    }
-
-    // Jalankan pas halaman beres loading
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', handleDownloadBtn);
-    } else {
-        handleDownloadBtn();
-    }
+        
+        // Jalankan fungsi
+        manageDownloadButtons();
     </script>
-    
 </nav>
