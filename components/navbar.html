@@ -65,26 +65,36 @@
     </div>
 
     <script>
-        // Fungsi deteksi mode buka
-        function hideDownloadBtnIfApp() {
-            const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-            const isWebview = window.navigator.userAgent.includes('wv') || window.navigator.userAgent.includes('Android');
-            
-            const btnDesktop = document.getElementById('apk-download-desktop');
-            const btnMobile = document.getElementById('apk-download-mobile');
+    function handleDownloadBtn() {
+        // Cek apakah web dibuka dalam mode 'standalone' (Aplikasi terinstal)
+        const isPWA = window.matchMedia('(display-mode: standalone)').matches 
+                      || window.navigator.standalone 
+                      || document.referrer.includes('android-app://');
 
-            // Jika dibuka lewat browser BIASA (bukan mode standalone PWA)
-            if (!isPWA) {
-                if(btnDesktop) btnDesktop.style.display = 'flex';
-                if(btnMobile) btnMobile.style.display = 'flex';
-            } else {
-                // Jika di dalam App/APK, pastikan tetap hilang
-                if(btnDesktop) btnDesktop.style.display = 'none';
-                if(btnMobile) btnMobile.style.display = 'none';
+        const btnDesktop = document.getElementById('apk-download-desktop');
+        const btnMobile = document.getElementById('apk-download-mobile');
+
+        // LOGIKA: Jika TIDAK dalam mode PWA/Instalasi, maka munculkan tombol
+        if (!isPWA) {
+            if(btnDesktop) {
+                btnDesktop.style.setProperty('display', 'flex', 'important');
             }
+            if(btnMobile) {
+                btnMobile.style.setProperty('display', 'flex', 'important');
+            }
+        } else {
+            // Jika sudah di dalam aplikasi, pastikan beneran ilang
+            if(btnDesktop) btnDesktop.style.display = 'none';
+            if(btnMobile) btnMobile.style.display = 'none';
         }
-        
-        // Jalankan saat halaman siap
-        document.addEventListener('DOMContentLoaded', hideDownloadBtnIfApp);
+    }
+
+    // Jalankan pas halaman beres loading
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', handleDownloadBtn);
+    } else {
+        handleDownloadBtn();
+    }
     </script>
+    
 </nav>
