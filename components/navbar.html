@@ -1,4 +1,4 @@
-<nav class="fixed top-0 left-0 w-full z-[999] bg-[#020617]/70 backdrop-blur-xl border-b border-white/5">
+<nav class="fixed top-0 left-0 w-full z-50 bg-dark-950/70 backdrop-blur-xl border-b border-white/5">
     
     <style>
         @keyframes aurora-glow {
@@ -8,18 +8,13 @@
         }
         .neon-avatar { animation: aurora-glow 4s ease-in-out infinite; transition: all 0.3s ease; }
         .neon-avatar:hover { animation-duration: 2s; transform: scale(1.05); }
-        
-        /* Maksa tombol APK muncul */
-        #apk-download-desktop, #apk-download-mobile {
-            display: flex !important;
-        }
     </style>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20"> 
             
             <a href="index.html" class="flex items-center justify-center p-1">
-                <img src="asset/img/41955.png" class="w-16 h-16 md:w-20 md:h-20 object-contain neon-avatar" alt="AZANA Logo">
+                <img src="asset/img/41955.png" class="w-20 h-20 object-contain neon-avatar" alt="AZANA Logo">
             </a>
 
             <div class="hidden md:flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] font-tech text-slate-400">
@@ -53,25 +48,36 @@
         </div>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-[#020617]/95 backdrop-blur-2xl">
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-dark-950/95 backdrop-blur-2xl">
         <div class="flex flex-col p-8 gap-6 text-[11px] uppercase tracking-[0.3em] font-tech text-slate-400">
             <a href="index.html" class="hover:text-neon-cyan transition">Beranda</a>
             <a href="#layanan" class="hover:text-neon-cyan transition">Layanan</a>
             <a href="blogs.html" class="hover:text-neon-cyan transition">Blog</a>
             <a href="privacy-policy.html" class="hover:text-neon-cyan transition">Privasi</a>
             <a href="about.html" class="hover:text-neon-cyan transition">Tentang</a>
-            <a href="https://wa.me/6282243995410" class="mt-4 bg-gradient-to-r from-neon-cyan to-neon-purple text-dark-950 py-4 rounded-xl text-center font-bold text-xs">
+            <a href="https://wa.me/6282243995410" class="mt-4 bg-gradient-to-r from-neon-cyan to-neon-purple text-dark-950 py-4 rounded-xl text-center font-bold text-xs hover:scale-[1.02] transition">
                 Pesan Sekarang
             </a>
         </div>
     </div>
 
     <script>
-        const btn = document.getElementById('menu-btn');
-        const menu = document.getElementById('mobile-menu');
-        if(btn && menu) {
-            btn.onclick = () => menu.classList.toggle('hidden');
+        function manageDownloadButtons() {
+            // Deteksi apakah dibuka di mode aplikasi (PWA/Standalone)
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+                                 || window.navigator.standalone;
+
+            if (isStandalone) {
+                // HANYA jika dibuka di aplikasi, kita hilangkan tombolnya
+                const btnDesktop = document.getElementById('apk-download-desktop');
+                const btnMobile = document.getElementById('apk-download-mobile');
+                
+                if(btnDesktop) btnDesktop.remove();
+                if(btnMobile) btnMobile.remove();
+            }
         }
+        
+        // Jalankan fungsi
+        manageDownloadButtons();
     </script>
-    
 </nav>
