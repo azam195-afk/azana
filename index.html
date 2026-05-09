@@ -392,17 +392,7 @@
             .then(data => {
                 document.getElementById('navbar').innerHTML = data;
 
-                // Logika Tombol Hamburger (Garis Tiga)
-                const menuBtn = document.getElementById('menu-btn');
-                const mobileMenu = document.getElementById('mobile-menu');
-                if (menuBtn && mobileMenu) {
-                    menuBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        mobileMenu.classList.toggle('hidden');
-                    });
-                }
-
-                // Jalankan Logika Scroll Navbar setelah navbar ke-load
+                initNavbarInteractions();
                 initScrollNavbar(); 
             })
             .catch(err => console.error('Gagal load navbar:', err));
@@ -444,12 +434,55 @@
             });
         }
 
+        function initNavbarInteractions() {
+
+            const menuBtn = document.getElementById('menu-btn');
+
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (menuBtn && mobileMenu) {
+
+                menuBtn.addEventListener('click', (e) => {
+
+                    e.stopPropagation();
+
+                    mobileMenu.classList.toggle('hidden');
+
+                });
+
+            }
+
+
+
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+
+                || window.navigator.standalone;
+
+            const isPWAUrl = new URLSearchParams(window.location.search).get('utm_source') === 'pwa';
+
+            if (isStandalone || isPWAUrl) {
+
+                document.getElementById('apk-download-desktop')?.style.setProperty('display', 'none', 'important');
+
+                document.getElementById('apk-download-mobile')?.style.setProperty('display', 'none', 'important');
+
+            }
+
+        }
+
+
         // --- LOGIKA OFFLINE & SERVICE WORKER ---
-        window.addEventListener('offline', () => { window.location.href = 'offline.html'; });
-        window.addEventListener('online', () => { window.location.href = 'index.html'; });
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log("SW Error:", err));
+            window.addEventListener('load', () => {
+
+                navigator.serviceWorker.register('sw.js')
+
+                    .then(() => console.log('ServiceWorker registration successful'))
+
+                    .catch(err => console.log("SW Error:", err));
+
+            });
         }
 
         // --- LOGIKA PORTFOLIO (GITHUB API) ---
@@ -490,18 +523,6 @@
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('sw.js').then(function(registration) {
-        // Cukup log di console saja, gak bakal kelihatan sama orang awam
-        console.log('ServiceWorker registration successful');
-      }, function(err) {
-        console.log('Gagal Daftar Service Worker:', err);
-      });
-    });
-  }
-</script>
             
 </body>
 </html>
