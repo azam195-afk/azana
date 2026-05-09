@@ -13,10 +13,7 @@
         .neon-avatar { animation: aurora-glow 4s ease-in-out infinite; transition: all 0.3s ease; }
         .neon-avatar:hover { animation-duration: 2s; transform: scale(1.05); }
 
-        #apk-download-desktop, #apk-download-mobile {
-            display: flex !important;
-        }
-
+    
         @media (display-mode: standalone) {
             #apk-download-desktop, #apk-download-mobile {
                 display: none !important;
@@ -33,7 +30,7 @@
 
             <div class="hidden md:flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] font-tech text-slate-400">
                 <a href="index.html" class="hover:text-neon-cyan transition relative group">Beranda</a>
-                <a href="#layanan" class="hover:text-neon-cyan transition relative group">Layanan</a>
+                <a href="index.html#layanan" class="hover:text-neon-cyan transition relative group">Layanan</a>
                 <a href="blogs.html" class="hover:text-neon-cyan transition relative group">Blog</a>
                 <a href="privacy-policy.html" class="hover:text-neon-cyan transition relative group">Privasi</a>
                 <a href="about.html" class="hover:text-neon-cyan transition relative group">Tentang</a>
@@ -65,7 +62,7 @@
     <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-dark-950/95 backdrop-blur-2xl">
         <div class="flex flex-col p-8 gap-6 text-[11px] uppercase tracking-[0.3em] font-tech text-slate-400">
             <a href="index.html" class="hover:text-neon-cyan transition">Beranda</a>
-            <a href="#layanan" class="hover:text-neon-cyan transition">Layanan</a>
+            <a href="index.html#layanan" class="hover:text-neon-cyan transition">Layanan</a>
             <a href="blogs.html" class="hover:text-neon-cyan transition">Blog</a>
             <a href="privacy-policy.html" class="hover:text-neon-cyan transition">Privasi</a>
             <a href="about.html" class="hover:text-neon-cyan transition">Tentang</a>
@@ -74,28 +71,5 @@
             </a>
         </div>
     </div>
-
-<script>
-    function checkAppMode() {
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
-                             || window.navigator.standalone;
-        const urlParams = new URLSearchParams(window.location.search);
-        const isPWAUrl = urlParams.get('utm_source') === 'pwa';
-
-        if (isStandalone || isPWAUrl) {
-            const btnD = document.getElementById('apk-download-desktop');
-            const btnM = document.getElementById('apk-download-mobile');
-            if(btnD) btnD.style.display = 'none';
-            if(btnM) btnM.style.display = 'none';
-        }
-    }
-    checkAppMode();
-    setTimeout(checkAppMode, 1000); 
-
-    // Tambahan Script buat Menu biar beneran jalan
-    document.getElementById('menu-btn').onclick = function() {
-        document.getElementById('mobile-menu').classList.toggle('hidden');
-    }
-</script>
     
 </nav>
