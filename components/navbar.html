@@ -19,6 +19,105 @@
                 display: none !important;
             }
         }
+        
+        .wa-loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background:
+                radial-gradient(circle at 30% 20%, rgba(0, 242, 254, 0.22), transparent 30%),
+                radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.24), transparent 35%),
+                rgba(5, 5, 8, 0.86);
+            backdrop-filter: blur(18px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.28s ease;
+        }
+        .wa-loading-overlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .wa-loading-card {
+            width: min(92vw, 360px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 1.5rem;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(145deg, rgba(19, 19, 26, 0.92), rgba(5, 5, 8, 0.94));
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.18), 0 0 70px rgba(168, 85, 247, 0.14);
+            transform: translateY(12px) scale(0.98);
+            transition: transform 0.28s ease;
+        }
+        .wa-loading-overlay.is-visible .wa-loading-card {
+            transform: translateY(0) scale(1);
+        }
+        .wa-loading-ring {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 1rem;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            color: #25D366;
+            font-size: 2.2rem;
+            background: rgba(37, 211, 102, 0.1);
+            border: 1px solid rgba(37, 211, 102, 0.28);
+            box-shadow: 0 0 26px rgba(37, 211, 102, 0.25);
+            position: relative;
+        }
+        .wa-loading-ring::before {
+            content: '';
+            position: absolute;
+            inset: -7px;
+            border-radius: inherit;
+            border: 2px solid transparent;
+            border-top-color: #00f2fe;
+            border-right-color: #a855f7;
+            animation: wa-spin 1s linear infinite;
+        }
+        .wa-loading-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+        .wa-loading-subtitle {
+            margin-top: 0.5rem;
+            font-size: 0.72rem;
+            color: #94a3b8;
+            line-height: 1.55;
+        }
+        .wa-loading-bar {
+            width: 100%;
+            height: 4px;
+            margin-top: 1.25rem;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .wa-loading-bar span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #00f2fe, #25D366, #a855f7);
+            transform-origin: left;
+            animation: wa-progress 2s ease forwards;
+        }
+        body.wa-loading-active {
+            overflow: hidden;
+        }
+        @keyframes wa-spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes wa-progress {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
     </style>
 
     <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -66,8 +165,7 @@
             <a href="blogs.html" class="hover:text-neon-cyan transition">Blog</a>
             <a href="privacy-policy.html" class="hover:text-neon-cyan transition">Privasi</a>
             <a href="about.html" class="hover:text-neon-cyan transition">Tentang</a>
-            <a href="https://wa.me/6282243995410" class="mt-4 bg-gradient-to-r from-neon-cyan to-neon-purple text-dark-950 py-4 rounded-xl text-center font-bold text-xs hover:scale-[1.02] transition">
-                Pesan Sekarang
+            <a href="https://wa.me/6282243995410" data-wa-transition class="mt-4 bg-gradient-to-r from-neon-cyan to-neon-purple text-dark-950 py-4 rounded-xl text-center font-bold text-xs hover:scale-[1.02] transition">Pesan Sekarang
             </a>
         </div>
     </div>
