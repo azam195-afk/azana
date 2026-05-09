@@ -149,14 +149,22 @@
     const loadComp = (id, url, isNav = false) => {
         fetch(url).then(res => res.text()).then(html => {
             document.getElementById(id).innerHTML = html;
-            if(isNav) initNavLogic();
+            if (isNav) initNavLogic();
         });
     };
 
     function initNavLogic() {
         const btn = document.getElementById('menu-btn');
         const menu = document.getElementById('mobile-menu');
-        if(btn && menu) btn.onclick = () => menu.classList.toggle('hidden');
+        if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+            || window.navigator.standalone;
+        const isPWAUrl = new URLSearchParams(window.location.search).get('utm_source') === 'pwa';
+        if (isStandalone || isPWAUrl) {
+            document.getElementById('apk-download-desktop')?.style.setProperty('display', 'none', 'important');
+            document.getElementById('apk-download-mobile')?.style.setProperty('display', 'none', 'important');
+        }
     }
 
     loadComp('navbar', 'components/navbar.html', true);
