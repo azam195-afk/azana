@@ -1,4 +1,4 @@
-<nav class="fixed top-0 left-0 w-full z-50 bg-dark-950/70 backdrop-blur-xl border-b border-white/5">
+<nav class="fixed top-0 left-0 w-full z-[999] bg-black/80 backdrop-blur-xl border-b border-white/10">
     
     <style>
         @keyframes aurora-glow {
@@ -8,18 +8,11 @@
         }
         .neon-avatar { animation: aurora-glow 4s ease-in-out infinite; transition: all 0.3s ease; }
         .neon-avatar:hover { animation-duration: 2s; transform: scale(1.05); }
-        /* SECARA DEFAULT TOMBOL MUNCUL */
-#apk-download-desktop, #apk-download-mobile {
-    display: flex !important;
-}
-
-/* TAPI KALAU DIBUKA DI MODE APLIKASI (STANDALONE), PAKSA HILANG */
-@media (display-mode: standalone) {
-    #apk-download-desktop, #apk-download-mobile {
-        display: none !important;
-    }
-}
         
+        /* Tombol APK dipaksa muncul di mana saja agar aman */
+        #apk-download-desktop, #apk-download-mobile {
+            display: flex !important;
+        }
     </style>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,7 +53,7 @@
         </div>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-dark-950/95 backdrop-blur-2xl">
+    <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-black/95 backdrop-blur-2xl">
         <div class="flex flex-col p-8 gap-6 text-[11px] uppercase tracking-[0.3em] font-tech text-slate-400">
             <a href="index.html" class="hover:text-neon-cyan transition">Beranda</a>
             <a href="#layanan" class="hover:text-neon-cyan transition">Layanan</a>
@@ -73,27 +66,15 @@
         </div>
     </div>
 
-<script>
-    function checkAppMode() {
-        // Cek mode standalone
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
-                             || window.navigator.standalone;
-        
-        // Cek apakah ada parameter 'utm_source=pwa' (opsional tapi kuat)
-        const urlParams = new URLSearchParams(window.location.search);
-        const isPWAUrl = urlParams.get('utm_source') === 'pwa';
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-        if (isStandalone || isPWAUrl) {
-            const btnD = document.getElementById('apk-download-desktop');
-            const btnM = document.getElementById('apk-download-mobile');
-            if(btnD) btnD.style.display = 'none';
-            if(btnM) btnM.style.display = 'none';
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
         }
-    }
-
-    // Jalankan langsung dan kasih jeda dikit biar sinkron
-    checkAppMode();
-    setTimeout(checkAppMode, 1000); 
-</script>
+    </script>
     
 </nav>
