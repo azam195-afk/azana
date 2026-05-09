@@ -1,4 +1,4 @@
-const CACHE_NAME = 'azana-v11'; // Ganti v11 biar bener-bener reset
+const CACHE_NAME = 'azana-v12';
 const assets = [
   './',
   'index.html',
