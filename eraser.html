@@ -136,14 +136,14 @@
         <main class="w-full max-w-4xl flex flex-col items-center">
             
             <!-- Kotak Upload 1:1 -->
-            <div id="upload-area" onclick="document.getElementById('file-input').click()" class="upload-square group">
-                <input type="file" id="file-input" class="hidden" accept="image/*">
-                <div class="w-16 h-16 bg-dark-800 rounded-2xl flex items-center justify-center mb-6 text-3xl text-neon-purple group-hover:text-neon-cyan transition-all border border-white/5">
+            <label id="upload-area" for="file-input" tabindex="0" class="upload-square group focus:outline-none focus:ring-2 focus:ring-neon-cyan/60">
+                <input type="file" id="file-input" class="sr-only" accept="image/*">
+                <span class="w-16 h-16 bg-dark-800 rounded-2xl flex items-center justify-center mb-6 text-3xl text-neon-purple group-hover:text-neon-cyan transition-all border border-white/5 pointer-events-none">
                     <i class="fas fa-arrow-up-from-bracket"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white mb-1 font-tech uppercase tracking-widest">Pilih Foto Anda</h3>
-                <p class="text-slate-500 text-[10px] font-tech tracking-widest uppercase opacity-60">Klik untuk mulai mengedit</p>
-            </div>
+                </span>
+                <span class="text-lg font-bold text-white mb-1 font-tech uppercase tracking-widest pointer-events-none">Pilih Foto Anda</span>
+                <span class="text-slate-500 text-[10px] font-tech tracking-widest uppercase opacity-60 pointer-events-none">Klik atau seret foto untuk mulai</span>
+            </label>
 
             <div id="editor-area" class="hidden w-full flex-col items-center">
                 <div class="w-full max-w-md flex items-center justify-between gap-3 mb-6 bg-dark-950/80 p-3 rounded-2xl border border-white/5 backdrop-blur-sm">
@@ -220,16 +220,16 @@
             <div>
                 <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Follow Us</h4>
                 <div class="flex gap-4">
-                    <a href="https://www.instagram.com/zamm_azana?igsh=aXlobmJzZDl6aHJ2" target="_blank" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr hover:from-yellow-500 hover:to-purple-500 hover:text-white transition-all shadow-lg">
+                    <a href="https://www.instagram.com/zamm_azana?igsh=aXlobmJzZDl6aHJ2" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr hover:from-yellow-500 hover:to-purple-500 hover:text-white transition-all shadow-lg">
                         <i class="fab fa-instagram text-sm"></i>
                     </a>
-                    <a href="https://www.facebook.com/maulana.azam.165" target="_blank" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-lg">
+                    <a href="https://www.facebook.com/maulana.azam.165" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-lg">
                         <i class="fab fa-facebook-f text-xs"></i>
                     </a>
-                    <a href="https://youtube.com/@azanaastory?si=DMQHZ0Cl9HGGhEk2" target="_blank" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-lg">
+                    <a href="https://youtube.com/@azanaastory?si=DMQHZ0Cl9HGGhEk2" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-lg">
                         <i class="fab fa-youtube text-xs"></i>
                     </a>
-                    <a href="https://www.tiktok.com/@azam.195?_r=1&_t=ZS-965J24jNOL7" target="_blank" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-lg">
+                    <a href="https://www.tiktok.com/@azam.195?_r=1&_t=ZS-965J24jNOL7" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-lg">
                         <i class="fab fa-tiktok text-xs"></i>
                     </a>
                 </div>
@@ -323,8 +323,8 @@
             animateNodes();
         };
 
-        // --- EDITOR LOGIC (FIXED) ---
-        const CLIPDROP_API_KEY = "ae50f97a39406075707c40fceeedbf31d9e385681146fcdceba4622d82045781742d2979374fa558a7bb8b8eee4642fa"; 
+        // --- EDITOR LOGIC ---
+        let CLIPDROP_API_KEY = window.AZANA_API_KEYS?.CLIPDROP || localStorage.getItem('AZANA_CLIPDROP_API_KEY') || '';
         const fileInput = document.getElementById('file-input');
         const uploadArea = document.getElementById('upload-area');
         const editorArea = document.getElementById('editor-area');
@@ -347,9 +347,13 @@
         let hue = 180; let hueDirection = 1;
         let brushHistory = [];
 
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if(!file) return;
+        function loadImageFile(file) {
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                alert('File harus berupa gambar.');
+                return;
+            }
+            
             const reader = new FileReader();
             reader.onload = (event) => {
                 imageObj.onload = () => {
@@ -361,6 +365,34 @@
                 imageObj.src = event.target.result;
             };
             reader.readAsDataURL(file);
+                    }
+
+        fileInput.addEventListener('change', (e) => loadImageFile(e.target.files[0]));
+
+        uploadArea.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                fileInput.click();
+            }
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, (event) => {
+                event.preventDefault();
+                uploadArea.classList.add('border-neon-cyan', 'bg-neon-cyan/5');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, (event) => {
+                event.preventDefault();
+                uploadArea.classList.remove('border-neon-cyan', 'bg-neon-cyan/5');
+            });
+        });
+
+        uploadArea.addEventListener('drop', (event) => {
+            const file = event.dataTransfer?.files?.[0];
+            if (file) loadImageFile(file);
         });
 
         function setupCanvas() {
@@ -464,6 +496,13 @@
             btnProcess.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>MENGHAPUS...';
             btnProcess.disabled = true;
             try {
+                if (!CLIPDROP_API_KEY) {
+                    CLIPDROP_API_KEY = prompt('Masukkan API key Clipdrop untuk memproses gambar:')?.trim() || '';
+                    if (CLIPDROP_API_KEY) localStorage.setItem('AZANA_CLIPDROP_API_KEY', CLIPDROP_API_KEY);
+                }
+                if (!CLIPDROP_API_KEY) {
+                    throw new Error('API key Clipdrop belum dikonfigurasi.');
+                }
                 const imageBlob = await new Promise(resolve => imgCanvas.toBlob(resolve, 'image/jpeg', 0.95));
                 const maskCanvas = document.createElement('canvas');
                 maskCanvas.width = drawCanvas.width; maskCanvas.height = drawCanvas.height;
