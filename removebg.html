@@ -105,19 +105,19 @@
 
         <main class="w-full max-w-[340px] relative">
             <!-- Kotak Upload: Transparan Bening & 1:1 -->
-            <div id="upload-area" onclick="document.getElementById('file-input').click()" 
-                class="aspect-square w-full rounded-[2.5rem] border border-dashed border-neon-cyan/20 flex flex-col items-center justify-center p-6 text-center transition-all duration-700 bg-white/[0.02] backdrop-blur-[1px] cursor-pointer group hover:bg-white/[0.05] animate-border">
+            <label id="upload-area" for="file-input" tabindex="0"
+                class="aspect-square w-full rounded-[2.5rem] border border-dashed border-neon-cyan/20 flex flex-col items-center justify-center p-6 text-center transition-all duration-700 bg-white/[0.02] backdrop-blur-[1px] cursor-pointer group hover:bg-white/[0.05] focus:outline-none focus:ring-2 focus:ring-neon-cyan/60 animate-border">
                 
-                <input type="file" id="file-input" class="hidden" accept="image/png, image/jpeg, image/webp">
+                <input type="file" id="file-input" class="sr-only" accept="image/png, image/jpeg, image/webp">
                 
-                <div class="pointer-events-none flex flex-col items-center">
-                    <div class="w-16 h-16 bg-dark-900/20 rounded-2xl flex items-center justify-center mb-8 text-neon-purple group-hover:scale-110 transition-all duration-500 border border-white/5 shadow-xl">
-                        <i class="fas fa-upload text-3xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2 font-tech uppercase tracking-[0.25em]">Pilih Foto Anda</h3>
-                    <p class="text-slate-600 text-[8px] font-tech tracking-widest uppercase opacity-50">Klik atau seret foto ke sini</p>
-                </div>
-            </div>
+                <span class="pointer-events-none flex flex-col items-center">
+                    <span class="w-16 h-16 bg-dark-900/20 rounded-2xl flex items-center justify-center mb-8 text-neon-purple group-hover:scale-110 transition-all duration-500 border border-white/5 shadow-xl">
+                       <i class="fas fa-upload text-3xl"></i>
+                    </span>
+                    <span class="text-lg font-bold text-white mb-2 font-tech uppercase tracking-[0.25em]">Pilih Foto Anda</span>
+                    <span class="text-slate-600 text-[8px] font-tech tracking-widest uppercase opacity-50">Klik atau seret foto ke sini</span>
+                </span>
+            </label>
 
             <!-- Processing Area -->
             <div id="processing-area" class="hidden flex-col items-center justify-center">
@@ -249,8 +249,8 @@ fetch('components/footer-ai.html')
             animateNodes();
         };
 
-        // --- LOGIKA REMOVE BG (Tetap Sama) ---
-        const API_KEY_REMOVE_BG = "XB5iYToJX8dJthRRYwJdGzZU";
+        // --- LOGIKA REMOVE BG ---
+        let API_KEY_REMOVE_BG = window.AZANA_API_KEYS?.REMOVE_BG || localStorage.getItem('AZANA_REMOVE_BG_API_KEY') || '';
         const fileInput = document.getElementById('file-input');
         const uploadArea = document.getElementById('upload-area');
         const processingArea = document.getElementById('processing-area');
@@ -260,6 +260,10 @@ fetch('components/footer-ai.html')
 
         function tangkapFoto(file) {
             if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                alert('File harus berupa gambar PNG, JPG, JPEG, atau WEBP.');
+                return;
+            }
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('preview-image').src = e.target.result;
@@ -273,10 +277,43 @@ fetch('components/footer-ai.html')
 
         fileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) tangkapFoto(e.target.files[0]); });
 
+        uploadArea.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                fileInput.click();
+            }
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, (event) => {
+                event.preventDefault();
+                uploadArea.classList.add('border-neon-purple/60', 'bg-white/[0.06]');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, (event) => {
+                event.preventDefault();
+                uploadArea.classList.remove('border-neon-purple/60', 'bg-white/[0.06]');
+            });
+        });
+
+        uploadArea.addEventListener('drop', (event) => {
+            const file = event.dataTransfer?.files?.[0];
+            if (file) tangkapFoto(file);
+        });
+        
         async function prosesHapusLatar(file) {
             let progress = 0;
             const interval = setInterval(() => { if(progress < 95) { progress += 2; progressBar.style.width = progress + '%'; } }, 150);
             try {
+                if (!API_KEY_REMOVE_BG) {
+                    API_KEY_REMOVE_BG = prompt('Masukkan API key remove.bg untuk memproses gambar:')?.trim() || '';
+                    if (API_KEY_REMOVE_BG) localStorage.setItem('AZANA_REMOVE_BG_API_KEY', API_KEY_REMOVE_BG);
+                }
+                if (!API_KEY_REMOVE_BG) {
+                    throw new Error('API key remove.bg belum dikonfigurasi.');
+                }
                 const formData = new FormData();
                 formData.append('size', 'auto');
                 formData.append('image_file', file);
