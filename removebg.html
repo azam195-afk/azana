@@ -327,11 +327,7 @@ fetch('components/footer-ai.html')
             const interval = setInterval(() => { if(progress < 95) { progress += 2; progressBar.style.width = progress + '%'; } }, 150);
             try {
                 if (!API_KEY_REMOVE_BG) {
-                    API_KEY_REMOVE_BG = prompt('Masukkan API key remove.bg untuk memproses gambar:')?.trim() || '';
-                    if (API_KEY_REMOVE_BG) localStorage.setItem('AZANA_REMOVE_BG_API_KEY', API_KEY_REMOVE_BG);
-                }
-                if (!API_KEY_REMOVE_BG) {
-                    throw new Error('API key remove.bg belum dikonfigurasi.');
+                    throw new Error('API key remove.bg belum dikonfigurasi oleh admin.');
                 }
                 const formData = new FormData();
                 formData.append('size', 'auto');
