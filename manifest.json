@@ -1,7 +1,7 @@
 {
   "name": "Azana Design Studio",
   "short_name": "Azana",
-  "start_url": "index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#050508",
   "theme_color": "#00f2fe",
@@ -18,5 +18,8 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ]
+  ],
+  "scope": "/",
+  "id": "/",
+  "description": "AZANA DESIGN adalah studio kreatif digital untuk jasa edit foto, edit video, desain profesional, dan tools AI editing."
 }
