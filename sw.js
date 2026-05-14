@@ -1,4 +1,4 @@
-const CACHE_NAME = 'azana-v13';
+const CACHE_NAME = 'azana-v14';
 const PRECACHE_ASSETS = [
   './',
   'index.html',
@@ -10,6 +10,8 @@ const PRECACHE_ASSETS = [
   'eraser.html',
   'penjernih.html',
   'manifest.json',
+  'robots.txt',
+  'sitemap.xml',
   'offline.html',
   'components/navbar.html',
   'components/footer-main.html',
