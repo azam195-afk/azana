@@ -1,32 +1,27 @@
-# ⚡ AZANA DESIGN — NEXT-GEN DIGITAL ARCHITECT
+# AZANA DESIGN
 
-> **"Turning static pixels into dynamic masterpieces."** > Azana is not just a website; it's a high-performance ecosystem for visual manipulation.
+Website statis produksi untuk studio desain digital dan tools AI gambar.
 
----
+## Struktur
+- `assets/` menyimpan gambar, ikon, logo, video, audio, font, dan portfolio.
+- `css/` berisi base, layout, component, page, dan theme stylesheet.
+- `js/` berisi core app, API service, module halaman, dan utility.
+- `components/` berisi navbar, footer, sidebar, card, modal, dan widget reusable.
+- `pages/`, `data/`, `docs/`, dan `public/` disiapkan untuk konten, konfigurasi, dokumentasi, dan file publik.
 
-## 💀 PROJECT STATUS: ELITE
-Azana Design dibangun dengan satu tujuan: **Mendominasi Visual.** Menggabungkan arsitektur *frontend* yang bersih dengan kekuatan *Artificial Intelligence* kelas berat untuk menghasilkan output yang tidak masuk akal.
+## API key
+Jangan commit API key ke repository. Untuk demo lokal, masukkan key melalui localStorage browser:
 
-## 🛠️ CORE TECH STACK (HARDCORE)
-- **Engine:** Pure HTML5 / CSS3 / Modern JavaScript (ES2026+)
-- **Brain:** AI Integration (Remove.bg & ClipDrop Neural Engines)
-- **Resilience:** Advanced Service Workers (Progressive Web App v13)
-- **Infrastructure:** LocalStorage Security Layer & Private API Management
+```js
+localStorage.setItem('REMOVE_BG_API_KEY', '...');
+localStorage.setItem('CLIPDROP_API_KEY', '...');
+localStorage.setItem('GEMINI_API_KEY', '...');
+```
 
-## 💎 GOD-LEVEL FEATURES
-* **[AI] BG REMOVER:** Hapus background sehalus silet dalam hitungan detik.
-* **[AI] MAGIC ERASER:** Menghilangkan objek mengganggu seolah-olah mereka tidak pernah ada.
-* **[AI] PHOTO ENHANCER:** Merestorasi foto kusam menjadi kualitas Ultra-HD.
-* **OFFLINE SUPREMACY:** Berkat PWA, Azana tetap hidup meskipun koneksi internet mati.
+Untuk production, gunakan backend/serverless proxy dengan environment variable.
 
-## 🛡️ ENCRYPTED SECURITY
-Arsitektur ini menggunakan sistem **Secret Configuration Layer**. Kunci API tidak tersebar di publik. Kami menggunakan `api-config.js` yang terisolasi untuk memastikan keamanan data tetap di tangan pemilik.
-
----
-
-## ⚠️ CAUTION
-**This repository is a private asset.** Any unauthorized attempt to replicate or scrape the logic of Azana will be met with the sheer complexity of its code.
-
----
-**Developed by [Azam]** *Built different. Built better.*
-
+## Production checklist
+- Jalankan validasi link dan syntax sebelum deploy.
+- Simpan secret API di backend/serverless proxy, bukan file statis.
+- Aktifkan kompresi Brotli/Gzip di hosting.
+- Gunakan cache header panjang untuk `assets/`, `css/`, dan `js/`.
