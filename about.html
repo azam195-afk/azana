@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>About Us - AZANA DESIGN</title>
@@ -25,209 +25,209 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
-    
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { 
-                        sans: ['Plus Jakarta Sans', 'sans-serif'], 
-                        tech: ['Rajdhani', 'sans-serif'] 
-                    },
-                    colors: { 
-                        neon: { cyan: '#00f2fe', purple: '#bc13fe' }, 
-                        dark: { 950: '#050508', 900: '#0a0a14', 800: '#13131a' } 
-                    }
-                }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Plus Jakarta Sans', 'sans-serif'],
+              tech: ['Rajdhani', 'sans-serif']
+            },
+            colors: {
+              neon: { cyan: '#00f2fe', purple: '#bc13fe' },
+              dark: { 950: '#050508', 900: '#0a0a14', 800: '#13131a' }
             }
+          }
         }
+      }
     </script>
     <style>
-        body { 
-            background-color: #050508; 
-            color: #cbd5e1; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            margin: 0;
-            position: relative;
-            overflow-x: hidden;
-        }
+      body {
+        background-color: #050508;
+        color: #cbd5e1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        position: relative;
+        overflow-x: hidden;
+      }
 
-        #neural-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: #050508;
-        }
+      #neural-canvas {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -1;
+        background: #050508;
+      }
 
-        .vignette {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
-            z-index: 0; pointer-events: none;
-        }
+      .vignette {
+        position: fixed; inset: 0;
+        background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
+        z-index: 0; pointer-events: none;
+      }
 
-        .glass-card { 
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 2rem;
-        }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 2rem;
+      }
 
-        .safe-italic { padding-right: 0.3em; display: inline-block; }
+      .safe-italic { padding-right: 0.3em; display: inline-block; }
     </style>
-</head>
-<body>
+  </head>
+  <body>
 
     <canvas id="neural-canvas"></canvas>
     <div class="vignette"></div>
 
     <div class="flex-grow flex flex-col items-center p-6 w-full relative z-10">
-        
-        <header class="text-center w-full max-w-3xl mt-10 mb-12">
-            <div class="inline-flex w-14 h-14 rounded-2xl bg-dark-900/60 border border-neon-cyan/30 items-center justify-center text-neon-cyan shadow-[0_0_20px_rgba(0,242,254,0.2)] mb-4">
-                <i class="fas fa-info-circle text-2xl"></i>
-            </div>
-            <h1 class="text-3xl md:text-5xl font-tech font-bold text-white tracking-widest uppercase italic leading-tight">
-                ABOUT <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan safe-italic">AZANA DESIGN</span>
-            </h1>
-        </header>
 
-        <main class="w-full max-w-4xl grid md:grid-cols-2 gap-8">
-            <div class="glass-card p-8 flex flex-col gap-6 border-neon-cyan/20">
-                <h2 class="font-tech text-xl font-bold text-white tracking-widest uppercase italic">Siapa Kami?</h2>
-                <p class="text-slate-400 text-sm leading-relaxed">
-                    <span class="text-white font-bold">AZANA DESIGN</span> adalah ekosistem kreatif berbasis <span class="text-neon-cyan italic">Artificial Intelligence</span> yang dirancang untuk mendefinisikan ulang batas-batas desain digital. Kami fokus pada kecepatan, presisi, dan antarmuka futuristik.
-                </p>
-                <p class="text-slate-400 text-sm leading-relaxed">
-                    Melalui integrasi sistem neural tingkat lanjut, kami menyediakan alat bantu pengolahan citra instan yang dapat diakses oleh siapa saja.
-                </p>
-            </div>
+      <header class="text-center w-full max-w-3xl mt-10 mb-12">
+        <div class="inline-flex w-14 h-14 rounded-2xl bg-dark-900/60 border border-neon-cyan/30 items-center justify-center text-neon-cyan shadow-[0_0_20px_rgba(0,242,254,0.2)] mb-4">
+          <i class="fas fa-info-circle text-2xl"></i>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-tech font-bold text-white tracking-widest uppercase italic leading-tight">
+          ABOUT <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan safe-italic">AZANA DESIGN</span>
+        </h1>
+      </header>
 
-            <div class="glass-card p-8 flex flex-col gap-6 border-neon-purple/20">
-                <h2 class="font-tech text-xl font-bold text-white tracking-widest uppercase italic">Visi & Misi</h2>
-                <div class="space-y-4">
-                    <div class="flex gap-4">
-                        <div class="text-neon-purple mt-1"><i class="fas fa-bolt"></i></div>
-                        <p class="text-slate-400 text-xs leading-relaxed uppercase tracking-wider font-tech">Efisiensi tanpa batas dalam setiap piksel.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="text-neon-cyan mt-1"><i class="fas fa-brain"></i></div>
-                        <p class="text-slate-400 text-xs leading-relaxed uppercase tracking-wider font-tech">Kecerdasan Buatan yang intuitif bagi pengguna.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="text-neon-purple mt-1"><i class="fas fa-shield-alt"></i></div>
-                        <p class="text-slate-400 text-xs leading-relaxed uppercase tracking-wider font-tech">Keamanan data citra visual yang terjamin.</p>
-                    </div>
-                </div>
-            </div>
+      <main class="w-full max-w-4xl grid md:grid-cols-2 gap-8">
+        <div class="glass-card p-8 flex flex-col gap-6 border-neon-cyan/20">
+          <h2 class="font-tech text-xl font-bold text-white tracking-widest uppercase italic">Siapa Kami?</h2>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            <span class="text-white font-bold">AZANA DESIGN</span> adalah ekosistem kreatif berbasis <span class="text-neon-cyan italic">Artificial Intelligence</span> yang dirancang untuk mendefinisikan ulang batas-batas desain digital. Kami fokus pada kecepatan, presisi, dan antarmuka futuristik.
+          </p>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Melalui integrasi sistem neural tingkat lanjut, kami menyediakan alat bantu pengolahan citra instan yang dapat diakses oleh siapa saja.
+          </p>
+        </div>
 
-            <div class="md:col-span-2 glass-card p-6 flex justify-around items-center text-center">
-                <div>
-                    <span class="block text-2xl font-tech font-bold text-white tracking-widest uppercase italic">v1.0</span>
-                    <span class="text-[9px] text-slate-500 uppercase tracking-widest">Neural Engine</span>
-                </div>
-                <div class="h-10 w-[1px] bg-white/10"></div>
-                <div>
-                    <span class="block text-2xl font-tech font-bold text-white tracking-widest uppercase italic">Fast</span>
-                    <span class="text-[9px] text-slate-500 uppercase tracking-widest">Processing</span>
-                </div>
-                <div class="h-10 w-[1px] bg-white/10"></div>
-                <div>
-                    <span class="block text-2xl font-tech font-bold text-white tracking-widest uppercase italic">Secure</span>
-                    <span class="text-[9px] text-slate-500 uppercase tracking-widest">Algorithm</span>
-                </div>
+        <div class="glass-card p-8 flex flex-col gap-6 border-neon-purple/20">
+          <h2 class="font-tech text-xl font-bold text-white tracking-widest uppercase italic">Visi & Misi</h2>
+          <div class="space-y-4">
+            <div class="flex gap-4">
+              <div class="text-neon-purple mt-1"><i class="fas fa-bolt"></i></div>
+              <p class="text-slate-400 text-xs leading-relaxed uppercase tracking-wider font-tech">Efisiensi tanpa batas dalam setiap piksel.</p>
             </div>
-        </main>
+            <div class="flex gap-4">
+              <div class="text-neon-cyan mt-1"><i class="fas fa-brain"></i></div>
+              <p class="text-slate-400 text-xs leading-relaxed uppercase tracking-wider font-tech">Kecerdasan Buatan yang intuitif bagi pengguna.</p>
+            </div>
+            <div class="flex gap-4">
+              <div class="text-neon-purple mt-1"><i class="fas fa-shield-alt"></i></div>
+              <p class="text-slate-400 text-xs leading-relaxed uppercase tracking-wider font-tech">Keamanan data citra visual yang terjamin.</p>
+            </div>
+          </div>
+        </div>
 
-        <a href="index.html" class="mt-12 inline-flex items-center gap-3 bg-dark-800 border border-neon-cyan/30 px-8 py-3 rounded-xl text-[10px] text-neon-cyan font-bold uppercase font-tech tracking-[0.3em] transition-all hover:bg-neon-cyan hover:text-dark-950 shadow-[0_0_20px_rgba(0,242,254,0.1)]">
-            <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
-        </a>
+        <div class="md:col-span-2 glass-card p-6 flex justify-around items-center text-center">
+          <div>
+            <span class="block text-2xl font-tech font-bold text-white tracking-widest uppercase italic">v1.0</span>
+            <span class="text-[9px] text-slate-500 uppercase tracking-widest">Neural Engine</span>
+          </div>
+          <div class="h-10 w-[1px] bg-white/10"></div>
+          <div>
+            <span class="block text-2xl font-tech font-bold text-white tracking-widest uppercase italic">Fast</span>
+            <span class="text-[9px] text-slate-500 uppercase tracking-widest">Processing</span>
+          </div>
+          <div class="h-10 w-[1px] bg-white/10"></div>
+          <div>
+            <span class="block text-2xl font-tech font-bold text-white tracking-widest uppercase italic">Secure</span>
+            <span class="text-[9px] text-slate-500 uppercase tracking-widest">Algorithm</span>
+          </div>
+        </div>
+      </main>
+
+      <a href="index.html" class="mt-12 inline-flex items-center gap-3 bg-dark-800 border border-neon-cyan/30 px-8 py-3 rounded-xl text-[10px] text-neon-cyan font-bold uppercase font-tech tracking-[0.3em] transition-all hover:bg-neon-cyan hover:text-dark-950 shadow-[0_0_20px_rgba(0,242,254,0.1)]">
+        <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+      </a>
     </div>
 
-   <div id="footer"></div>
+    <div id="footer"></div>
 
-<script>
-fetch('components/footer-ai.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('footer').innerHTML = data;
-  });
-</script>
-    
     <script>
-        const canvas = document.getElementById('neural-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const mouse = { x: null, y: null, radius: 100 };
-
-        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-        window.addEventListener('resize', () => { init(); });
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            let numberOfParticles = (canvas.width * canvas.height) / 4500;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 0.7 + 0.2;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.color = Math.random() > 0.5 ? '#00f2fe' : '#bc13fe';
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                if (mouse.x != null) {
-                    let dx = mouse.x - this.x; let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-                    if (distance < mouse.radius) {
-                        this.x -= dx * 0.015; this.y -= dy * 0.015;
-                    }
-                }
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color; ctx.fill();
-            }
-        }
-
-        function connect() {
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-                    if (distance < 90) {
-                        let opacity = (1 - distance/90) * 0.25;
-                        ctx.strokeStyle = particles[a].color === '#bc13fe' 
-                            ? `rgba(188, 19, 254, ${opacity})` : `rgba(0, 242, 254, ${opacity})`;
-                        ctx.lineWidth = 0.2;
-                        ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            connect();
-            requestAnimationFrame(animate);
-        }
-
-        init(); animate();
+      fetch('components/footer-ai.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer').innerHTML = data;
+      });
     </script>
-</body>
+
+    <script>
+      const canvas = document.getElementById('neural-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const mouse = { x: null, y: null, radius: 100 };
+
+      window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener('resize', () => { init(); });
+
+      function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        particles = [];
+        let numberOfParticles = (canvas.width * canvas.height) / 4500;
+        for (let i = 0; i < numberOfParticles; i++) {
+          particles.push(new Particle());
+        }
+      }
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 0.7 + 0.2;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.color = Math.random() > 0.5 ? '#00f2fe' : '#bc13fe';
+        }
+        update() {
+          this.x += this.vx; this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+          if (mouse.x != null) {
+            let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance < mouse.radius) {
+              this.x -= dx * 0.015; this.y -= dy * 0.015;
+            }
+          }
+        }
+        draw() {
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = this.color; ctx.fill();
+        }
+      }
+
+      function connect() {
+        for (let a = 0; a < particles.length; a++) {
+          for (let b = a; b < particles.length; b++) {
+            let dx = particles[a].x - particles[b].x;
+            let dy = particles[a].y - particles[b].y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance < 90) {
+              let opacity = (1 - distance/90) * 0.25;
+              ctx.strokeStyle = particles[a].color === '#bc13fe'
+              ? `rgba(188, 19, 254, ${opacity})` : `rgba(0, 242, 254, ${opacity})`;
+              ctx.lineWidth = 0.2;
+              ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y);
+              ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        connect();
+        requestAnimationFrame(animate);
+      }
+
+      init(); animate();
+    </script>
+  </body>
 </html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Privacy Policy - AZANA DESIGN</title>
@@ -25,201 +25,201 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
-    
+
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { 
-                        sans: ['Plus Jakarta Sans', 'sans-serif'], 
-                        tech: ['Rajdhani', 'sans-serif'] 
-                    },
-                    colors: { 
-                        neon: { cyan: '#00f2fe', purple: '#bc13fe' }, 
-                        dark: { 950: '#050508', 900: '#0a0a14', 800: '#13131a' } 
-                    }
-                }
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Plus Jakarta Sans', 'sans-serif'],
+              tech: ['Rajdhani', 'sans-serif']
+            },
+            colors: {
+              neon: { cyan: '#00f2fe', purple: '#bc13fe' },
+              dark: { 950: '#050508', 900: '#0a0a14', 800: '#13131a' }
             }
+          }
         }
+      }
     </script>
     <style>
-        body { 
-            background-color: #050508; 
-            color: #cbd5e1; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            margin: 0;
-            position: relative;
-            overflow-x: hidden;
-        }
+      body {
+        background-color: #050508;
+        color: #cbd5e1;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        position: relative;
+        overflow-x: hidden;
+      }
 
-        #neural-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: #050508;
-        }
+      #neural-canvas {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        z-index: -1;
+        background: #050508;
+      }
 
-        .vignette {
-            position: fixed; inset: 0;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
-            z-index: 0; pointer-events: none;
-        }
+      .vignette {
+        position: fixed; inset: 0;
+        background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
+        z-index: 0; pointer-events: none;
+      }
 
-        .glass-card { 
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 2rem;
-        }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 2rem;
+      }
 
-        .safe-italic { padding-right: 0.3em; display: inline-block; }
-        
-        .content-section h2 {
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #00f2fe;
-            margin-bottom: 1rem;
-        }
+      .safe-italic { padding-right: 0.3em; display: inline-block; }
+
+      .content-section h2 {
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #00f2fe;
+        margin-bottom: 1rem;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
 
     <canvas id="neural-canvas"></canvas>
     <div class="vignette"></div>
 
     <div class="flex-grow flex flex-col items-center p-6 w-full relative z-10">
-        
-        <header class="text-center w-full max-w-3xl mt-10 mb-12">
-            <div class="inline-flex w-14 h-14 rounded-2xl bg-dark-900/60 border border-neon-cyan/30 items-center justify-center text-neon-cyan shadow-[0_0_20px_rgba(0,242,254,0.2)] mb-4">
-                <i class="fas fa-shield-halved text-2xl"></i>
-            </div>
-            <h1 class="text-3xl md:text-5xl font-tech font-bold text-white tracking-widest uppercase italic leading-tight">
-                PRIVACY <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan safe-italic">POLICY</span>
-            </h1>
-            <p class="text-slate-500 text-[10px] md:text-xs mt-4 uppercase tracking-[0.3em] font-tech">Terakhir Diperbarui: Mei 2026</p>
-        </header>
 
-        <main class="w-full max-w-4xl flex flex-col gap-8 mb-16">
-            <div class="glass-card p-8 md:p-10 content-section">
-                <h2>1. Informasi yang Kami Kumpulkan</h2>
-                <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                    AZANA DESIGN menghargai privasi Anda. Kami hanya mengumpulkan data teknis dasar dan gambar yang Anda unggah secara sukarela untuk diproses oleh mesin AI kami. Kami tidak mengumpulkan informasi identitas pribadi tanpa izin Anda.
-                </p>
+      <header class="text-center w-full max-w-3xl mt-10 mb-12">
+        <div class="inline-flex w-14 h-14 rounded-2xl bg-dark-900/60 border border-neon-cyan/30 items-center justify-center text-neon-cyan shadow-[0_0_20px_rgba(0,242,254,0.2)] mb-4">
+          <i class="fas fa-shield-halved text-2xl"></i>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-tech font-bold text-white tracking-widest uppercase italic leading-tight">
+          PRIVACY <span class="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-cyan safe-italic">POLICY</span>
+        </h1>
+        <p class="text-slate-500 text-[10px] md:text-xs mt-4 uppercase tracking-[0.3em] font-tech">Terakhir Diperbarui: Mei 2026</p>
+      </header>
 
-                <h2>2. Penggunaan Data Gambar</h2>
-                <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                    Gambar yang diunggah ke layanan seperti Magic Eraser atau BG Remover diproses secara otomatis melalui API pihak ketiga yang aman. Data citra visual diproses secara *real-time* dan tidak digunakan untuk melatih model AI kami secara permanen.
-                </p>
+      <main class="w-full max-w-4xl flex flex-col gap-8 mb-16">
+        <div class="glass-card p-8 md:p-10 content-section">
+          <h2>1. Informasi yang Kami Kumpulkan</h2>
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">
+            AZANA DESIGN menghargai privasi Anda. Kami hanya mengumpulkan data teknis dasar dan gambar yang Anda unggah secara sukarela untuk diproses oleh mesin AI kami. Kami tidak mengumpulkan informasi identitas pribadi tanpa izin Anda.
+          </p>
 
-                <h2>3. Keamanan Neural Link</h2>
-                <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                    Kami menggunakan enkripsi SSL untuk memastikan jalur komunikasi antara perangkat Anda dan server pemrosesan kami aman. Meskipun demikian, ingatlah bahwa tidak ada metode transmisi data melalui internet yang 100% aman.
-                </p>
+          <h2>2. Penggunaan Data Gambar</h2>
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">
+            Gambar yang diunggah ke layanan seperti Magic Eraser atau BG Remover diproses secara otomatis melalui API pihak ketiga yang aman. Data citra visual diproses secara *real-time* dan tidak digunakan untuk melatih model AI kami secara permanen.
+          </p>
 
-                <h2>4. Cookie & Pelacakan</h2>
-                <p class="text-slate-400 text-sm leading-relaxed mb-6">
-                    Kami dapat menggunakan cookie sesi sederhana untuk mengingat preferensi alat Anda (seperti ukuran kuas) guna meningkatkan pengalaman pengguna selama sesi aktif berlangsung.
-                </p>
+          <h2>3. Keamanan Neural Link</h2>
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">
+            Kami menggunakan enkripsi SSL untuk memastikan jalur komunikasi antara perangkat Anda dan server pemrosesan kami aman. Meskipun demikian, ingatlah bahwa tidak ada metode transmisi data melalui internet yang 100% aman.
+          </p>
 
-                <h2>5. Persetujuan</h2>
-                <p class="text-slate-400 text-sm leading-relaxed">
-                    Dengan menggunakan alat desain kami, Anda dengan ini menyetujui Kebijakan Privasi kami dan menyetujui ketentuan pemrosesan data yang dijelaskan di atas.
-                </p>
-            </div>
-        </main>
+          <h2>4. Cookie & Pelacakan</h2>
+          <p class="text-slate-400 text-sm leading-relaxed mb-6">
+            Kami dapat menggunakan cookie sesi sederhana untuk mengingat preferensi alat Anda (seperti ukuran kuas) guna meningkatkan pengalaman pengguna selama sesi aktif berlangsung.
+          </p>
 
-        <a href="index.html" class="mb-12 inline-flex items-center gap-3 bg-dark-800 border border-neon-cyan/30 px-8 py-3 rounded-xl text-[10px] text-neon-cyan font-bold uppercase font-tech tracking-[0.3em] transition-all hover:bg-neon-cyan hover:text-dark-950 shadow-[0_0_20px_rgba(0,242,254,0.1)]">
-            <i class="fas fa-home"></i> Kembali Ke Beranda
-        </a>
+          <h2>5. Persetujuan</h2>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Dengan menggunakan alat desain kami, Anda dengan ini menyetujui Kebijakan Privasi kami dan menyetujui ketentuan pemrosesan data yang dijelaskan di atas.
+          </p>
+        </div>
+      </main>
+
+      <a href="index.html" class="mb-12 inline-flex items-center gap-3 bg-dark-800 border border-neon-cyan/30 px-8 py-3 rounded-xl text-[10px] text-neon-cyan font-bold uppercase font-tech tracking-[0.3em] transition-all hover:bg-neon-cyan hover:text-dark-950 shadow-[0_0_20px_rgba(0,242,254,0.1)]">
+        <i class="fas fa-home"></i> Kembali Ke Beranda
+      </a>
     </div>
 
-<div id="footer"></div>
+    <div id="footer"></div>
 
-<script>
-fetch('components/footer-ai.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('footer').innerHTML = data;
-  });
-</script>
-    
     <script>
-        const canvas = document.getElementById('neural-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const mouse = { x: null, y: null, radius: 100 };
-
-        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-        window.addEventListener('resize', () => { init(); });
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = [];
-            let numberOfParticles = (canvas.width * canvas.height) / 4500;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 0.7 + 0.2;
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.color = Math.random() > 0.5 ? '#00f2fe' : '#bc13fe';
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                if (mouse.x != null) {
-                    let dx = mouse.x - this.x; let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-                    if (distance < mouse.radius) {
-                        this.x -= dx * 0.015; this.y -= dy * 0.015;
-                    }
-                }
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color; ctx.fill();
-            }
-        }
-
-        function connect() {
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-                    if (distance < 90) {
-                        let opacity = (1 - distance/90) * 0.25;
-                        ctx.strokeStyle = particles[a].color === '#bc13fe' 
-                            ? `rgba(188, 19, 254, ${opacity})` : `rgba(0, 242, 254, ${opacity})`;
-                        ctx.lineWidth = 0.2;
-                        ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            connect();
-            requestAnimationFrame(animate);
-        }
-
-        init(); animate();
+      fetch('components/footer-ai.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer').innerHTML = data;
+      });
     </script>
-</body>
+
+    <script>
+      const canvas = document.getElementById('neural-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const mouse = { x: null, y: null, radius: 100 };
+
+      window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener('resize', () => { init(); });
+
+      function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        particles = [];
+        let numberOfParticles = (canvas.width * canvas.height) / 4500;
+        for (let i = 0; i < numberOfParticles; i++) {
+          particles.push(new Particle());
+        }
+      }
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 0.7 + 0.2;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.color = Math.random() > 0.5 ? '#00f2fe' : '#bc13fe';
+        }
+        update() {
+          this.x += this.vx; this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+          if (mouse.x != null) {
+            let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance < mouse.radius) {
+              this.x -= dx * 0.015; this.y -= dy * 0.015;
+            }
+          }
+        }
+        draw() {
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = this.color; ctx.fill();
+        }
+      }
+
+      function connect() {
+        for (let a = 0; a < particles.length; a++) {
+          for (let b = a; b < particles.length; b++) {
+            let dx = particles[a].x - particles[b].x;
+            let dy = particles[a].y - particles[b].y;
+            let distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance < 90) {
+              let opacity = (1 - distance/90) * 0.25;
+              ctx.strokeStyle = particles[a].color === '#bc13fe'
+              ? `rgba(188, 19, 254, ${opacity})` : `rgba(0, 242, 254, ${opacity})`;
+              ctx.lineWidth = 0.2;
+              ctx.beginPath(); ctx.moveTo(particles[a].x, particles[a].y);
+              ctx.lineTo(particles[b].x, particles[b].y); ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        connect();
+        requestAnimationFrame(animate);
+      }
+
+      init(); animate();
+    </script>
+  </body>
 </html>
