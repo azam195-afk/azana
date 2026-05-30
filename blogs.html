@@ -1,44 +1,257 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="author" content="AZANA DESIGN">
-  <meta name="theme-color" content="#050508">
-  <link rel="preload" href="css/main.css" as="style">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="icon" href="assets/images/globe.png" type="image/png">
-  <link rel="apple-touch-icon" href="assets/images/globe.png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858" crossorigin="anonymous"></script>
-  <title>Blog - AZANA DESIGN</title>
-  <meta name="description" content="Kumpulan artikel AZANA DESIGN tentang tips editing foto, AI tools, remove background, penjernih foto, dan magic eraser.">
-  <link rel="canonical" href="https://azana.my.id/blogs.html">
-  <meta property="og:locale" content="id_ID">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="AZANA DESIGN">
-  <meta property="og:title" content="Blog - AZANA DESIGN">
-  <meta property="og:description" content="Kumpulan artikel AZANA DESIGN tentang tips editing foto, AI tools, remove background, penjernih foto, dan magic eraser.">
-  <meta property="og:url" content="https://azana.my.id/blogs.html">
-  <meta property="og:image" content="https://azana.my.id/assets/images/globe.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Blog - AZANA DESIGN">
-  <meta name="twitter:description" content="Kumpulan artikel AZANA DESIGN tentang tips editing foto, AI tools, remove background, penjernih foto, dan magic eraser.">
-  <meta name="twitter:image" content="https://azana.my.id/assets/images/globe.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Blog - AZANA DESIGN","headline":"Blog - AZANA DESIGN","description":"Kumpulan artikel AZANA DESIGN tentang tips editing foto, AI tools, remove background, penjernih foto, dan magic eraser.","url":"https://azana.my.id/blogs.html","image":"https://azana.my.id/assets/images/globe.png","inLanguage":"id-ID","publisher":{"@type":"Organization","name":"AZANA DESIGN","url":"https://azana.my.id/","logo":{"@type":"ImageObject","url":"https://azana.my.id/assets/images/globe.png"}}}</script>
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Blog - AZANA DESIGN</title>
+    <meta name="description" content="Kumpulan artikel AZANA DESIGN tentang tips editing foto, tutorial AI tools, remove background, penjernih foto, dan magic eraser.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="author" content="AZANA DESIGN">
+    <meta name="theme-color" content="#050508">
+    <link rel="canonical" href="https://azana.my.id/blogs.html">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AZANA DESIGN">
+    <meta property="og:title" content="Blog - AZANA DESIGN">
+    <meta property="og:description" content="Kumpulan artikel AZANA DESIGN tentang tips editing foto, tutorial AI tools, remove background, penjernih foto, dan magic eraser.">
+    <meta property="og:url" content="https://azana.my.id/blogs.html">
+    <meta property="og:image" content="https://azana.my.id/asset/img/globe.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog - AZANA DESIGN">
+    <meta name="twitter:description" content="Kumpulan artikel AZANA DESIGN tentang tips editing foto, tutorial AI tools, remove background, penjernih foto, dan magic eraser.">
+    <meta name="twitter:image" content="https://azana.my.id/asset/img/globe.png">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Blog - AZANA DESIGN","headline":"Blog - AZANA DESIGN","description":"Kumpulan artikel AZANA DESIGN tentang tips editing foto, tutorial AI tools, remove background, penjernih foto, dan magic eraser.","url":"https://azana.my.id/blogs.html","image":"https://azana.my.id/asset/img/globe.png","inLanguage":"id-ID","publisher":{"@type":"Organization","name":"AZANA DESIGN","url":"https://azana.my.id/","logo":{"@type":"ImageObject","url":"https://azana.my.id/asset/img/globe.png"}}}</script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="asset/js/whatsapp-transition.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Plus Jakarta Sans', 'sans-serif'], 
+                        tech: ['Rajdhani', 'sans-serif'] 
+                    },
+                    colors: { 
+                        neon: { cyan: '#00f2fe', purple: '#bc13fe' }, 
+                        dark: { 950: '#050508', 900: '#0a0a14', 800: '#13131a', 700: '#1e1e2e' } 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* JURUS 1: Optimasi Dasar */
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; min-height: 100vh;
+            background-color: #050508;
+            color: #cbd5e1;
+            overflow-x: hidden;
+            /* Aktifkan akselerasi hardware untuk scroll */
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        /* JURUS 2: GPU Acceleration pada elemen berat */
+        #neural-bg, .vignette, body::before {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            pointer-events: none;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 10% 10%, rgba(188, 19, 254, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 90% 90%, rgba(0, 242, 254, 0.12) 0%, transparent 45%);
+            z-index: 1;
+            filter: blur(80px);
+        }
+
+        #neural-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0;
+            opacity: 0.5; /* Kurangi sedikit biar gak berat di mata & CPU */
+        }
+
+        .vignette {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
+            z-index: 2;
+        }
+
+        .glass-card {
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(8px); /* Blur jangan kegedean biar gak lag */
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1.5rem;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            /* Pastikan card pake GPU buat animasi */
+            transform: translateZ(0);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px) translateZ(0);
+            box-shadow: 0 0 25px rgba(0,242,254,0.15);
+        }
+    </style>
 </head>
-<body>
-  <a class="skip-link" href="#main">Lewati ke konten</a>
-  <div class="site-shell">
-    <div data-component="navbar"></div>
-    <main id="main">
-      <section class="hero container"><span class="eyebrow">Blog</span><h1 class="title-sm">Panduan editing dan optimasi visual.</h1><p class="lead">Artikel ringkas, orisinal, dan praktis untuk membantu pengguna memahami editing foto dan workflow kreatif.</p></section><section class="section-sm container grid grid-3"><article class="card card-body"><span class="badge">AI enhancer</span><h2>Cara Memperjernih Foto Buram</h2><p>Langkah memilih foto sumber, menjaga detail, dan menghindari hasil berlebihan.</p><a class="button" href="artikel1.html">Baca</a></article><article class="card card-body"><span class="badge">Product photo</span><h2>Tips Hapus Background</h2><p>Cara membuat foto produk lebih bersih dan konsisten.</p><a class="button" href="artikel2.html">Baca</a></article><article class="card card-body"><span class="badge">Cleanup</span><h2>Magic Eraser yang Natural</h2><p>Kapan objek sebaiknya dihapus dan kapan foto perlu dipotret ulang.</p><a class="button" href="artikel3.html">Baca</a></article></section>
+
+<body class="antialiased">
+
+<canvas id="neural-bg"></canvas>
+<div class="vignette"></div>
+
+<div id="navbar" class="relative z-[100]"></div>
+
+<div class="flex-grow flex flex-col items-center p-6 w-full relative z-10 pt-24">
+
+    <header class="text-center w-full max-w-3xl mb-12">
+        <div class="inline-flex w-14 h-14 rounded-2xl bg-dark-900/60 border border-neon-cyan/30 items-center justify-center text-neon-cyan mb-4 shadow-[0_0_15px_rgba(0,242,254,0.2)]">
+            <i class="fas fa-blog text-2xl"></i>
+        </div>
+        <h1 class="text-3xl md:text-5xl font-tech font-bold text-white uppercase tracking-tight">
+            AZANA <span class="bg-gradient-to-r from-neon-purple to-neon-cyan text-transparent bg-clip-text">BLOG</span>
+        </h1>
+        <p class="text-slate-500 text-[10px] mt-4 uppercase tracking-[0.3em] font-tech">
+            Tips Editing • AI Tools • Tutorial
+        </p>
+    </header>
+
+    <main class="w-full max-w-5xl grid md:grid-cols-3 gap-6 mb-16">
+        <a href="artikel1.html" class="glass-card p-4 block group">
+            <div class="overflow-hidden rounded-xl mb-3 border border-white/5">
+                <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7" class="w-full h-40 object-cover group-hover:scale-105 transition duration-500" loading="lazy" alt="Ilustrasi peningkatan kualitas foto dengan AI">
+            </div>
+            <h3 class="text-white text-sm font-bold">Cara Memperjernih Foto Buram dengan AI</h3>
+            <p class="text-slate-400 text-[11px] mt-2 leading-relaxed">Panduan praktis memperjernih foto buram dengan langkah yang aman dan hasil tetap natural.</p>
+        </a>
+        
+        <a href="artikel2.html" class="glass-card p-4 block group">
+            <div class="overflow-hidden rounded-xl mb-3 border border-white/5">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" class="w-full h-40 object-cover group-hover:scale-105 transition duration-500" loading="lazy" alt="Ilustrasi teknologi hapus background otomatis">
+            </div>
+            <h3 class="text-white text-sm font-bold">Cara Hapus Background Tanpa Aplikasi</h3>
+            <p class="text-slate-400 text-[11px] mt-2 leading-relaxed">Panduan hapus background untuk foto produk, profil, dan konten promosi yang lebih profesional.</p>
+        </a>
+
+        <a href="artikel3.html" class="glass-card p-4 block group">
+            <div class="overflow-hidden rounded-xl mb-3 border border-white/5">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f" class="w-full h-40 object-cover group-hover:scale-105 transition duration-500" loading="lazy" alt="Ilustrasi pengeditan foto untuk menghapus objek">
+             </div>
+            <h3 class="text-white text-sm font-bold">Cara Hapus Objek yang Mengganggu</h3>
+            <p class="text-slate-400 text-[11px] mt-2 leading-relaxed">Belajar menghapus objek pengganggu dengan teknik bertahap agar hasil akhir terlihat alami.</p>
+        </a>
     </main>
-    <div data-component="footer"></div>
-  </div>
-  <script type="module" src="js/core/app.js"></script>
+
+    <a href="index.html" class="mb-12 inline-flex items-center gap-3 bg-dark-800 border border-neon-cyan/30 px-8 py-3 rounded-xl text-[10px] text-neon-cyan font-bold uppercase font-tech tracking-[0.3em] hover:bg-neon-cyan hover:text-dark-950 transition shadow-lg">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
+</div>
+
+<div id="footer"></div>
+
+<script>
+    // Panggil Navbar & Footer
+    const loadComp = (id, url, isNav = false) => {
+        fetch(url).then(res => res.text()).then(html => {
+            document.getElementById(id).innerHTML = html;
+            if (isNav) initNavLogic();
+        });
+    };
+
+    function initNavLogic() {
+        const btn = document.getElementById('menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+            || window.navigator.standalone;
+        const isPWAUrl = new URLSearchParams(window.location.search).get('utm_source') === 'pwa';
+        if (isStandalone || isPWAUrl) {
+            document.getElementById('apk-download-desktop')?.style.setProperty('display', 'none', 'important');
+            document.getElementById('apk-download-mobile')?.style.setProperty('display', 'none', 'important');
+        }
+    }
+
+    loadComp('navbar', 'components/navbar.html', true);
+    loadComp('footer', 'components/footer-ai.html');
+
+    // Optimasi Canvas Neural
+    const canvas = document.getElementById('neural-bg');
+    const ctx = canvas.getContext('2d', { alpha: false }); // Optimasi konteks
+    
+    let particlesArray = [];
+    let animationFrame;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        init();
+    }
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.speedX = (Math.random() * 0.4) - 0.2;
+            this.speedY = (Math.random() * 0.4) - 0.2;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+    }
+
+    function init() {
+        particlesArray = [];
+        // Batasi jumlah partikel biar gak lag di HP (Max 80)
+        let count = Math.min(80, (canvas.width * canvas.height) / 15000);
+        for (let i = 0; i < count; i++) particlesArray.push(new Particle());
+    }
+
+    function animate() {
+        ctx.fillStyle = '#050508'; // Manual clear biar gak berat
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < particlesArray.length; i++) {
+            let p1 = particlesArray[i];
+            p1.update();
+            
+            for (let j = i; j < particlesArray.length; j++) {
+                let p2 = particlesArray[j];
+                let dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+                if (dist < 120) {
+                    ctx.strokeStyle = `rgba(0, 242, 254, ${1 - dist/120})`;
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.stroke();
+                }
+            }
+        }
+        animationFrame = requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    animate();
+</script>
+
 </body>
 </html>

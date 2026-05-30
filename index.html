@@ -1,59 +1,591 @@
-<!DOCTYPE html>
-<html lang="id">
+﻿<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="author" content="AZANA DESIGN">
-  <meta name="theme-color" content="#050508">
-  <link rel="preload" href="css/main.css" as="style">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="icon" href="assets/images/globe.png" type="image/png">
-  <link rel="apple-touch-icon" href="assets/images/globe.png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858" crossorigin="anonymous"></script>
-  <title>AZANA DESIGN - Studio Desain Digital dan AI Tools</title>
-  <meta name="description" content="AZANA DESIGN menyediakan jasa desain, edit foto, edit video, portofolio kreatif, dan tools AI gambar yang mobile friendly serta SEO friendly.">
-  <link rel="canonical" href="https://azana.my.id/">
-  <meta property="og:locale" content="id_ID">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="AZANA DESIGN">
-  <meta property="og:title" content="AZANA DESIGN - Studio Desain Digital dan AI Tools">
-  <meta property="og:description" content="AZANA DESIGN menyediakan jasa desain, edit foto, edit video, portofolio kreatif, dan tools AI gambar yang mobile friendly serta SEO friendly.">
-  <meta property="og:url" content="https://azana.my.id/">
-  <meta property="og:image" content="https://azana.my.id/assets/images/globe.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AZANA DESIGN - Studio Desain Digital dan AI Tools">
-  <meta name="twitter:description" content="AZANA DESIGN menyediakan jasa desain, edit foto, edit video, portofolio kreatif, dan tools AI gambar yang mobile friendly serta SEO friendly.">
-  <meta name="twitter:image" content="https://azana.my.id/assets/images/globe.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AZANA DESIGN - Studio Desain Digital dan AI Tools","headline":"AZANA DESIGN - Studio Desain Digital dan AI Tools","description":"AZANA DESIGN menyediakan jasa desain, edit foto, edit video, portofolio kreatif, dan tools AI gambar yang mobile friendly serta SEO friendly.","url":"https://azana.my.id/","image":"https://azana.my.id/assets/images/globe.png","inLanguage":"id-ID","publisher":{"@type":"Organization","name":"AZANA DESIGN","url":"https://azana.my.id/","logo":{"@type":"ImageObject","url":"https://azana.my.id/assets/images/globe.png"}}}</script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZANA DESIGN - Jasa Edit Foto & Editing Video</title>
+    <meta name="description" content="AZANA DESIGN adalah jasa edit foto dan video profesional dengan teknologi AI seperti remove background, magic eraser, dan penjernih foto. Cepat, mudah, dan berkualitas tinggi.">
+    <meta name="keywords" content="edit foto AI, hapus background, penjernih foto, jasa edit foto, AI editing, remove bg online, magic eraser, editing profesional">
+    <meta name="author" content="AZANA DESIGN">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="asset/img/globe.png" type="image/png">
+    <link rel="apple-touch-icon" href="asset/img/globe.png">
+    <meta itemprop="image" content="asset/img/globe.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="asset/js/whatsapp-transition.js" defer></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+  .logo-neon-outline {
+    animation: cyberOutline 2.5s infinite alternate ease-in-out;
+    transition: transform 0.3s ease;
+    
+    /* --- BUMBU ANTI-LAG (GPU ACCELERATION) --- */
+    will-change: filter, transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  html {
+    /* Sesuaikan angkanya dengan tinggi navbar lu (sekitar 80px - 100px) */
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px; 
+  }
+        
   
+  .logo-neon-outline:hover {
+    transform: scale(1.05) translateZ(0);
+  }
+  
+  /* Outline putih ditipisin sisa 20-40% aja + Aura Neon */
+  @keyframes cyberOutline {
+    0% {
+      /* Cuma pakai 1px putih transparan */
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 6px #00f2fe);
+    }
+    100% {
+      filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 8px #a855f7);
+    }
+  }
+</style>
+
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        tech: ['Rajdhani', 'sans-serif'], // Font bernuansa teknologi untuk heading
+                    },
+                    colors: {
+                        neon: {
+                            cyan: '#00f2fe',   // Warna biru neon dari logo
+                            purple: '#a855f7', // Warna ungu dari logo
+                            magenta: '#d946ef', // Warna pinggiran logo
+                        },
+                        dark: {
+                            950: '#050508',
+                            900: '#0a0a0f', // Latar belakang sangat gelap mirip logo
+                            800: '#13131a',
+                            700: '#1c1c26',
+                            600: '#252532',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0f;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 242, 254, 0.05), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.05), transparent 25%);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #00f2fe, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glow-button {
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+        }
+        /* Motif garis sirkuit halus di background hero */
+        .circuit-bg {
+            background-image: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            /* background-attachment: fixed; <-- INI YANG BIKIN NGELAG UDAH SAYA HAPUS */
+        }
+    </style>
 </head>
-<body>
-  <a class="skip-link" href="#main">Lewati ke konten</a>
-  <div class="site-shell">
-    <div data-component="navbar"></div>
-    <main id="main">
-      <section class="hero container">
-        <span class="eyebrow">Studio visual + AI tools</span>
-        <h1 class="title">Desain digital cepat, rapi, dan <span class="gradient-text">siap produksi</span>.</h1>
-        <p class="lead">AZANA DESIGN membantu kreator, UMKM, dan brand membuat visual profesional melalui layanan desain, editing, dan tools gambar berbasis API dengan pengalaman mobile-first.</p>
-        <p><a class="button button-primary" href="#layanan">Lihat layanan</a> <a class="button button-secondary" href="contact.html">Konsultasi</a></p>
-        <div class="stats" aria-label="Ringkasan kualitas"><div class="stat"><strong>3</strong>AI tools</div><div class="stat"><strong>100%</strong>Responsive</div><div class="stat"><strong>SEO</strong>Metadata lengkap</div><div class="stat"><strong>PWA</strong>Offline fallback</div></div>
-      </section>
-      <section id="layanan" class="section container">
-        <span class="eyebrow">Layanan utama</span><h2 class="title-sm">Tools dan jasa yang mudah diakses.</h2>
-        <div class="grid grid-3">
-          <article class="card"><img class="service-image" src="assets/images/penjernih.png" alt="Preview penjernih foto AI" width="640" height="400" loading="lazy"><div class="card-body"><span class="badge">Photo enhancer</span><h3>Penjernih Foto</h3><p>Perbaiki foto buram dengan alur kerja yang menjelaskan batasan API dan menjaga keamanan key.</p><a class="button" href="penjernih.html">Buka tool</a></div></article>
-          <article class="card"><img class="service-image" src="assets/images/removebg.png" alt="Preview hapus background" width="640" height="400" loading="lazy"><div class="card-body"><span class="badge">Remove background</span><h3>BG Remover</h3><p>Hapus latar gambar produk atau konten sosial melalui service API terpisah dan rate limit.</p><a class="button" href="removebg.html">Buka tool</a></div></article>
-          <article class="card"><img class="service-image" src="assets/images/eraser.jpg" alt="Preview magic eraser" width="640" height="400" loading="lazy"><div class="card-body"><span class="badge">Cleanup object</span><h3>Magic Eraser</h3><p>Tandai objek yang mengganggu lalu proses melalui service cleanup dengan loading dan error state.</p><a class="button" href="eraser.html">Buka tool</a></div></article>
+<body class="text-slate-300 font-sans antialiased selection:bg-neon-cyan selection:text-dark-900">
+
+
+    <!-- Hero Section -->
+    <section id="beranda" class="circuit-bg min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
+        <!-- Efek Glow Latar Belakang -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse delay-1000"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10 mt-10">
+            <span class="inline-block py-1 px-4 rounded-full bg-dark-800 border border-neon-cyan/30 text-neon-cyan text-sm font-semibold tracking-widest mb-6 backdrop-blur-sm shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+                <i class="fas fa-bolt mr-2"></i> CREATIVE DIGITAL STUDIO
+            </span>
+            <h1 class="text-5xl md:text-7xl font-tech font-bold text-white mb-6 leading-tight">
+                Tingkatkan Visual Anda Bersama <br />
+             <span class="gradient-text">AZANA DESIGN</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-400 mb-10 max-w-3xl mx-auto font-light leading-relaxed">
+                Kami hadir dengan teknologi dan kreativitas untuk memenuhi segala kebutuhan visual Anda. Dari perbaikan foto, desain grafis profesional, hingga editing video sinematik.
+            </p>
+        <div class="max-w-6xl mx-auto text-center relative z-10 px-2">
+    
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-10">
+    <a href="penjernih.html" target="_blank" rel="noopener noreferrer" class="group bg-dark-800 rounded-2xl overflow-hidden border border-dark-700 hover:border-neon-cyan transition-all duration-300 hover:-translate-y-1">
+        <div class="h-32 md:h-40 bg-dark-900 overflow-hidden relative">
+            <img src="asset/img/penjernih.png" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-500" alt="Preview layanan penjernih foto AI">
         </div>
-      </section>
-      <section class="section container"><span class="eyebrow">Portofolio</span><h2 class="title-sm">Contoh visual AZANA.</h2><div class="portfolio-grid skeleton" data-portfolio-grid aria-live="polite"></div></section>
-    </main>
-    <div data-component="footer"></div>
+        <div class="p-4 text-left border-t border-dark-700 bg-dark-800">
+            <p class="text-[10px] font-tech text-neon-cyan tracking-widest uppercase mb-1">AI Studio</p>
+            <h4 class="text-xs md:text-sm font-bold text-white uppercase leading-tight">Penjernih Foto</h4>
+        </div>
+    </a>
+
+    <a href="removebg.html" target="_blank" rel="noopener noreferrer" class="group bg-dark-800 rounded-2xl overflow-hidden border border-dark-700 hover:border-neon-purple transition-all duration-300 hover:-translate-y-1">
+        <div class="h-32 md:h-40 bg-dark-900 overflow-hidden relative">
+            <img src="asset/img/removebg.png" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-500" alt="Preview layanan hapus background">
+        </div>
+        <div class="p-4 text-left border-t border-dark-700 bg-dark-800">
+            <p class="text-[10px] font-tech text-neon-purple tracking-widest uppercase mb-1">AI Studio</p>
+            <h4 class="text-xs md:text-sm font-bold text-white uppercase leading-tight">Hapus Background</h4>
+        </div>
+    </a>
+
+    <a href="eraser.html" target="_blank" rel="noopener noreferrer" class="group bg-dark-800 rounded-2xl overflow-hidden border border-dark-700 hover:border-neon-magenta transition-all duration-300 hover:-translate-y-1">
+        <div class="h-32 md:h-40 bg-dark-900 overflow-hidden relative">
+            <img src="asset/img/eraser.jpg" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-500" alt="Preview layanan magic eraser">
+        </div>
+        <div class="p-4 text-left border-t border-dark-700 bg-dark-800">
+            <p class="text-[10px] font-tech text-neon-magenta tracking-widest uppercase mb-1">AI Studio</p>
+            <h4 class="text-xs md:text-sm font-bold text-white uppercase leading-tight">Magic Eraser</h4>
+        </div>
+    </a>
+
+    <div class="bg-dark-900/40 rounded-2xl border border-dashed border-dark-700 opacity-50 flex flex-col justify-center items-center h-full min-h-[160px] p-4">
+        <i class="fas fa-plus text-dark-700 text-2xl mb-2"></i>
+        <span class="text-[10px] font-tech uppercase tracking-widest text-slate-600 italic">Coming Soon</span>
+    </div>
+</div>
+            
+    <div class="w-full mt-10 mb-16 relative z-20">
+        <div class="w-full mt-10 mb-20 relative z-20">
+        <div class="flex flex-col gap-4 px-4 max-w-md mx-auto">
+            
+            <a href="#layanan" class="flex items-center justify-center gap-3 bg-gradient-to-r from-neon-cyan to-neon-purple text-white py-4 px-6 rounded-full font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(0,242,254,0.3)] active:scale-95 transition-all">
+                <i class="fas fa-th-large text-lg"></i>
+                <span class="text-sm">Layanan Editing</span>
+            </a>
+
+            <a href="#kontak" class="flex items-center justify-center gap-3 bg-transparent border-2 border-neon-cyan text-neon-cyan py-4 px-6 rounded-full font-bold uppercase tracking-widest active:scale-95 transition-all">
+                <i class="fas fa-edit text-lg"></i>
+                <span class="text-sm">Jasa Editing</span>
+            </a>
+
+            <a href="blogs.html" class="flex items-center justify-center gap-3 bg-dark-800 border border-yellow-400/30 text-yellow-400 py-4 px-6 rounded-full font-bold uppercase tracking-widest active:scale-95 transition-all hover:bg-yellow-400 hover:text-dark-900 shadow-[0_0_15px_rgba(250,204,21,0.15)]">
+                <i class="fas fa-lightbulb text-lg"></i>
+                <span class="text-sm">Tutorial Edit Pakai AI</span>
+            </a>
+            
+        </div>
+    </div>
+</div>
+</section>
+            
+    <section id="layanan" class="py-12 relative bg-dark-900 border-t border-dark-700">
+    <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="text-center mb-10">
+            <h2 class="text-[10px] font-bold text-neon-cyan tracking-[0.3em] uppercase mb-1 font-tech">Services</h2>
+            <h3 class="text-xl font-bold text-white uppercase italic">Solusi Editing</h3>
+            <div class="h-[2px] w-12 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto mt-2"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6">
+    
+    <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-cyan/40 to-neon-purple/40 shadow-[0_0_15px_rgba(0,242,254,0.05)] group hover:scale-[1.02] transition-all">
+        <div class="bg-dark-800 p-4 rounded-2xl h-full">
+            <div class="w-10 h-10 bg-dark-900 border border-neon-cyan/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+                <i class="fas fa-image"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Edit Foto</h4>
+            <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">AI Enhance, restorasi, hapus BG, & koreksi warna.</p>
+        </div>
+    </div>
+
+    <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-purple/40 to-neon-cyan/40 shadow-[0_0_15px_rgba(168,85,247,0.05)] group hover:scale-[1.02] transition-all">
+        <div class="bg-dark-800 p-4 rounded-2xl h-full">
+            <div class="w-10 h-10 bg-dark-900 border border-neon-purple/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-purple shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                <i class="fas fa-bezier-curve"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Desain Logo</h4>
+            <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Identitas unik untuk bisnis, esports, & brand.</p>
+        </div>
+    </div>
+
+    <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-cyan/40 to-neon-purple/40 shadow-[0_0_15px_rgba(0,242,254,0.05)] group hover:scale-[1.02] transition-all">
+        <div class="bg-dark-800 p-4 rounded-2xl h-full">
+            <div class="w-10 h-10 bg-dark-900 border border-neon-cyan/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+                <i class="fas fa-scroll"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Banner</h4>
+            <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Desain spanduk, poster event, & brosur bisnis.</p>
+        </div>
+    </div>
+
+    <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-purple/40 to-neon-cyan/40 shadow-[0_0_15px_rgba(168,85,247,0.05)] group hover:scale-[1.02] transition-all">
+        <div class="bg-dark-800 p-4 rounded-2xl h-full">
+            <div class="w-10 h-10 bg-dark-900 border border-neon-purple/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-purple shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                <i class="fas fa-envelope-open-text"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Undangan</h4>
+            <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Desain digital interaktif & siap cetak.</p>
+        </div>
+    </div>
+
+    <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-cyan/40 to-neon-purple/40 shadow-[0_0_15px_rgba(0,242,254,0.05)] group hover:scale-[1.02] transition-all">
+        <div class="bg-dark-800 p-4 rounded-2xl h-full">
+            <div class="w-10 h-10 bg-dark-900 border border-neon-cyan/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+                <i class="fas fa-film"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Video Edit</h4>
+            <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Color grading, transisi, & TikTok/Reels.</p>
+        </div>
+    </div>
+
+    <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-purple/40 to-neon-cyan/40 shadow-[0_0_15px_rgba(168,85,247,0.05)] group hover:scale-[1.02] transition-all">
+        <div class="bg-dark-800 p-4 rounded-2xl h-full">
+            <div class="w-10 h-10 bg-dark-900 border border-neon-purple/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-purple shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+                <i class="fas fa-laptop-code"></i>
+            </div>
+            <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Custom</h4>
+            <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Kebutuhan editing khusus sesuai instruksi.</p>
+        </div>
+    </div>
+        </div>
+    </div>
+  </section>
+        
+
+   <!-- Mini Portofolio / Proses Section -->
+  <section id="portofolio-section" class="py-12 bg-dark-900 border-t border-dark-700">
+    <div class="container mx-auto px-6">
+        
+        <div class="mb-12 max-w-2xl mx-auto">
+            <h2 class="text-xs font-bold text-neon-purple tracking-widest uppercase mb-3 font-tech text-center">Tentang Kualitas Kami</h2>
+            <h3 class="text-2xl md:text-4xl font-bold text-white mb-6 text-center leading-tight uppercase italic">Estetika Futuristik dengan Hasil Presisi</h3>
+            <p class="text-slate-400 leading-relaxed text-sm text-center font-light">
+                Desain yang baik bukan hanya tentang warna yang indah, tapi tentang pesan yang tersampaikan. Di <span class="text-neon-cyan font-semibold">AZANA DESIGN</span>, kami menggabungkan <span class="italic text-slate-300">*software*</span> editing terbaik dengan sentuhan kreativitas manusia untuk menghasilkan karya yang <span class="italic text-slate-300">*stand out*</span>.
+            </p>
+        </div>
+
+        <div class="relative w-full max-w-[320px] mx-auto mb-12">
+            <div class="text-center mb-4">
+                <h4 class="text-[10px] font-tech text-neon-cyan tracking-[0.3em] uppercase">Showcase</h4>
+                <h3 class="text-lg font-bold text-white uppercase italic">Hasil Editing</h3>
+                <div class="h-[2px] w-12 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto mt-1"></div>
+            </div>
+
+            <div class="relative p-[1.5px] rounded-2xl bg-gradient-to-b from-neon-cyan/20 to-transparent shadow-[0_0_20px_rgba(0,242,254,0.1)]">
+                <div class="swiper mySwiper rounded-2xl overflow-hidden bg-dark-800 aspect-square">
+                    <div id="otomatis-portfolio" class="swiper-wrapper">
+
+  <div class="swiper-slide">
+    <img src="asset/img/penjernih.png" class="w-full h-full object-contain" alt="Hasil edit foto jernih">
   </div>
-  <script type="module" src="js/core/app.js"></script>
+
+  <div class="swiper-slide">
+    <img src="asset/img/removebg.png" class="w-full h-full object-contain" alt="Hapus background otomatis">
+  </div>
+
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+            <p class="text-[9px] text-slate-500 text-center mt-3 italic tracking-widest uppercase">
+                <i class="fas fa-hand-pointer mr-1 animate-pulse"></i> Geser Galeri
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 max-w-[350px] mx-auto border-t border-white/5 pt-8">
+            <div class="bg-dark-800/50 p-4 rounded-xl border border-white/5 text-center">
+                <div class="text-neon-cyan text-xl mb-2"><i class="fas fa-sync-alt"></i></div>
+                <h5 class="text-[11px] font-bold text-white uppercase">Revisi Fleksibel</h5>
+                <p class="text-[9px] text-slate-400 mt-1">Sampai Anda Puas</p>
+            </div>
+            <div class="bg-dark-800/50 p-4 rounded-xl border border-white/5 text-center">
+                <div class="text-neon-purple text-xl mb-2"><i class="fas fa-bolt"></i></div>
+                <h5 class="text-[11px] font-bold text-white uppercase">Proses Cepat</h5>
+                <p class="text-[9px] text-slate-400 mt-1">Selesai Tepat Waktu</p>
+            </div>
+            <div class="bg-dark-800/50 p-4 rounded-xl border border-white/5 text-center">
+                <div class="text-neon-cyan text-xl mb-2"><i class="fas fa-shield-alt"></i></div>
+                <h5 class="text-[11px] font-bold text-white uppercase">Kualitas HD</h5>
+                <p class="text-[9px] text-slate-400 mt-1">Hasil Tajam & Jernih</p>
+            </div>
+            <div class="bg-dark-800/50 p-4 rounded-xl border border-white/5 text-center">
+                <div class="text-neon-purple text-xl mb-2"><i class="fas fa-headset"></i></div>
+                <h5 class="text-[11px] font-bold text-white uppercase">Support 24/7</h5>
+                <p class="text-[9px] text-slate-400 mt-1">Konsultasi Gratis</p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+<section class="py-16 bg-dark-900 border-t border-dark-700">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    
+    <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 font-tech uppercase italic">
+      Teknologi AI untuk Editing Foto Profesional
+    </h2>
+
+    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+      AZANA DESIGN menghadirkan solusi editing modern berbasis kecerdasan buatan (AI) yang mampu meningkatkan kualitas visual secara instan dan profesional. Dengan teknologi terbaru, pengguna dapat menghapus background, menghilangkan objek yang mengganggu, serta meningkatkan kejernihan foto hanya dalam hitungan detik tanpa perlu keahlian khusus.
+    </p>
+
+    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+      Selain menyediakan fitur otomatis, kami juga menawarkan jasa editing manual dengan sentuhan kreatif untuk menghasilkan desain yang lebih unik dan sesuai kebutuhan. Kombinasi antara teknologi AI dan kreativitas manusia menjadikan AZANA DESIGN sebagai solusi terbaik untuk kebutuhan visual digital masa kini.
+    </p>
+
+    <p class="text-slate-400 text-sm leading-relaxed">
+      Platform ini dirancang untuk memberikan pengalaman cepat, mudah, dan berkualitas tinggi baik untuk keperluan pribadi, bisnis, maupun konten media sosial.
+    </p>
+
+  </div>
+</section>
+
+<section id="faq" class="py-16 bg-dark-950 border-t border-dark-700">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-10">
+      <span class="text-[10px] font-bold text-neon-cyan tracking-[0.3em] uppercase font-tech">FAQ Cepat</span>
+      <h2 class="text-2xl md:text-3xl font-bold text-white mt-3 font-tech uppercase italic">Yang Sering Ditanyakan</h2>
+      <p class="text-slate-500 text-xs mt-3 max-w-xl mx-auto">Agar calon pelanggan lebih yakin sebelum pesan, bagian ini menjawab proses order, revisi, dan file akhir.</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="bg-dark-800/70 border border-white/5 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
+        <div class="text-neon-cyan text-xl mb-4"><i class="fas fa-clock"></i></div>
+        <h3 class="text-white font-tech font-bold uppercase tracking-wide text-sm mb-2">Berapa Lama?</h3>
+        <p class="text-slate-400 text-[11px] leading-relaxed">Estimasi mengikuti tingkat kesulitan. Untuk edit ringan bisa lebih cepat setelah brief dan bahan lengkap.</p>
+      </div>
+
+      <div class="bg-dark-800/70 border border-white/5 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
+        <div class="text-neon-purple text-xl mb-4"><i class="fas fa-pen-nib"></i></div>
+        <h3 class="text-white font-tech font-bold uppercase tracking-wide text-sm mb-2">Bisa Revisi?</h3>
+        <p class="text-slate-400 text-[11px] leading-relaxed">Bisa. Revisi disesuaikan dengan brief awal supaya hasil tetap rapi, jelas, dan sesuai kebutuhan.</p>
+      </div>
+
+      <div class="bg-dark-800/70 border border-white/5 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
+        <div class="text-neon-cyan text-xl mb-4"><i class="fas fa-file-export"></i></div>
+        <h3 class="text-white font-tech font-bold uppercase tracking-wide text-sm mb-2">File Apa Saja?</h3>
+        <p class="text-slate-400 text-[11px] leading-relaxed">Hasil bisa dikirim dalam format siap pakai seperti PNG, JPG, atau format lain sesuai kebutuhan proyek.</p>
+      </div>
+    </div>
+  </div>
+</section>
+            
+<section id="kontak" class="py-16 relative bg-dark-900 overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#00f2fe 1px, transparent 1px), linear-gradient(90deg, #00f2fe 1px, transparent 1px); background-size: 30px 30px;"></div>
+    
+    <div class="max-w-md mx-auto px-6 relative z-10">
+        <div class="relative p-[1px] rounded-3xl bg-gradient-to-br from-neon-cyan/40 via-transparent to-neon-purple/40 shadow-[0_0_40px_rgba(0,0,0,0.7)]">
+            <div class="bg-dark-800/90 backdrop-blur-2xl rounded-3xl p-8 text-center">
+                
+                <div class="w-14 h-14 bg-dark-900 border border-neon-cyan/30 rounded-2xl flex items-center justify-center mx-auto mb-5 transform rotate-3 shadow-[0_0_15px_rgba(0,242,254,0.1)]">
+                    <span class="text-neon-cyan text-xl"><i class="fas fa-comment-dots"></i></span>
+                </div>
+
+                <h2 class="text-xl md:text-2xl font-bold text-white mb-3 font-tech tracking-wide uppercase italic">Mulai Konsultasi</h2>
+                <p class="text-[11px] text-slate-400 mb-8 leading-relaxed max-w-[250px] mx-auto">
+                    Klik tombol di bawah untuk terhubung langsung dengan Admin <span class="text-neon-cyan">AZANA DESIGN</span>.
+                </p>
+                
+                <div class="flex flex-row gap-3 justify-center">
+                    <a href="https://wa.me/6282243995410" target="_blank" rel="noopener noreferrer" data-wa-transition class="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:brightness-110 text-white py-3 rounded-xl font-bold text-[10px] uppercase tracking-tighter transition-all active:scale-95 shadow-[0_0_15px_rgba(37,211,102,0.2)]">
+                        <i class="fab fa-whatsapp text-sm"></i> WhatsApp
+                    </a>
+                    
+                    <a href="mailto:maulanaazam195@gmail.com" class="flex-1 flex items-center justify-center gap-2 bg-dark-700 hover:bg-dark-600 border border-white/10 text-slate-300 py-3 rounded-xl font-bold text-[10px] uppercase tracking-tighter transition-all active:scale-95">
+                        <i class="far fa-envelope text-sm"></i> Email
+                    </a>
+                </div>
+            </div>
+        </div>
+     </div>
+</section>
+            
+    <div id="navbar"></div>
+    <div id="footer"></div>
+
+    <script>
+        // --- PROSES MANGGIL NAVBAR ---
+        fetch('components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+
+                initNavbarInteractions();
+                initScrollNavbar(); 
+            })
+            .catch(err => console.error('Gagal load navbar:', err));
+
+        // --- PROSES MANGGIL FOOTER ---
+        fetch('components/footer-main.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+
+                // Logika Ganti Bahasa (Pindahkan ke sini karena elemennya di dalam footer)
+                const langSelect = document.getElementById('languageSelect');
+                if (langSelect) {
+                    langSelect.addEventListener('change', function() {
+                        if(this.value === 'en') {
+                            window.location.href = "https://translate.google.com/translate?sl=id&tl=en&u=" + window.location.href;
+                        } else {
+                            window.location.reload();
+                        }
+                    });
+                }
+            })
+            .catch(err => console.error('Gagal load footer:', err));
+
+        // --- FUNGSI SCROLL NAVBAR ---
+        function initScrollNavbar() {
+            window.addEventListener('scroll', () => {
+                const nav = document.querySelector('nav');
+                if (!nav) return;
+                if (window.scrollY > 50) {
+                    nav.classList.add('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
+                    nav.classList.remove('border-dark-700');
+                    nav.classList.add('border-neon-cyan/20');
+                } else {
+                    nav.classList.remove('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
+                    nav.classList.add('border-dark-700');
+                    nav.classList.remove('border-neon-cyan/20');
+                }
+            });
+        }
+
+        function initNavbarInteractions() {
+
+            const menuBtn = document.getElementById('menu-btn');
+
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (menuBtn && mobileMenu) {
+
+                menuBtn.addEventListener('click', (e) => {
+
+                    e.stopPropagation();
+
+                    mobileMenu.classList.toggle('hidden');
+
+                });
+
+            }
+
+
+
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+
+                || window.navigator.standalone;
+
+            const isPWAUrl = new URLSearchParams(window.location.search).get('utm_source') === 'pwa';
+
+            if (isStandalone || isPWAUrl) {
+
+                document.getElementById('apk-download-desktop')?.style.setProperty('display', 'none', 'important');
+
+                document.getElementById('apk-download-mobile')?.style.setProperty('display', 'none', 'important');
+
+            }
+
+        }
+
+
+        // --- LOGIKA OFFLINE & SERVICE WORKER ---
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+
+                navigator.serviceWorker.register('sw.js')
+
+                    .then(() => console.log('ServiceWorker registration successful'))
+
+                    .catch(err => console.log("SW Error:", err));
+
+            });
+        }
+
+        // --- LOGIKA PORTFOLIO (GITHUB API) ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('otomatis-portfolio');
+            if (!container) return;
+            
+            const initPortfolioSwiper = () => {
+                new Swiper(".mySwiper", {
+                    loop: true,
+                    autoplay: { delay: 3000 },
+                    pagination: { el: ".swiper-pagination", clickable: true },
+                });
+            };
+            
+            fetch('https://api.github.com/repos/azam195-afk/azana/contents/portfolio')
+                .then(res => {
+                    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+                    return res.json();
+                })
+                .then(files => {
+                   if (!Array.isArray(files)) throw new Error('Format portfolio tidak valid')
+                    const fragment = document.createDocumentFragment();
+                    files
+                        .filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file.name) && file.download_url)
+                        .forEach(file => {
+                            const slide = document.createElement('div');
+                            slide.className = 'swiper-slide h-full w-full flex items-center justify-center p-2 bg-dark-900/50';
+
+                            const image = document.createElement('img');
+                            image.src = file.download_url;
+                            image.className = 'max-w-full max-h-full object-contain shadow-lg';
+                            image.alt = `Portfolio AZANA - ${file.name.replace(/\.[^.]+$/, '')}`;
+                            image.loading = 'lazy';
+
+                            slide.appendChild(image);
+                            fragment.appendChild(slide);
+                        });
+
+                    if (!fragment.childElementCount) throw new Error('Tidak ada gambar portfolio');
+                    container.replaceChildren(fragment);
+                    initPortfolioSwiper();
+                })
+
+                .catch(err => {
+                    console.log("Portfolio Error:", err);
+                    container.innerHTML = `
+                        <div class="swiper-slide h-full w-full flex flex-col items-center justify-center p-8 bg-dark-900/50 text-center">
+                            <i class="fas fa-image text-3xl text-neon-cyan/70 mb-4"></i>
+                            <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-tech">Portfolio belum bisa dimuat</p>
+                        </div>`;
+                    initPortfolioSwiper();
+                });
+        });
+    </script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858"
+     crossorigin="anonymous"></script>
+<!-- first sds -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3077542320658858"
+     data-ad-slot="6308845946"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
 </body>
 </html>
+            
