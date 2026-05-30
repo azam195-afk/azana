@@ -1,2 +1,5 @@
 # Jangan upload file kunci rahasia
 asset/js/api-config.js
+
+# ZIP/export lokal hasil packaging
+/dist/

@@ -1,343 +1,44 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Azana Offline - Pro Version</title>
-    <meta name="robots" content="noindex, nofollow">
-    <style>
-        :root {
-            --neon-cyan: #00ffff;
-            --dark-bg: #0a0a0c;
-            --button-bg: #1e1e22;
-            --alert-red: #ff3333;
-        }
-        body {
-            background-color: var(--dark-bg);
-            color: white;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start; 
-            min-height: 100vh;
-            margin: 0;
-            padding-top: 5px;
-            touch-action: none;
-            overflow: hidden;
-        }
-        /* --- HEADER AREA --- */
-        .header { 
-            text-align: center; 
-            margin-bottom: 10px; 
-            width: 250px; 
-        }
-        .logo-azana {
-            width: 170px;
-            height: auto;
-            margin: 0 auto 5px;
-            display: block;
-        }
-        .offline-status {
-            background-color: var(--alert-red);
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: blink-red 1.5s infinite;
-            display: inline-block;
-        }
-        @keyframes blink-red {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-        /* --- SCORE & HIGH SCORE --- */
-        #score-container {
-            position: absolute;
-            bottom: -45px;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            width: 100%;
-        }
-        #score-val { 
-            color: var(--neon-cyan); 
-            font-size: 14px; 
-            font-weight: bold;
-            text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
-            white-space: nowrap;
-        }
-        #high-score {
-            color: #ffcc00;
-            font-size: 10px;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-
-        #game-wrapper {
-            position: relative;
-            padding: 5px;
-            background: #18181b;
-            border: 2px solid #333;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        /* --- CONTROLS --- */
-        .controls-container {
-            margin-top: 35px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-        .row { display: flex; gap: 15px; }
-        .btn {
-            background: var(--button-bg);
-            color: var(--neon-cyan);
-            border: 2px solid #444;
-            border-radius: 50%;
-            width: 75px;
-            height: 75px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            cursor: pointer;
-            box-shadow: 0 6px 0 #000;
-        }
-        .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #000; background: #333; }
-        .btn-ok { background: var(--neon-cyan); color: black; font-size: 14px; font-weight: bold; border: none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="author" content="AZANA DESIGN">
+  <meta name="theme-color" content="#050508">
+  <link rel="preload" href="css/main.css" as="style">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" href="assets/images/globe.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/images/globe.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858" crossorigin="anonymous"></script>
+  <title>Offline - AZANA DESIGN</title>
+  <meta name="description" content="Halaman offline AZANA DESIGN untuk Progressive Web App ketika koneksi internet tidak tersedia.">
+  <link rel="canonical" href="https://azana.my.id/offline.html">
+  <meta property="og:locale" content="id_ID">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AZANA DESIGN">
+  <meta property="og:title" content="Offline - AZANA DESIGN">
+  <meta property="og:description" content="Halaman offline AZANA DESIGN untuk Progressive Web App ketika koneksi internet tidak tersedia.">
+  <meta property="og:url" content="https://azana.my.id/offline.html">
+  <meta property="og:image" content="https://azana.my.id/assets/images/globe.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Offline - AZANA DESIGN">
+  <meta name="twitter:description" content="Halaman offline AZANA DESIGN untuk Progressive Web App ketika koneksi internet tidak tersedia.">
+  <meta name="twitter:image" content="https://azana.my.id/assets/images/globe.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Offline - AZANA DESIGN","headline":"Offline - AZANA DESIGN","description":"Halaman offline AZANA DESIGN untuk Progressive Web App ketika koneksi internet tidak tersedia.","url":"https://azana.my.id/offline.html","image":"https://azana.my.id/assets/images/globe.png","inLanguage":"id-ID","publisher":{"@type":"Organization","name":"AZANA DESIGN","url":"https://azana.my.id/","logo":{"@type":"ImageObject","url":"https://azana.my.id/assets/images/globe.png"}}}</script>
+  
 </head>
 <body>
-    <div class="header">
-        <img src="asset/img/41955.png" alt="Azana Logo" class="logo-azana">
-        <div class="offline-status">ANDA OFFLINE</div>
-    </div>
-    <div id="game-wrapper">
-        <div id="score-container">
-            <div id="score-val">Score: 0</div>
-            <div id="high-score">Best: 0</div>
-        </div>
-        <canvas id="tetris" width="240" height="400"></canvas>
-    </div>
-    <div class="controls-container">
-        <div class="row">
-            <div class="btn" onclick="playerMove(-1)">◀</div>
-            <div class="btn btn-ok" onclick="playerRotate(1)">ROTATE</div>
-            <div class="btn" onclick="playerMove(1)">▶</div>
-        </div>
-        <div class="btn" onclick="playerHardDrop()">▼</div>
-    </div>
-
-    <script>
-        const canvas = document.getElementById('tetris');
-        const context = canvas.getContext('2d');
-        const scoreElement = document.getElementById('score-val');
-        const highScoreElement = document.getElementById('high-score');
-        context.scale(20, 20);
-
-        // --- 1. AUDIO SYSTEM (Web Audio API) ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playSound(freq, type, duration) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
-        }
-
-        const soundMove = () => playSound(150, 'square', 0.1);
-        const soundRotate = () => playSound(300, 'sine', 0.1);
-        const soundClear = () => {
-            playSound(400, 'triangle', 0.2);
-            setTimeout(() => playSound(600, 'triangle', 0.2), 100);
-        };
-        const soundGameOver = () => {
-            playSound(150, 'sawtooth', 0.5);
-            setTimeout(() => playSound(100, 'sawtooth', 0.5), 200);
-        };
-
-        // --- 3. HIGH SCORE LOGIC ---
-        let highScore = localStorage.getItem('azanaHighScore') || 0;
-        highScoreElement.innerText = "Best: " + highScore;
-
-        function checkHighScore() {
-            if (player.score > highScore) {
-                highScore = player.score;
-                localStorage.setItem('azanaHighScore', highScore);
-                highScoreElement.innerText = "Best: " + highScore;
-            }
-        }
-
-        function drawGrid() {
-            context.strokeStyle = '#222';
-            context.lineWidth = 0.05;
-            for (let x = 0; x < 12; x++) {
-                for (let y = 0; y < 20; y++) {
-                    context.strokeRect(x, y, 1, 1);
-                }
-            }
-        }
-
-        function draw() {
-            context.fillStyle = '#000';
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            drawGrid();
-            drawMatrix(arena, {x: 0, y: 0});
-            drawMatrix(player.matrix, player.pos);
-        }
-
-        function drawMatrix(matrix, offset) {
-            matrix.forEach((row, y) => {
-                row.forEach((value, x) => {
-                    if (value !== 0) {
-                        context.fillStyle = colors[value];
-                        context.fillRect(x + offset.x, y + offset.y, 1, 1);
-                        context.strokeStyle = '#000';
-                        context.lineWidth = 0.05;
-                        context.strokeRect(x + offset.x, y + offset.y, 1, 1);
-                    }
-                });
-            });
-        }
-
-        function arenaSweep() {
-            let rowCount = 1;
-            outer: for (let y = arena.length - 1; y > 0; --y) {
-                for (let x = 0; x < arena[y].length; ++x) { if (arena[y][x] === 0) continue outer; }
-                const row = arena.splice(y, 1)[0].fill(0);
-                arena.unshift(row);
-                ++y; 
-                player.score += rowCount * 10; 
-                rowCount *= 2;
-                soundClear();
-                // --- 2. SPEED UP LOGIC ---
-                dropInterval = Math.max(100, 1000 - (Math.floor(player.score / 100) * 100));
-            }
-            updateScore();
-        }
-
-        function collide(arena, player) {
-            const [m, o] = [player.matrix, player.pos];
-            for (let y = 0; y < m.length; ++y) {
-                for (let x = 0; x < m[y].length; ++x) {
-                    if (m[y][x] !== 0 && (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) return true;
-                }
-            }
-            return false;
-        }
-
-        function createMatrix(w, h) { const matrix = []; while (h--) matrix.push(new Array(w).fill(0)); return matrix; }
-
-        function createPiece(type) {
-            if (type === 'I') return [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]];
-            if (type === 'L') return [[0, 2, 0], [0, 2, 0], [0, 2, 2]];
-            if (type === 'J') return [[0, 3, 0], [0, 3, 0], [3, 3, 0]];
-            if (type === 'O') return [[4, 4], [4, 4]];
-            if (type === 'Z') return [[5, 5, 0], [0, 5, 5], [0, 0, 0]];
-            if (type === 'S') return [[0, 6, 6], [6, 6, 0], [0, 0, 0]];
-            if (type === 'T') return [[0, 7, 0], [7, 7, 7], [0, 0, 0]];
-        }
-
-        function merge(arena, player) {
-            player.matrix.forEach((row, y) => {
-                row.forEach((value, x) => { if (value !== 0) arena[y + player.pos.y][x + player.pos.x] = value; });
-            });
-        }
-
-        function playerDrop() {
-            player.pos.y++;
-            if (collide(arena, player)) { 
-                player.pos.y--; 
-                merge(arena, player); 
-                playerReset(); 
-                arenaSweep(); 
-            }
-            dropCounter = 0;
-        }
-
-        function playerHardDrop() { 
-            while (!collide(arena, player)) { player.pos.y++; } 
-            player.pos.y--; 
-            merge(arena, player); 
-            soundMove();
-            playerReset(); 
-            arenaSweep(); 
-            dropCounter = 0; 
-        }
-
-        function playerMove(dir) { 
-            player.pos.x += dir; 
-            if (collide(arena, player)) {
-                player.pos.x -= dir; 
-            } else {
-                soundMove();
-            }
-        }
-
-        function playerReset() {
-            const pieces = 'ILJOTSZ';
-            player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
-            player.pos.y = 0;
-            player.pos.x = (arena[0].length / 2 | 0) - (player.matrix[0].length / 2 | 0);
-            if (collide(arena, player)) {
-                soundGameOver();
-                checkHighScore();
-                arena.forEach(row => row.fill(0));
-                player.score = 0;
-                dropInterval = 1000;
-                updateScore();
-            }
-        }
-
-        function playerRotate(dir) {
-            const pos = player.pos.x; let offset = 1; rotate(player.matrix, dir);
-            while (collide(arena, player)) {
-                player.pos.x += offset; offset = -(offset + (offset > 0 ? 1 : -1));
-                if (offset > player.matrix[0].length) { rotate(player.matrix, -dir); player.pos.x = pos; return; }
-            }
-            soundRotate();
-        }
-
-        function rotate(matrix, dir) {
-            for (let y = 0; y < matrix.length; ++y) { for (let x = 0; x < y; ++x) { [matrix[x][y], matrix[y][x]] = [matrix[y][x], matrix[x][y]]; } }
-            if (dir > 0) matrix.forEach(row => row.reverse()); else matrix.reverse();
-        }
-
-        let dropCounter = 0; 
-        let dropInterval = 1000; 
-        let lastTime = 0;
-
-        function update(time = 0) { 
-            const deltaTime = time - lastTime; 
-            lastTime = time; 
-            dropCounter += deltaTime; 
-            if (dropCounter > dropInterval) playerDrop(); 
-            draw(); 
-            requestAnimationFrame(update); 
-        }
-
-        function updateScore() { 
-            scoreElement.innerText = "Score: " + player.score; 
-            checkHighScore();
-        }
-
-        const colors = [null, '#00ffff', '#ff00ff', '#ffff00', '#00ff00', '#ff0000', '#0000ff', '#ff8800'];
-        const arena = createMatrix(12, 20);
-        const player = { pos: {x: 0, y: 0}, matrix: null, score: 0 };
-        window.addEventListener('online', () => { window.location.href = 'index.html'; });
-        playerReset(); updateScore(); update();
-    </script>
+  <a class="skip-link" href="#main">Lewati ke konten</a>
+  <div class="site-shell">
+    <div data-component="navbar"></div>
+    <main id="main">
+      <section class="hero container"><span class="eyebrow">Offline</span><h1 class="title-sm">Anda sedang offline.</h1><p class="lead">Beberapa halaman yang sudah pernah dibuka tetap tersedia. Tools API memerlukan koneksi internet.</p><p><a class="button button-primary" href="index.html">Kembali ke Home</a></p></section>
+    </main>
+    <div data-component="footer"></div>
+  </div>
+  <script type="module" src="js/core/app.js"></script>
 </body>
 </html>

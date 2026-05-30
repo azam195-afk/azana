@@ -1,0 +1,6 @@
+.canvas-stack { position: relative; width: 100%; max-width: 720px; margin-inline: auto; }
+.canvas-stack canvas { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); touch-action: none; }
+.range-row { display: grid; gap: 8px; }
+.canvas-stack canvas + canvas { position: absolute; inset: 0; }
+.canvas-stack canvas:first-child { position: relative; }
+.canvas-stack { min-height: 320px; }

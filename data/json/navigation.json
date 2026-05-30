@@ -1,0 +1,9 @@
+[
+  { "label": "Home", "href": "index.html" },
+  { "label": "Blog", "href": "blogs.html" },
+  { "label": "Remove BG", "href": "removebg.html" },
+  { "label": "Penjernih", "href": "penjernih.html" },
+  { "label": "Magic Eraser", "href": "eraser.html" },
+  { "label": "About", "href": "about.html" },
+  { "label": "Contact", "href": "contact.html" }
+]
