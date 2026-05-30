@@ -1,30 +1,30 @@
 (function () {
-    const overlayId = 'wa-loading-overlay';
-    const modalId = 'wa-order-modal';
-    const styleId = 'wa-order-modal-style';
-    const redirectDelay = 2000;
-    const serviceOptions = [
-        'Penjernih Foto',
-        'Hapus Background',
-        'Magic Eraser',
-        'Video Editing',
-        'Desain Grafis',
-    ];
+  const overlayId = 'wa-loading-overlay';
+  const modalId = 'wa-order-modal';
+  const styleId = 'wa-order-modal-style';
+  const redirectDelay = 2000;
+  const serviceOptions = [
+    'Penjernih Foto',
+    'Hapus Background',
+    'Magic Eraser',
+    'Video Editing',
+    'Desain Grafis',
+  ];
 
-    let activeLink = null;
+  let activeLink = null;
 
-    function createOverlay() {
-        injectModalStyles();
-        
-        let overlay = document.getElementById(overlayId);
-        if (overlay) return overlay;
+  function createOverlay() {
+    injectModalStyles();
 
-        overlay = document.createElement('div');
-        overlay.id = overlayId;
-        overlay.className = 'wa-loading-overlay';
-        overlay.setAttribute('aria-live', 'polite');
-        overlay.setAttribute('aria-hidden', 'true');
-        overlay.innerHTML = `
+    let overlay = document.getElementById(overlayId);
+    if (overlay) return overlay;
+
+    overlay = document.createElement('div');
+    overlay.id = overlayId;
+    overlay.className = 'wa-loading-overlay';
+    overlay.setAttribute('aria-live', 'polite');
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML = `
             <div class="wa-loading-card" role="status">
                 <div class="wa-loading-ring">
                     <i class="fab fa-whatsapp"></i>
@@ -35,16 +35,16 @@
             </div>
         `;
 
-        document.body.appendChild(overlay);
-        return overlay;
-    }
+    document.body.appendChild(overlay);
+    return overlay;
+  }
 
-    function injectModalStyles() {
-        if (document.getElementById(styleId)) return;
+  function injectModalStyles() {
+    if (document.getElementById(styleId)) return;
 
-        const style = document.createElement('style');
-        style.id = styleId;
-        style.textContent = `
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
             .wa-loading-overlay {
                 position: fixed;
                 inset: 0;
@@ -296,20 +296,20 @@
             }
         `;
 
-        document.head.appendChild(style);
-    }
+    document.head.appendChild(style);
+  }
 
-    function createOrderModal() {
-        let modal = document.getElementById(modalId);
-        if (modal) return modal;
+  function createOrderModal() {
+    let modal = document.getElementById(modalId);
+    if (modal) return modal;
 
-        injectModalStyles();
+    injectModalStyles();
 
-        modal = document.createElement('div');
-        modal.id = modalId;
-        modal.className = 'wa-order-modal';
-        modal.setAttribute('aria-hidden', 'true');
-        modal.innerHTML = `
+    modal = document.createElement('div');
+    modal.id = modalId;
+    modal.className = 'wa-order-modal';
+    modal.setAttribute('aria-hidden', 'true');
+    modal.innerHTML = `
             <div class="wa-order-panel" role="dialog" aria-modal="true" aria-labelledby="wa-order-title">
                 <div class="wa-order-header">
                     <div>
@@ -345,102 +345,102 @@
             </div>
         `;
 
-        modal.addEventListener('click', function (event) {
-            if (event.target === modal) closeOrderModal();
-        });
-
-        modal.querySelector('.wa-order-close').addEventListener('click', closeOrderModal);
-        modal.querySelector('form').addEventListener('submit', handleOrderSubmit);
-        document.body.appendChild(modal);
-        return modal;
-    }
-
-    function showOverlay() {
-        const overlay = createOverlay();
-        overlay.setAttribute('aria-hidden', 'false');
-        overlay.classList.add('is-visible');
-        document.body.classList.add('wa-loading-active');
-    }
-
-    function openOrderModal(link) {
-        activeLink = link;
-        const modal = createOrderModal();
-        const form = modal.querySelector('form');
-        form.reset();
-        modal.setAttribute('aria-hidden', 'false');
-        modal.classList.add('is-visible');
-        document.body.classList.add('wa-modal-active');
-        window.setTimeout(() => modal.querySelector('#wa-order-name')?.focus(), 80);
-    }
-
-    function closeOrderModal() {
-        const modal = document.getElementById(modalId);
-        if (!modal) return;
-
-        modal.classList.remove('is-visible');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('wa-modal-active');
-    }
-
-    function buildOrderMessage(form) {
-        const formData = new FormData(form);
-        const name = String(formData.get('name') || '').trim();
-        const service = String(formData.get('service') || '').trim();
-        const message = String(formData.get('message') || '').trim();
-
-        return `Halo Azana! Nama saya ${name}, saya ingin pesan ${service}. Detail: ${message}`;
-    }
-
-    function buildWhatsAppUrl(link, message) {
-        const href = link.getAttribute('href') || '';
-        const url = new URL(href, window.location.href);
-        url.searchParams.set('text', message);
-        return url.toString();
-    }
-
-    function redirectToWhatsApp(link, message) {
-        const targetUrl = buildWhatsAppUrl(link, message);
-        const shouldOpenNewTab = link.target === '_blank';
-
-        window.setTimeout(() => {
-            if (shouldOpenNewTab) {
-                window.open(targetUrl, '_blank', 'noopener');
-                document.getElementById(overlayId)?.classList.remove('is-visible');
-                document.getElementById(overlayId)?.setAttribute('aria-hidden', 'true');
-                document.body.classList.remove('wa-loading-active');
-                return;
-            }
-
-            window.location.href = targetUrl;
-        }, redirectDelay);
-    }
-
-        function handleOrderSubmit(event) {
-        event.preventDefault();
-        if (!activeLink) return;
-
-        const form = event.currentTarget;
-        if (!form.checkValidity()) {
-            form.reportValidity();
-            return;
-        }
-
-        const orderMessage = buildOrderMessage(form);
-        const link = activeLink;
-        closeOrderModal();
-        showOverlay();
-        redirectToWhatsApp(link, orderMessage);
-    }
-
-    document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeOrderModal();
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) closeOrderModal();
     });
-        
-        document.addEventListener('click', function (event) {
-        const link = event.target.closest('[data-wa-transition]');
-        if (!link) return;
 
-        event.preventDefault();
-        openOrderModal(link);
-    });
+    modal.querySelector('.wa-order-close').addEventListener('click', closeOrderModal);
+    modal.querySelector('form').addEventListener('submit', handleOrderSubmit);
+    document.body.appendChild(modal);
+    return modal;
+  }
+
+  function showOverlay() {
+    const overlay = createOverlay();
+    overlay.setAttribute('aria-hidden', 'false');
+    overlay.classList.add('is-visible');
+    document.body.classList.add('wa-loading-active');
+  }
+
+  function openOrderModal(link) {
+    activeLink = link;
+    const modal = createOrderModal();
+    const form = modal.querySelector('form');
+    form.reset();
+    modal.setAttribute('aria-hidden', 'false');
+    modal.classList.add('is-visible');
+    document.body.classList.add('wa-modal-active');
+    window.setTimeout(() => modal.querySelector('#wa-order-name')?.focus(), 80);
+  }
+
+  function closeOrderModal() {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+
+    modal.classList.remove('is-visible');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('wa-modal-active');
+  }
+
+  function buildOrderMessage(form) {
+    const formData = new FormData(form);
+    const name = String(formData.get('name') || '').trim();
+    const service = String(formData.get('service') || '').trim();
+    const message = String(formData.get('message') || '').trim();
+
+    return `Halo Azana! Nama saya ${name}, saya ingin pesan ${service}. Detail: ${message}`;
+  }
+
+  function buildWhatsAppUrl(link, message) {
+    const href = link.getAttribute('href') || '';
+    const url = new URL(href, window.location.href);
+    url.searchParams.set('text', message);
+    return url.toString();
+  }
+
+  function redirectToWhatsApp(link, message) {
+    const targetUrl = buildWhatsAppUrl(link, message);
+    const shouldOpenNewTab = link.target === '_blank';
+
+    window.setTimeout(() => {
+      if (shouldOpenNewTab) {
+        window.open(targetUrl, '_blank', 'noopener');
+        document.getElementById(overlayId)?.classList.remove('is-visible');
+        document.getElementById(overlayId)?.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('wa-loading-active');
+        return;
+      }
+
+      window.location.href = targetUrl;
+    }, redirectDelay);
+  }
+
+  function handleOrderSubmit(event) {
+    event.preventDefault();
+    if (!activeLink) return;
+
+    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const orderMessage = buildOrderMessage(form);
+    const link = activeLink;
+    closeOrderModal();
+    showOverlay();
+    redirectToWhatsApp(link, orderMessage);
+  }
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeOrderModal();
+  });
+
+  document.addEventListener('click', function (event) {
+    const link = event.target.closest('[data-wa-transition]');
+    if (!link) return;
+
+    event.preventDefault();
+    openOrderModal(link);
+  });
 }());
