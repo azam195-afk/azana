@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /offline.html
-Disallow: /apks/
+Disallow: /public/downloads/
 
 Sitemap: https://azana.my.id/sitemap.xml

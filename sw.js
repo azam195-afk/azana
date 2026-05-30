@@ -1,56 +1,52 @@
-const CACHE_NAME = 'azana-v14';
+const CACHE_NAME = 'azana-v15';
 const PRECACHE_ASSETS = [
   './',
   'index.html',
   'blogs.html',
   'about.html',
+  'contact.html',
   'privacy-policy.html',
   'terms.html',
+  'disclaimer.html',
   'removebg.html',
   'eraser.html',
   'penjernih.html',
-  'manifest.json',
-  'robots.txt',
-  'sitemap.xml',
   'offline.html',
-  'components/navbar.html',
-  'components/footer-main.html',
-  'components/footer-ai.html',
-  'asset/js/whatsapp-transition.js',
-  'asset/img/41955.png',
-  'asset/img/globe.png',
-  'asset/img/removebg.png',
-  'asset/img/penjernih.png',
-  'asset/img/eraser.jpg'
+  'css/main.css',
+  'css/themes/tokens.css',
+  'css/base/reset.css',
+  'css/layouts/site.css',
+  'css/components/ui.css',
+  'css/pages/home.css',
+  'css/pages/tools.css',
+  'js/core/app.js',
+  'js/api/config.js',
+  'js/api/api-service.js',
+  'js/api/rate-limiter.js',
+  'js/api/prompt-manager.js',
+  'js/utils/dom.js',
+  'components/navbar/navbar.html',
+  'components/footer/footer.html',
+  'assets/images/globe.png',
+  'assets/images/removebg.png',
+  'assets/images/penjernih.png',
+  'assets/images/eraser.jpg'
 ];
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(PRECACHE_ASSETS))
-      .then(() => self.skipWaiting())
-  );
-  self.skipWaiting();
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_ASSETS)).then(() => self.skipWaiting()));
 });
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => Promise.all(
-      cacheNames
-        .filter(cacheName => cacheName !== CACHE_NAME)
-        .map(cacheName => caches.delete(cacheName))
-    )).then(() => self.clients.claim())
-  );
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(caches.keys().then((names) => Promise.all(names.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name)))).then(() => self.clients.claim()));
 });
 
 async function networkFirst(request) {
   const cache = await caches.open(CACHE_NAME);
-
   try {
-    const networkResponse = await fetch(request);
-    if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
-    }
-    return networkResponse;
+    const response = await fetch(request);
+    if (response.ok) cache.put(request, response.clone());
+    return response;
   } catch (error) {
     return (await cache.match(request)) || caches.match('offline.html');
   }
@@ -58,34 +54,17 @@ async function networkFirst(request) {
 
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(CACHE_NAME);
-  const cachedResponse = await cache.match(request);
-
-  const networkResponsePromise = fetch(request)
-    .then(networkResponse => {
-      if (networkResponse.ok) {
-        cache.put(request, networkResponse.clone());
-      }
-      return networkResponse;
-    })
-    .catch(() => cachedResponse);
-
-  return cachedResponse || networkResponsePromise;
+  const cached = await cache.match(request);
+  const fresh = fetch(request).then((response) => {
+    if (response.ok) cache.put(request, response.clone());
+    return response;
+  }).catch(() => cached);
+  return cached || fresh;
 }
 
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-
-  const requestUrl = new URL(event.request.url);
-
-  if (requestUrl.origin !== self.location.origin) {
-    event.respondWith(fetch(event.request));
-    return;
-  }
-
-  if (event.request.mode === 'navigate') {
-    event.respondWith(networkFirst(event.request));
-    return;
-  }
-
-  event.respondWith(staleWhileRevalidate(event.request));
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+  event.respondWith(event.request.mode === 'navigate' ? networkFirst(event.request) : staleWhileRevalidate(event.request));
 });
