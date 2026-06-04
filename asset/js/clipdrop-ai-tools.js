@@ -1,5 +1,6 @@
+const CLIPDROP_API_KEY = "ae50f97a39406075707c40fceeedbf31d9e385681146fcdceba4622d82045781742d2979374fa558a7bb8b8eee4642fa";
+
 (function () {
-  const CLIPDROP_API_KEY = window.AZANA_API_KEYS?.CLIPDROP || localStorage.getItem('AZANA_CLIPDROP_API_KEY') || '';
 
   const ENDPOINTS = {
     sketch: 'https://clipdrop-api.co/sketch-to-image/v1',
