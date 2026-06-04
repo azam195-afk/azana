@@ -26,19 +26,19 @@ const PRECACHE_ASSETS = [
 
 self.addEventListener('install', event => {
   event.waitUntil(
-  caches.open(CACHE_NAME)
-  .then(cache => cache.addAll(PRECACHE_ASSETS))
-  .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(PRECACHE_ASSETS))
+      .then(() => self.skipWaiting())
   );
   self.skipWaiting();
 });
 self.addEventListener('activate', event => {
   event.waitUntil(
-  caches.keys().then(cacheNames => Promise.all(
-  cacheNames
-  .filter(cacheName => cacheName !== CACHE_NAME)
-  .map(cacheName => caches.delete(cacheName))
-  )).then(() => self.clients.claim())
+    caches.keys().then(cacheNames => Promise.all(
+      cacheNames
+        .filter(cacheName => cacheName !== CACHE_NAME)
+        .map(cacheName => caches.delete(cacheName))
+    )).then(() => self.clients.claim())
   );
 });
 
@@ -61,13 +61,13 @@ async function staleWhileRevalidate(request) {
   const cachedResponse = await cache.match(request);
 
   const networkResponsePromise = fetch(request)
-  .then(networkResponse => {
-    if (networkResponse.ok) {
-      cache.put(request, networkResponse.clone());
-    }
-    return networkResponse;
-  })
-  .catch(() => cachedResponse);
+    .then(networkResponse => {
+      if (networkResponse.ok) {
+        cache.put(request, networkResponse.clone());
+      }
+      return networkResponse;
+    })
+    .catch(() => cachedResponse);
 
   return cachedResponse || networkResponsePromise;
 }
