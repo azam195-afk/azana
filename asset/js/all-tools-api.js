@@ -12,7 +12,10 @@ async function downloadTikTok(url) {
     }
     
     try {
-        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
+        // Menggunakan corsproxy.io atau allorigins supaya lolos blokir browser
+        const targetUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
+        const apiUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+        
         const response = await fetch(apiUrl);
         const resJson = await response.json();
 
