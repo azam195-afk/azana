@@ -156,36 +156,22 @@
     buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
 
     try {
-        // Menggunakan fetch melalui proxy cors.bridged.cc atau allorigins untuk menangkap byte file MP4 secara utuh
-        const response = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl));
-        const blob = await response.blob();
-        
-        // Buat objek URL lokal dari blob video
-        const blobUrl = window.URL.createObjectURL(blob);
-        
+        // Trik direct download instan tanpa loading fetch blob
         const a = document.createElement('a');
         a.style.display = 'none';
-        a.href = blobUrl;
+        a.href = targetUrl;
         a.download = filename;
+        a.setAttribute('download', filename);
         document.body.appendChild(a);
         a.click();
-        
-        window.URL.revokeObjectURL(blobUrl);
         document.body.removeChild(a);
     } catch (err) {
-        // Fallback jika fetch blob gagal: gunakan trik forced attribute download via temporary anchor
-        const a = document.createElement('a');
-        a.href = targetUrl;
-        a.setAttribute('download', filename);
-        a.setAttribute('type', 'video/mp4');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        window.open(targetUrl, '_blank');
     } finally {
         setTimeout(() => {
             buttonElement.disabled = false;
             buttonElement.innerHTML = originalContent;
-        }, 2000);
+        }, 1500);
     }
     }
         
