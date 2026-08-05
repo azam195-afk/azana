@@ -171,38 +171,54 @@
                 alert("Terjadi kesalahan: " + err.message);
             }
         }
+        
+        let currentVideoUrl = "";
+        let currentAudioUrl = "";
 
-        // Fungsi download meniru persis pola ig.html
+        // Di bagian penarikan data (dalam processYouTubeDownload):
+        currentVideoUrl = result.video_url;
+        currentAudioUrl = result.audio_url;
+
+        // Di bagian fungsi downloadMedia (meniru persis ig.html):
         async function downloadMedia(fileUrl, filename, buttonElement) {
-    const targetUrl = fileUrl;
-    if (!targetUrl) {
-        alert("Link unduhan tidak tersedia!");
-        return;
-    }
+            const targetUrl = fileUrl;
+            if (!targetUrl) {
+                alert("Link unduhan tidak tersedia!");
+                return;
+            }
 
-    const originalContent = buttonElement.innerHTML;
-    buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
 
-    // Untuk link YouTube/Google Video, metode fetch blob sering diblokir CORS total.
-    // Cara paling aman dan langsung mendownload adalah membuka link CDN langsung di tab baru dengan atribut download tersembunyi.
-    try {
-        const a = document.createElement('a');
-        a.href = targetUrl;
-        a.download = filename;
-        a.setAttribute('download', filename);
-        a.target = '_blank';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } catch (err) {
-        window.open(targetUrl, '_blank');
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 2000);
-    }
+            try {
+                const response = await fetch(targetUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                const a = document.createElement('a');
+                a.href = targetUrl;
+                a.setAttribute('download', filename);
+                a.setAttribute('target', '_blank');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
         }
         
 
