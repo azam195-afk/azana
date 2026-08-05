@@ -150,7 +150,7 @@
         }
 
         // Fungsi unduh paksa lewat blob/link agar tidak nyangkut keputer di browser
-        async function downloadMedia(fileUrl, filename, buttonElement) {
+async function downloadMedia(fileUrl, filename, buttonElement) {
     if (!fileUrl) {
         alert("Link unduhan untuk format ini tidak tersedia!");
         return;
@@ -161,9 +161,9 @@
     buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
 
     try {
-        // Menggunakan teknik fetch dengan blob & CORS proxy aman untuk server streaming YouTube
-        const corsProxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(fileUrl);
-        const response = await fetch(corsProxy);
+        // Menggunakan teknik fetch melalui CORS Proxy aman agar tidak ke-redirect/play di browser
+        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(fileUrl);
+        const response = await fetch(proxyUrl);
         const blob = await response.blob();
         const blobUrl = window.URL.createObjectURL(blob);
         
@@ -177,12 +177,12 @@
         window.URL.revokeObjectURL(blobUrl);
         document.body.removeChild(a);
     } catch (err) {
-        // Fallback langsung paksa download via anchor download attribute
+        // Fallback jika proxy gagal, paksa unduh langsung
         const a = document.createElement('a');
         a.href = fileUrl;
         a.download = filename;
         a.setAttribute('download', filename);
-        a.target = '_blank';
+        a.setAttribute('target', '_blank');
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -192,7 +192,7 @@
             buttonElement.innerHTML = originalContent;
         }, 2500);
     }
-        }
+}
         
 
         fetch('components/footer-ai.html')
