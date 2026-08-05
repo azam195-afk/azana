@@ -278,6 +278,27 @@
         requestAnimationFrame(animateNodes);
       }
       window.onload = function() { initNodes(); animateNodes(); };
+                // Fungsi Download langsung ke file asli tanpa error JSON corsproxy
+        function downloadMedia(fileUrl, filename) {
+            if (!fileUrl) {
+                alert("Link unduhan tidak tersedia!");
+                return;
+            }
+
+            alert("Mendownload file, silakan cek notifikasi unduhan...");
+
+            // Buat elemen anchor tersembunyi agar langsung di-trigger oleh browser
+            const a = document.createElement('a');
+            a.href = fileUrl;
+            a.download = filename;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
     </script>
 </body>
 </html>
