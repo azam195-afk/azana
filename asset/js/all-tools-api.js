@@ -36,42 +36,41 @@ async function downloadTikTok(url) {
     }
 }
 
-async function downloadInstagram(url) {
-    if (!url) {
-        throw new Error("URL Instagram tidak boleh kosong!");
+async function downloadMedia(fileUrl, filename, buttonElement) {
+    if (!fileUrl) {
+        alert("Link unduhan tidak tersedia!");
+        return;
     }
-    
+
+    // Mengubah link embed Instagram menjadi link halaman asli, lalu arahkan 
+    // agar browser mendownload/menyimpan kontennya langsung
+    let targetDownloadUrl = fileUrl;
+    if (fileUrl.includes('/embed')) {
+        targetDownloadUrl = fileUrl.replace(/\/embed\/?$/, '');
+    }
+
+    const originalContent = buttonElement.innerHTML;
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyiapkan Unduhan...`;
+
     try {
-        let cleanUrl = url.trim();
-        
-        // Membersihkan query parameter yang tidak perlu agar bersih
-        if (cleanUrl.includes('?')) {
-            cleanUrl = cleanUrl.split('?')[0];
-        }
-
-        if (!cleanUrl.includes("instagram.com")) {
-            throw new Error("Bukan link Instagram yang valid.");
-        }
-
-        // Membentuk URL embed publik resmi Instagram yang dijamin tembus tanpa blokir CORS
-        const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
-
-        return {
-            status: "success",
-            platform: "instagram",
-            url: cleanUrl,
-            type: "video",
-            url_media: embedUrl,
-            is_embed: true,
-            author: "instagram_user"
-        };
-    } catch (error) {
-        console.error("Error Instagram:", error);
-        return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
+        // Memaksa download menggunakan elemen anchor HTML5 attribute download
+        const a = document.createElement('a');
+        a.href = targetDownloadUrl;
+        a.target = '_blank';
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } catch (err) {
+        window.open(targetDownloadUrl, '_blank');
+    } finally {
+        setTimeout(() => {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalContent;
+        }, 2000);
     }
 }
-
-
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
 async function downloadSpotify(url) { return { url, status: "pending" }; }
