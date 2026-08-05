@@ -127,7 +127,7 @@
             }
                 }
         
-                    async function downloadMedia(fileUrl, filename, buttonElement) {
+                            async function downloadMedia(fileUrl, filename, buttonElement) {
             if (!fileUrl) {
                 alert("Link unduhan tidak tersedia!");
                 return;
@@ -135,15 +135,41 @@
 
             const originalContent = buttonElement.innerHTML;
             buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Membuka Unduhan...`;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh Video...`;
 
-            // Menggunakan domain downloader utama yang stabil dan aktif
-            setTimeout(() => {
-                window.open(`https://en.savefrom.net/1-instagram-video-downloader-36/?url=${encodeURIComponent(fileUrl)}`, '_blank');
-                buttonElement.disabled = false;
-                buttonElement.innerHTML = originalContent;
-            }, 1000);
-                    }
+            try {
+                // Mengambil langsung file video dari link bersih Instagram
+                const response = await fetch(fileUrl, { mode: 'no-cors' });
+                
+                // Jika browser mengizinkan fetch langsung
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = 'instagram_video.mp4';
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                // Jika terkena proteksi CORS ketat dari Instagram, arahkan sistem untuk memicu download via anchor direct link
+                const a = document.createElement('a');
+                a.href = fileUrl;
+                a.setAttribute('download', 'instagram_video.mp4');
+                a.setAttribute('target', '_blank');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
+        }
         
 
 
