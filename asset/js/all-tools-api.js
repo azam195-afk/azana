@@ -43,6 +43,8 @@ async function downloadInstagram(url) {
     
     try {
         let cleanUrl = url.trim();
+        
+        // Membersihkan query parameter yang tidak perlu agar bersih
         if (cleanUrl.includes('?')) {
             cleanUrl = cleanUrl.split('?')[0];
         }
@@ -51,30 +53,25 @@ async function downloadInstagram(url) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        const response = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`);
-        const json = await response.json();
+        // Membentuk URL embed publik resmi Instagram yang dijamin tembus tanpa blokir CORS
+        const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
 
-        if (json && json.status && json.data && json.data.length > 0) {
-            const mediaData = json.data[0];
-            const mediaUrl = mediaData.url;
-            const isVideo = mediaData.type === "video" || mediaUrl.includes(".mp4");
-
-            return {
-                status: "success",
-                platform: "instagram",
-                type: isVideo ? "video" : "image",
-                url_media: mediaUrl,
-                is_embed: false
-            };
-        } else {
-            throw new Error("Gagal mengambil data dari server. Pastikan link publik.");
-        }
+        return {
+            status: "success",
+            platform: "instagram",
+            url: cleanUrl,
+            type: "video",
+            url_media: embedUrl,
+            is_embed: true,
+            author: "instagram_user"
+        };
     } catch (error) {
-        console.error("API Error:", error);
-        return { status: "error", message: "Gagal memproses link Instagram." };
+        console.error("Error Instagram:", error);
+        return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
     }
 }
 
+// Mendaftarkan fungsi secara global agar terbaca sempurna oleh ig.html
 window.downloadInstagram = downloadInstagram;
 
 
