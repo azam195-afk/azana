@@ -125,48 +125,44 @@
         }
 
         async function downloadMedia(fileUrl, filename, buttonElement) {
-            if (!fileUrl) {
-                alert("Link unduhan tidak tersedia!");
-                return;
-            }
+    if (!fileUrl) {
+        alert("Link unduhan tidak tersedia!");
+        return;
+    }
 
-            // Ambil link bersih tanpa /embed/
-            let targetUrl = fileUrl.replace(/\/embed\/?$/, '');
+    const originalContent = buttonElement.innerHTML;
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
 
-            const originalContent = buttonElement.innerHTML;
-            buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
-
-            try {
-                // Memaksa download file langsung ke perangkat
-                const response = await fetch(targetUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
-                // Jika CORS membatasi fetch, buat trigger download lewat elemen link langsung
-                const a = document.createElement('a');
-                a.href = targetUrl;
-                a.setAttribute('download', filename);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } finally {
-                setTimeout(() => {
-                    buttonElement.disabled = false;
-                    buttonElement.innerHTML = originalContent;
-                }, 2000);
-            }
+    try {
+        const response = await fetch(fileUrl);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = 'instagram_video.mp4';
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+    } catch (err) {
+        const a = document.createElement('a');
+        a.href = fileUrl;
+        a.setAttribute('download', 'instagram_video.mp4');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } finally {
+        setTimeout(() => {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalContent;
+        }, 2000);
+    }
         }
+
 
         fetch('components/footer-ai.html')
         .then(response => response.text())
