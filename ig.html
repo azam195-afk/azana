@@ -140,17 +140,16 @@
 
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Membuka Unduhan...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Membuka SnapSave...`;
 
     setTimeout(() => {
-        // Menggunakan redirect langsung ke en.savefrom.net yang jauh lebih stabil
-        window.open(`https://en.savefrom.net/1-instagram-video-downloader-36/?url=${encodeURIComponent(targetUrl)}`, '_blank');
+        // Menggunakan SnapSave yang servernya sangat stabil untuk download video IG
+        window.open(`https://snapsave.app/id?url=${encodeURIComponent(targetUrl)}`, '_blank');
         buttonElement.disabled = false;
         buttonElement.innerHTML = originalContent;
     }, 1000);
     }
         
-
 
         fetch('components/footer-ai.html')
         .then(response => response.text())
