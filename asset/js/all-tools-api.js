@@ -36,6 +36,9 @@ async function downloadTikTok(url) {
     }
 }
 
+/**
+ * FUNGSI INSTAGRAM DOWNLOADER (Stabil & Otomatis)
+ */
 async function downloadInstagram(url) {
     if (!url) {
         throw new Error("URL Instagram tidak boleh kosong!");
@@ -43,16 +46,16 @@ async function downloadInstagram(url) {
     
     try {
         const cleanUrl = url.trim();
-        // Menggunakan endpoint API publik downloader Instagram alternatif
-        const apiUrl = `https://api.vkrtechnologies.com/api/downloader/ig?url=${encodeURIComponent(cleanUrl)}`;
+        // Menggunakan endpoint API publik downloader alternatif yang stabil
+        const apiUrl = `https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`;
         
         const response = await fetch(apiUrl);
         const resJson = await response.json();
 
-        if (resJson && (resJson.status === true || resJson.status === "success" || resJson.result)) {
-            const resultData = resJson.result || resJson.data;
-            const mediaUrl = Array.isArray(resultData) ? resultData[0].url : (resultData.url || resultData);
-            const isVideo = !mediaUrl.includes(".jpg") && !mediaUrl.includes(".png");
+        if (resJson && resJson.status && resJson.data && resJson.data.length > 0) {
+            const mediaItem = resJson.data[0];
+            const mediaUrl = mediaItem.url;
+            const isVideo = mediaItem.type === "video" || mediaUrl.includes(".mp4");
 
             return {
                 status: "success",
