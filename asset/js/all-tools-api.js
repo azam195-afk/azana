@@ -42,51 +42,35 @@ async function downloadInstagram(url) {
     }
     
     try {
-        const cleanUrl = url.trim();
-        // Menggunakan endpoint API publik pihak ketiga alternatif (Cobalt API v7) yang sangat stabil tanpa perlu RapidAPI key
-        const targetUrl = `https://co.wuk.sh/api/json`;
+        let cleanUrl = url.trim();
         
-        const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(targetUrl)}`, {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                url: cleanUrl,
-                vQuality: "max"
-            })
-        });
-        
-        const resJson = await response.json();
-        console.log("Respon Cobalt API:", resJson);
-
-        let mediaUrl = "";
-        if (resJson.status === "stream" || resJson.status === "redirect" || resJson.url) {
-            mediaUrl = resJson.url;
-        } else if (resJson.picker && resJson.picker.length > 0) {
-            mediaUrl = resJson.picker[0].url;
+        // Membersihkan query parameter yang tidak perlu agar bersih
+        if (cleanUrl.includes('?')) {
+            cleanUrl = cleanUrl.split('?')[0];
         }
 
-        if (mediaUrl) {
-            const isVideo = !mediaUrl.includes(".jpg") && !mediaUrl.includes(".png") && !mediaUrl.includes(".jpeg");
-
-            return {
-                status: "success",
-                platform: "instagram",
-                url: cleanUrl,
-                type: isVideo ? "video" : "image",
-                url_media: mediaUrl,
-                author: "instagram_user"
-            };
-        } else {
-            throw new Error("Gagal mendapatkan link media dari server.");
+        if (!cleanUrl.includes("instagram.com")) {
+            throw new Error("Bukan link Instagram yang valid.");
         }
+
+        // Membentuk URL embed publik resmi Instagram yang dijamin tembus tanpa blokir CORS
+        const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
+
+        return {
+            status: "success",
+            platform: "instagram",
+            url: cleanUrl,
+            type: "video",
+            url_media: embedUrl,
+            is_embed: true,
+            author: "instagram_user"
+        };
     } catch (error) {
-        console.error("Error Instagram API:", error);
-        return { status: "error", message: "Gagal mengambil data Instagram. Periksa link publiknya." };
+        console.error("Error Instagram:", error);
+        return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
     }
 }
+
 
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
