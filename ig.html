@@ -133,7 +133,6 @@
         return;
     }
 
-    // Ambil link bersih postingan asli tanpa /embed/
     let targetUrl = fileUrl;
     if (targetUrl.includes('/embed')) {
         targetUrl = targetUrl.replace(/\/embed\/?$/, '');
@@ -141,11 +140,11 @@
 
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Membuka Proses Unduh...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Membuka Unduhan...`;
 
-    // Langsung arahkan ke layanan dlm tab baru yang otomatis nyiapin tombol download video
     setTimeout(() => {
-        window.open(`https://sssinstagram.com/id?url=${encodeURIComponent(targetUrl)}`, '_blank');
+        // Menggunakan redirect langsung ke en.savefrom.net yang jauh lebih stabil
+        window.open(`https://en.savefrom.net/1-instagram-video-downloader-36/?url=${encodeURIComponent(targetUrl)}`, '_blank');
         buttonElement.disabled = false;
         buttonElement.innerHTML = originalContent;
     }, 1000);
