@@ -43,7 +43,6 @@ async function downloadInstagram(url) {
     
     try {
         let cleanUrl = url.trim();
-        
         if (cleanUrl.includes('?')) {
             cleanUrl = cleanUrl.split('?')[0];
         }
@@ -52,20 +51,27 @@ async function downloadInstagram(url) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
+        // Menggunakan API publik stabil untuk mengambil data video & direct link CDN
+        const response = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`);
+        const json = await response.json();
 
-        return {
-            status: "success",
-            platform: "instagram",
-            url: cleanUrl,
-            type: "video",
-            url_media: embedUrl,
-            is_embed: true,
-            author: "instagram_user"
-        };
+        if (json && json.status && json.data && json.data.length > 0) {
+            const mediaItem = json.data[0];
+            return {
+                status: "success",
+                platform: "instagram",
+                type: "video",
+                url: cleanUrl,
+                url_media: mediaItem.url, // Ini link CDN langsung (mirip rapidcdn)
+                thumbnail: mediaItem.thumbnail || "",
+                is_embed: false
+            };
+        } else {
+            throw new Error("Gagal memproses video. Pastikan link publik.");
+        }
     } catch (error) {
         console.error("Error Instagram:", error);
-        return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
+        return { status: "error", message: "Gagal memproses link Instagram." };
     }
 }
 
