@@ -135,7 +135,7 @@
                     document.getElementById('preview-title').innerText = result.title;
                     document.getElementById('preview-thumb').src = result.thumbnail;
                     
-                    // Simpan link mentah ke variabel global mirip ig.html
+                    // Masukkan ke variabel global agar terbaca oleh tombol download
                     currentVideoUrl = result.video_url;
                     currentAudioUrl = result.audio_url;
                     
@@ -150,9 +150,11 @@
             }
         }
 
-        // Fungsi download meniru persis pola ig.html menggunakan Blob
+        // Fungsi download meniru persis pola ig.html
         async function downloadMedia(fileUrl, filename, buttonElement) {
-            const targetUrl = fileUrl;
+            // Jika argumen kosong, ambil dari variabel global
+            const targetUrl = fileUrl || (filename.includes('video') ? currentVideoUrl : currentAudioUrl);
+            
             if (!targetUrl) {
                 alert("Link unduhan untuk format ini tidak tersedia!");
                 return;
@@ -211,7 +213,7 @@
             document.getElementById('footer').innerHTML = data;
         }).catch(err => console.log("Footer load error:", err));
     </script>
-
+    
     <script>
       const canvas = document.getElementById('neural-bg');
       const ctx = canvas.getContext('2d');
