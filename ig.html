@@ -101,6 +101,8 @@
 
             loadingBox.classList.remove('hidden');
             previewContainer.classList.add('hidden');
+            videoElement.classList.add('hidden');
+            imageElement.classList.add('hidden');
 
             try {
                 const result = await downloadInstagram(urlInput);
@@ -110,12 +112,11 @@
 
                     if (result.type === "video") {
                         videoElement.src = currentMediaUrl;
+                        videoElement.load();
                         videoElement.classList.remove('hidden');
-                        imageElement.classList.add('hidden');
                     } else {
                         imageElement.src = currentMediaUrl;
                         imageElement.classList.remove('hidden');
-                        videoElement.classList.add('hidden');
                     }
                     
                     loadingBox.classList.add('hidden');
