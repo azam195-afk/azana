@@ -130,31 +130,49 @@
         return;
     }
 
+    // Mengambil link postingan bersih tanpa /embed/
+    let targetUrl = fileUrl;
+    if (targetUrl.includes('/embed')) {
+        targetUrl = targetUrl.replace(/\/embed\/?$/, '');
+    }
+
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyiapkan Unduhan...`;
 
     try {
-        const response = await fetch(fileUrl);
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
+        // Menggunakan layanan pihak ketiga publik secara instan untuk mendapatkan direct link file mp4 mentah
+        const apiRes = await fetch(`https://co.wuk.sh/api/json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify({ url: targetUrl, vQuality: "max" })
+        });
         
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = 'instagram_video.mp4';
-        document.body.appendChild(a);
-        a.click();
-        
-        window.URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(a);
+        const data = await apiRes.json();
+        const finalDirectUrl = data.url || (data.picker && data.picker[0] && data.picker[0].url);
+
+        if (finalDirectUrl) {
+            // Download file langsung via blob agar tersimpan sebagai file video di HP/PC
+            const response = await fetch(finalDirectUrl);
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = 'instagram_video.mp4';
+            document.body.appendChild(a);
+            a.click();
+            
+            window.URL.revokeObjectURL(blobUrl);
+            document.body.removeChild(a);
+        } else {
+            // Fallback jika API sedang sibuk, arahkan ke web downloader resmi di tab baru
+            window.open(`https://saveig.app/en?url=${encodeURIComponent(targetUrl)}`, '_blank');
+        }
     } catch (err) {
-        const a = document.createElement('a');
-        a.href = fileUrl;
-        a.setAttribute('download', 'instagram_video.mp4');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        // Fallback darurat jika CORS memblokir fetch blob
+        window.open(`https://saveig.app/en?url=${encodeURIComponent(targetUrl)}`, '_blank');
     } finally {
         setTimeout(() => {
             buttonElement.disabled = false;
@@ -162,6 +180,7 @@
         }, 2000);
     }
         }
+        
 
 
         fetch('components/footer-ai.html')
