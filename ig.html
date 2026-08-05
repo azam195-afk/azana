@@ -127,7 +127,7 @@
             }
                 }
         
-    async function downloadMedia(fileUrl, filename, buttonElement) {
+async function downloadMedia(fileUrl, filename, buttonElement) {
     if (!fileUrl) {
         alert("Link unduhan tidak tersedia!");
         return;
@@ -140,15 +140,52 @@
 
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Membuka SnapSave...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh Video...`;
 
-    setTimeout(() => {
-        // Menggunakan SnapSave yang servernya sangat stabil untuk download video IG
-        window.open(`https://snapsave.app/id?url=${encodeURIComponent(targetUrl)}`, '_blank');
-        buttonElement.disabled = false;
-        buttonElement.innerHTML = originalContent;
-    }, 1000);
+    try {
+        // Mengambil direct link video asli menggunakan API downloader backend publik secara senyap
+        const apiRes = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(targetUrl)}`);
+        const json = await apiRes.json();
+        
+        let directVideoUrl = "";
+        if (json && json.status && json.data && json.data.length > 0) {
+            directVideoUrl = json.data[0].url;
+        }
+
+        if (!directVideoUrl) {
+            throw new Error("Gagal mendapatkan link file video.");
+        }
+
+        // Eksekusi download file langsung di halaman lu
+        const response = await fetch(directVideoUrl);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = 'instagram_video.mp4';
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+    } catch (err) {
+        // Fallback jika fetch blob diblokir CORS, jalankan direct anchor download
+        const a = document.createElement('a');
+        a.href = targetUrl;
+        a.setAttribute('download', 'instagram_video.mp4');
+        a.setAttribute('target', '_blank');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } finally {
+        setTimeout(() => {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalContent;
+        }, 2000);
     }
+}
         
 
         fetch('components/footer-ai.html')
