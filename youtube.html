@@ -160,7 +160,7 @@
         let videoLinks = {};
         let audioLink = "";
 
-        async function processYouTubeDownload() {
+                async function processYouTubeDownload() {
             const urlInput = document.getElementById('yt-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
             const previewContainer = document.getElementById('preview-container');
@@ -174,8 +174,11 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // Ambil data MP4 dan MP3 dari Nexray API v1 secara paralel
-                const [resMp4, resMp3] = await Promise.all([
+                // Tembak endpoint v1 ytmp4 dengan berbagai variasi resolusi atau endpoint aio/ytmp4 nexray
+                const [res360, res480, res720, res1080, resMp3] = await Promise.all([
+                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=360`).then(r => r.json()).catch(() => null),
+                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=480`).then(r => r.json()).catch(() => null),
+                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=720`).then(r => r.json()).catch(() => null),
                     fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
                     fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
                 ]);
@@ -185,25 +188,45 @@
 
                 videoLinks = {};
 
-                if (resMp4 && resMp4.status === true && resMp4.result) {
-                    title = resMp4.result.title || title;
-                    thumbnail = resMp4.result.thumbnail || thumbnail;
-                    videoLinks['1080'] = resMp4.result.url;
-                    videoLinks['default'] = resMp4.result.url;
+                // Mapping link berdasarkan respons resolusi dari Nexray API v1
+                if (res360 && res360.status && res360.result) {
+                    videoLinks['360'] = res360.result.url;
+                    title = res360.result.title;
+                    thumbnail = res360.result.thumbnail;
+                }
+                if (res480 && res480.status && res480.result) {
+                    videoLinks['480'] = res480.result.url;
+                    title = res480.result.title || title;
+                    thumbnail = res480.result.thumbnail || thumbnail;
+                }
+                if (res720 && res720.status && res720.result) {
+                    videoLinks['720'] = res720.result.url;
+                    title = res720.result.title || title;
+                    thumbnail = res720.result.thumbnail || thumbnail;
+                }
+                if (res1080 && res1080.status && res1080.result) {
+                    videoLinks['1080'] = res1080.result.url;
+                    title = res1080.result.title || title;
+                    thumbnail = res1080.result.thumbnail || thumbnail;
                 }
 
-                // Ambil juga link cadangan resolusi lain jika ada dari API
-                if (resMp3 && resMp3.status === true && resMp3.result) {
+                if (resMp3 && resMp3.status && resMp3.result) {
                     audioLink = resMp3.result.url || "";
                     if (title === "YouTube Video" && resMp3.result.title) title = resMp3.result.title;
                     if (!thumbnail && resMp3.result.thumbnail) thumbnail = resMp3.result.thumbnail;
                 }
 
-                if (!videoLinks['default'] && !audioLink) {
-                    throw new Error("Gagal mengambil data dari server Nexray.");
+                // Fallback jika salah satu kosong
+                const fallbackUrl = videoLinks['1080'] || videoLinks['720'] || videoLinks['480'] || videoLinks['360'];
+                if (!fallbackUrl && !audioLink) {
+                    throw new Error("Gagal mengambil data dari server Nexray API.");
                 }
 
-                // Set data ke tampilan HTML
+                // Set default jika ada resolusi yang kosong
+                ['360', '480', '720', '1080'].forEach(res => {
+                    if (!videoLinks[res]) videoLinks[res] = fallbackUrl;
+                });
+
                 document.getElementById('vid-title').innerText = title;
                 document.getElementById('vid-thumbnail').src = thumbnail;
 
@@ -216,29 +239,10 @@
             }
         }
 
-        function switchTab(type) {
-            const btnMp4 = document.getElementById('tab-btn-mp4');
-            const btnMp3 = document.getElementById('tab-btn-mp3');
-            const contentMp4 = document.getElementById('content-mp4');
-            const contentMp3 = document.getElementById('content-mp3');
-
-            if (type === 'mp4') {
-                btnMp4.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 bg-purple-600 text-white shadow";
-                btnMp3.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 text-gray-400 hover:text-white";
-                contentMp4.classList.remove('hidden');
-                contentMp3.classList.add('hidden');
-            } else {
-                btnMp3.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 bg-cyan-600 text-white shadow";
-                btnMp4.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 text-gray-400 hover:text-white";
-                contentMp3.classList.remove('hidden');
-                contentMp4.classList.add('hidden');
-            }
-        }
-
-        // Fungsi download langsung trigger tanpa nge-play di tab baru
-        function triggerDownload(fileUrl, filename, buttonElement) {
+        // Fungsi download aman yang memaksa download file via Blob stream agar tidak nge-play di tab baru
+        async function triggerDownload(fileUrl, filename, buttonElement) {
             if (!fileUrl) {
-                alert("Link unduhan untuk format ini belum tersedia!");
+                alert("Link unduhan untuk resolusi ini belum tersedia!");
                 return;
             }
 
@@ -247,6 +251,22 @@
             buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
 
             try {
+                // Fetch blob murni agar browser memprosesnya sebagai file biner download
+                const response = await fetch(fileUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                // Fallback jika blob diblokir CORS: gunakan trik parameter paksa unduh
                 const a = document.createElement('a');
                 a.href = fileUrl;
                 a.download = filename;
@@ -254,8 +274,6 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-            } catch (err) {
-                window.open(fileUrl, '_blank');
             } finally {
                 setTimeout(() => {
                     buttonElement.disabled = false;
