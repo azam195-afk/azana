@@ -59,36 +59,20 @@
                 </div>
                 <button onclick="processYouTubeDownload()" id="btn-process" 
                     class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-500 hover:to-purple-500 text-white shadow-lg shadow-purple-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i> Preview
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Cek / Proses Link
                 </button>
             </div>
 
+            <!-- Loading Box -->
             <div id="loading-box" class="hidden text-center py-6 text-cyan-400 text-xs">
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari Nexray...
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses link YouTube...
             </div>
 
             <!-- PREVIEW CONTAINER -->
             <div id="preview-container" class="hidden space-y-4 pt-2">
-                
-                <!-- THUMBNAIL PREVIEW -->
-                <div class="relative w-full rounded-2xl overflow-hidden bg-black border border-purple-500/30 shadow-inner aspect-video flex items-center justify-center">
-                    <img id="preview-thumb" class="w-full h-full object-cover" alt="Thumbnail">
-                </div>
+                <div id="media-view-area"></div>
 
-                <!-- INFO JUDUL & COPY -->
-                <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3.5 space-y-2.5">
-                    <div>
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] text-gray-400 font-semibold uppercase">Judul Video:</span>
-                            <button onclick="copyTitle()" class="text-[10px] bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 text-purple-200 px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer">
-                                <i class="fa-solid fa-copy"></i> <span id="copy-text">Copy Title</span>
-                            </button>
-                        </div>
-                        <p id="preview-title" class="text-xs text-gray-200 leading-relaxed bg-black/30 p-2.5 rounded-xl border border-white/5 max-h-24 overflow-y-auto">Judul video...</p>
-                    </div>
-                </div>
-
-                <!-- PILIHAN FORMAT DOWNLOAD -->
+                <!-- TOMBOL FORMAT GANDA (MP4 & MP3) -->
                 <div class="space-y-2 pt-1">
                     <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest text-center">Pilih Format Unduhan</p>
                     
@@ -102,7 +86,6 @@
                         <span class="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded text-emerald-300">MP3</span>
                     </button>
                 </div>
-
             </div>
 
         </div>
@@ -119,9 +102,10 @@
             const urlInput = document.getElementById('yt-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
             const previewContainer = document.getElementById('preview-container');
+            const viewArea = document.getElementById('media-view-area');
 
             if (!urlInput) {
-                alert('Masukkan link YouTube terlebih dahulu, bro!');
+                alert('Masukkan link YouTube dulu, bro!');
                 return;
             }
 
@@ -132,34 +116,21 @@
                 const result = await downloadYouTube(urlInput);
                 
                 if (result && result.status === "success") {
-    <script src="asset/js/all-tools-api.js"></script>
-    <script>
-        let currentVideoUrl = "";
-        let currentAudioUrl = "";
-
-        async function processYouTubeDownload() {
-            const urlInput = document.getElementById('yt-url').value.trim();
-            const loadingBox = document.getElementById('loading-box');
-            const previewContainer = document.getElementById('preview-container');
-
-            if (!urlInput) {
-                alert('Masukkan link YouTube terlebih dahulu, bro!');
-                return;
-            }
-
-            loadingBox.classList.remove('hidden');
-            previewContainer.classList.add('hidden');
-
-            try {
-                const result = await downloadYouTube(urlInput);
-                
-                if (result && result.status === "success") {
-                    document.getElementById('preview-title').innerText = result.title;
-                    document.getElementById('preview-thumb').src = result.thumbnail;
-                    
-                    // Masukkan ke variabel global agar terbaca oleh tombol download
                     currentVideoUrl = result.video_url;
                     currentAudioUrl = result.audio_url;
+
+                    // Render preview meniru struktur ig.html
+                    viewArea.innerHTML = `
+                        <div class="space-y-3 text-center">
+                            <div class="rounded-xl overflow-hidden bg-black aspect-video max-h-[200px] mx-auto flex items-center justify-center border border-purple-500/30">
+                                <img src="${result.thumbnail || ''}" class="w-full h-full object-cover" alt="Thumbnail">
+                            </div>
+                            <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3 text-left">
+                                <span class="text-[10px] text-gray-400 font-semibold uppercase">Judul Video:</span>
+                                <p class="text-xs text-gray-200 truncate mt-0.5">${result.title || "YouTube Video"}</p>
+                            </div>
+                        </div>
+                    `;
                     
                     loadingBox.classList.add('hidden');
                     previewContainer.classList.remove('hidden');
@@ -171,15 +142,8 @@
                 alert("Terjadi kesalahan: " + err.message);
             }
         }
-        
-        let currentVideoUrl = "";
-        let currentAudioUrl = "";
 
-        // Di bagian penarikan data (dalam processYouTubeDownload):
-        currentVideoUrl = result.video_url;
-        currentAudioUrl = result.audio_url;
-
-        // Di bagian fungsi downloadMedia (meniru persis ig.html):
+        // Fungsi download meniru persis pola komposisi ig.html
         async function downloadMedia(fileUrl, filename, buttonElement) {
             const targetUrl = fileUrl;
             if (!targetUrl) {
@@ -220,7 +184,6 @@
                 }, 2000);
             }
         }
-        
 
         fetch('components/footer-ai.html')
         .then(response => response.text())
