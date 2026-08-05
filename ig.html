@@ -140,25 +140,32 @@ async function downloadMedia(fileUrl, filename, buttonElement) {
 
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh Video...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
 
     try {
-        // Mengambil direct link video asli menggunakan API downloader backend publik secara senyap
-        const apiRes = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(targetUrl)}`);
-        const json = await apiRes.json();
-        
-        let directVideoUrl = "";
-        if (json && json.status && json.data && json.data.length > 0) {
-            directVideoUrl = json.data[0].url;
-        }
+        // Menggunakan API Cobalt/Co.wuk untuk menarik link video mentah .mp4 secara instan
+        const response = await fetch("https://co.wuk.sh/api/json", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                url: targetUrl,
+                vQuality: "max"
+            })
+        });
+
+        const data = await response.json();
+        const directVideoUrl = data.url || (data.picker && data.picker[0] && data.picker[0].url);
 
         if (!directVideoUrl) {
-            throw new Error("Gagal mendapatkan link file video.");
+            throw new Error("Gagal mendapatkan link video.");
         }
 
-        // Eksekusi download file langsung di halaman lu
-        const response = await fetch(directVideoUrl);
-        const blob = await response.blob();
+        // Eksekusi download file .mp4 langsung ke HP
+        const videoResponse = await fetch(directVideoUrl);
+        const blob = await videoResponse.blob();
         const blobUrl = window.URL.createObjectURL(blob);
         
         const a = document.createElement('a');
@@ -171,14 +178,8 @@ async function downloadMedia(fileUrl, filename, buttonElement) {
         window.URL.revokeObjectURL(blobUrl);
         document.body.removeChild(a);
     } catch (err) {
-        // Fallback jika fetch blob diblokir CORS, jalankan direct anchor download
-        const a = document.createElement('a');
-        a.href = targetUrl;
-        a.setAttribute('download', 'instagram_video.mp4');
-        a.setAttribute('target', '_blank');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        console.error("Download Error:", err);
+        alert("Gagal mengunduh video otomatis. Pastikan link publik.");
     } finally {
         setTimeout(() => {
             buttonElement.disabled = false;
@@ -186,6 +187,7 @@ async function downloadMedia(fileUrl, filename, buttonElement) {
         }, 2000);
     }
 }
+        
         
 
         fetch('components/footer-ai.html')
