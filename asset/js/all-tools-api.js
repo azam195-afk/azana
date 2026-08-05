@@ -36,40 +36,40 @@ async function downloadTikTok(url) {
     }
 }
 
-Async function downloadInstagram(url) {
-    If (!url) {
-        Throw new Error("URL Instagram tidak boleh kosong!");
+async function downloadInstagram(url) {
+    if (!url) {
+        throw new Error("URL Instagram tidak boleh kosong!");
     }
     
-    Try {
-        Let cleanUrl = url.trim();
+    try {
+        let cleanUrl = url.trim();
         
-        If (cleanUrl.includes('?')) {
-            CleanUrl = cleanUrl.split('?')[0];
+        if (cleanUrl.includes('?')) {
+            cleanUrl = cleanUrl.split('?')[0];
         }
 
-        If (!cleanUrl.includes("instagram.com")) {
-            Throw new Error("Bukan link Instagram yang valid.");
+        if (!cleanUrl.includes("instagram.com")) {
+            throw new Error("Bukan link Instagram yang valid.");
         }
 
-        Const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
+        const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
 
-        Return {
-            Status: "success",
-            Platform: "instagram",
-            Url: cleanUrl,
-            Type: "video",
-            Url_media: embedUrl,
-            Is_embed: true,
-            Author: "instagram_user"
+        return {
+            status: "success",
+            platform: "instagram",
+            url: cleanUrl,
+            type: "video",
+            url_media: embedUrl,
+            is_embed: true,
+            author: "instagram_user"
         };
     } catch (error) {
-        Console.error("Error Instagram:", error);
-        Return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
+        console.error("Error Instagram:", error);
+        return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
     }
 }
 
-Window.downloadInstagram = downloadInstagram;
+window.downloadInstagram = downloadInstagram;
 
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
