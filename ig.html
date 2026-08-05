@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Downloader - Azana Tools</title>
+    <title>YouTube Downloader - Azana Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -38,42 +38,71 @@
         <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2 text-sm font-semibold">
             <i class="fa-solid fa-arrow-left"></i> KEMBALI
         </a>
-        <span class="text-xs tracking-widest text-purple-400 uppercase font-bold">INSTAGRAM ROOM</span>
+        <span class="text-xs tracking-widest text-purple-400 uppercase font-bold">YOUTUBE ROOM</span>
     </header>
 
     <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
         <div class="card-glow rounded-3xl p-5 w-full">
             
             <div class="text-center mb-5">
-                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-black/40 border border-pink-500/30 flex items-center justify-center text-pink-400 text-2xl shadow-[0_0_15px_rgba(236,72,153,0.3)]">
-                    <i class="fa-brands fa-instagram"></i>
+                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-black/40 border border-red-500/30 flex items-center justify-center text-red-500 text-2xl shadow-[0_0_15px_rgba(239,68,68,0.3)]">
+                    <i class="fa-brands fa-youtube"></i>
                 </div>
-                <h1 class="text-xl font-extrabold tracking-wider mb-1">INSTAGRAM DOWNLOADER</h1>
-                <p class="text-[11px] text-gray-400">Download Reels, Video, Foto, atau Story IG tanpa watermark.</p>
+                <h1 class="text-xl font-extrabold tracking-wider mb-1">YOUTUBE DOWNLOADER</h1>
+                <p class="text-[11px] text-gray-400">Preview video, pilih format MP4 / MP3, lalu download.</p>
             </div>
 
             <div class="space-y-3 mb-4">
                 <div class="relative">
-                    <input type="text" id="ig-url" placeholder="Tempel link Instagram di sini..." 
-                        class="w-full bg-black/50 border border-purple-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-pink-400 transition">
+                    <input type="text" id="yt-url" placeholder="Tempel link YouTube di sini..." 
+                        class="w-full bg-black/50 border border-purple-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition">
                 </div>
-                <button onclick="processInstagramDownload()" class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-pink-600 hover:bg-pink-500 rounded-xl text-xs font-semibold text-white transition shadow-lg shadow-pink-600/30 cursor-pointer">
-                    <i class="fa-solid fa-magnifying-glass"></i> Cek / Proses Link
+                <button onclick="processYouTubeDownload()" id="btn-process" 
+                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-500 hover:to-purple-500 text-white shadow-lg shadow-purple-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Preview
                 </button>
             </div>
 
-            <div id="loading-box" class="hidden text-center py-6 text-pink-400 text-xs">
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data Instagram...
+            <div id="loading-box" class="hidden text-center py-6 text-cyan-400 text-xs">
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dari Nexray...
             </div>
 
-            <div id="preview-container" class="hidden mt-4 space-y-3">
-                <div id="media-view-area" class="w-full overflow-hidden rounded-2xl bg-black/40 border border-pink-500/30 flex justify-center">
+            <!-- PREVIEW CONTAINER -->
+            <div id="preview-container" class="hidden space-y-4 pt-2">
+                
+                <!-- THUMBNAIL PREVIEW -->
+                <div class="relative w-full rounded-2xl overflow-hidden bg-black border border-purple-500/30 shadow-inner aspect-video flex items-center justify-center">
+                    <img id="preview-thumb" class="w-full h-full object-cover" alt="Thumbnail">
+                </div>
+
+                <!-- INFO JUDUL & COPY -->
+                <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3.5 space-y-2.5">
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-[10px] text-gray-400 font-semibold uppercase">Judul Video:</span>
+                            <button onclick="copyTitle()" class="text-[10px] bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 text-purple-200 px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer">
+                                <i class="fa-solid fa-copy"></i> <span id="copy-text">Copy Title</span>
+                            </button>
+                        </div>
+                        <p id="preview-title" class="text-xs text-gray-200 leading-relaxed bg-black/30 p-2.5 rounded-xl border border-white/5 max-h-24 overflow-y-auto">Judul video...</p>
                     </div>
+                </div>
 
-                <button onclick="downloadMedia(currentMediaUrl, 'instagram_video.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-pink-600/30 hover:bg-pink-600/50 border border-pink-500/40 rounded-xl text-xs font-semibold text-pink-200 transition cursor-pointer">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-download text-pink-400"></i> Download Media (Video/Foto)</span>
-                    <span class="text-[10px] bg-pink-500/20 px-2 py-0.5 rounded text-pink-300">HD</span>
-                </button>
+                <!-- PILIHAN FORMAT DOWNLOAD -->
+                <div class="space-y-2 pt-1">
+                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest text-center">Pilih Format Unduhan</p>
+                    
+                    <button onclick="downloadMedia(currentVideoUrl, 'youtube_video.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-red-600/30 hover:bg-red-600/50 border border-red-500/40 rounded-xl text-xs font-semibold text-red-200 transition cursor-pointer">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-video text-red-400"></i> Download MP4 (Video)</span>
+                        <span class="text-[10px] bg-red-500/20 px-2 py-0.5 rounded text-red-300">MP4</span>
+                    </button>
+
+                    <button onclick="downloadMedia(currentAudioUrl, 'youtube_audio.mp3', this)" class="w-full flex items-center justify-between py-3 px-4 bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 rounded-xl text-xs font-semibold text-emerald-200 transition cursor-pointer">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-music text-emerald-400"></i> Download MP3 (Audio)</span>
+                        <span class="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded text-emerald-300">MP3</span>
+                    </button>
+                </div>
+
             </div>
 
         </div>
@@ -83,93 +112,98 @@
 
     <script src="asset/js/all-tools-api.js"></script>
     <script>
+        let currentVideoUrl = "";
+        let currentAudioUrl = "";
 
-        let currentDirectUrl = "";
+        async function processYouTubeDownload() {
+            const urlInput = document.getElementById('yt-url').value.trim();
+            const loadingBox = document.getElementById('loading-box');
+            const previewContainer = document.getElementById('preview-container');
 
-async function processInstagramDownload() {
-    const urlInput = document.getElementById('ig-url').value.trim();
-    const loadingBox = document.getElementById('loading-box');
-    const previewContainer = document.getElementById('preview-container');
-    const viewArea = document.getElementById('media-view-area');
+            if (!urlInput) {
+                alert('Masukkan link YouTube terlebih dahulu, bro!');
+                return;
+            }
 
-    if (!urlInput) {
-        alert('Masukkan link Instagram dulu, bro!');
-        return;
-    }
+            loadingBox.classList.remove('hidden');
+            previewContainer.classList.add('hidden');
 
-    loadingBox.classList.remove('hidden');
-    previewContainer.classList.add('hidden');
-
-    try {
-        const result = await downloadInstagram(urlInput);
-        
-        if (result && result.status === "success") {
-            currentDirectUrl = result.url_media;
-
-            // Render video player asli di web lu (mirip web temen lu)
-            viewArea.innerHTML = `
-                <div class="p-4 text-center space-y-3">
-                    <div class="rounded-xl overflow-hidden bg-black aspect-[9/16] max-h-[350px] mx-auto flex items-center justify-center">
-                        <video src="${currentDirectUrl}" controls class="w-full h-full object-contain" poster="${result.thumbnail || ''}"></video>
-                    </div>
-                    <p class="text-xs text-gray-400">Instagram Video / Reels</p>
-                </div>
-            `;
-            
-            loadingBox.classList.add('hidden');
-            previewContainer.classList.remove('hidden');
-        } else {
-            throw new Error(result?.message || "Gagal mengambil data.");
+            try {
+                const result = await downloadYouTube(urlInput);
+                
+                if (result && result.status === "success") {
+                    document.getElementById('preview-title').innerText = result.title;
+                    document.getElementById('preview-thumb').src = result.thumbnail;
+                    
+                    // Simpan link mentah ke variabel global mirip ig.html
+                    currentVideoUrl = result.video_url;
+                    currentAudioUrl = result.audio_url;
+                    
+                    loadingBox.classList.add('hidden');
+                    previewContainer.classList.remove('hidden');
+                } else {
+                    throw new Error(result?.message || "Gagal mengambil data.");
+                }
+            } catch (err) {
+                loadingBox.classList.add('hidden');
+                alert("Terjadi kesalahan: " + err.message);
+            }
         }
-    } catch (err) {
-        loadingBox.classList.add('hidden');
-        alert("Terjadi kesalahan: " + err.message);
-    }
-}
 
-async function downloadMedia(fileUrl, filename, buttonElement) {
-    const targetUrl = currentDirectUrl || fileUrl;
-    if (!targetUrl) {
-        alert("Link unduhan tidak tersedia!");
-        return;
-    }
+        // Fungsi download meniru persis pola ig.html menggunakan Blob
+        async function downloadMedia(fileUrl, filename, buttonElement) {
+            const targetUrl = fileUrl;
+            if (!targetUrl) {
+                alert("Link unduhan untuk format ini tidak tersedia!");
+                return;
+            }
 
-    const originalContent = buttonElement.innerHTML;
-    buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
 
-    try {
-        // Mengunduh file langsung melalui blob agar browser langsung mendownload filenya
-        const response = await fetch(targetUrl);
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = 'instagram_video.mp4';
-        document.body.appendChild(a);
-        a.click();
-        
-        window.URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(a);
-    } catch (err) {
-        // Fallback jika diblokir CORS, buka link CDN di tab baru agar langsung terdownload
-        const a = document.createElement('a');
-        a.href = targetUrl;
-        a.setAttribute('download', 'instagram_video.mp4');
-        a.setAttribute('target', '_blank');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 2000);
-    }
-}
-        
+            try {
+                const response = await fetch(targetUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                const a = document.createElement('a');
+                a.href = targetUrl;
+                a.setAttribute('download', filename);
+                a.setAttribute('target', '_blank');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
+        }
+
+        function copyTitle() {
+            const titleText = document.getElementById('preview-title').innerText;
+            navigator.clipboard.writeText(titleText).then(() => {
+                const copyTextSpan = document.getElementById('copy-text');
+                copyTextSpan.innerText = "Copied!";
+                setTimeout(() => {
+                    copyTextSpan.innerText = "Copy Title";
+                }, 2000);
+            }).catch(err => {
+                alert("Gagal menyalin judul!");
+            });
+        }
 
         fetch('components/footer-ai.html')
         .then(response => response.text())
@@ -188,7 +222,7 @@ async function downloadMedia(fileUrl, filename, buttonElement) {
       window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
       resizeCanvas();
       const particlesArray = [];
-      const colors = ['#ec4899', '#bc13fe'];
+      const colors = ['#00f2fe', '#bc13fe'];
       class Particle {
         constructor() {
           this.x = Math.random() * canvas.width;
