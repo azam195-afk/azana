@@ -135,6 +135,7 @@
                     document.getElementById('preview-title').innerText = result.title;
                     document.getElementById('preview-thumb').src = result.thumbnail;
                     
+                    // Simpan link mentah ke variabel global mirip ig.html
                     currentVideoUrl = result.video_url;
                     currentAudioUrl = result.audio_url;
                     
@@ -149,51 +150,60 @@
             }
         }
 
-        // Fungsi unduh paksa lewat blob/link agar tidak nyangkut keputer di browser
-async function downloadMedia(fileUrl, filename, buttonElement) {
-    if (!fileUrl) {
-        alert("Link unduhan untuk format ini tidak tersedia!");
-        return;
-    }
+        // Fungsi download meniru persis pola ig.html menggunakan Blob
+        async function downloadMedia(fileUrl, filename, buttonElement) {
+            const targetUrl = fileUrl;
+            if (!targetUrl) {
+                alert("Link unduhan untuk format ini tidak tersedia!");
+                return;
+            }
 
-    const originalContent = buttonElement.innerHTML;
-    buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
 
-    try {
-        // Menggunakan teknik fetch melalui CORS Proxy aman agar tidak ke-redirect/play di browser
-        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(fileUrl);
-        const response = await fetch(proxyUrl);
-        const blob = await response.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        
-        window.URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(a);
-    } catch (err) {
-        // Fallback jika proxy gagal, paksa unduh langsung
-        const a = document.createElement('a');
-        a.href = fileUrl;
-        a.download = filename;
-        a.setAttribute('download', filename);
-        a.setAttribute('target', '_blank');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 2500);
-    }
-}
-        
+            try {
+                const response = await fetch(targetUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                const a = document.createElement('a');
+                a.href = targetUrl;
+                a.setAttribute('download', filename);
+                a.setAttribute('target', '_blank');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
+        }
+
+        function copyTitle() {
+            const titleText = document.getElementById('preview-title').innerText;
+            navigator.clipboard.writeText(titleText).then(() => {
+                const copyTextSpan = document.getElementById('copy-text');
+                copyTextSpan.innerText = "Copied!";
+                setTimeout(() => {
+                    copyTextSpan.innerText = "Copy Title";
+                }, 2000);
+            }).catch(err => {
+                alert("Gagal menyalin judul!");
+            });
+        }
 
         fetch('components/footer-ai.html')
         .then(response => response.text())
