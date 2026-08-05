@@ -43,15 +43,26 @@ async function downloadInstagram(url) {
     
     try {
         const cleanUrl = url.trim();
-        const apiUrl = `https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`;
+        const apiHost = "instagram-downloader38.p.rapidapi.com";
+        const apiKey = "9cbf8bd8d4msh68c9733fe4041d3p14ea1fjsnd5afc4aba406";
         
-        const response = await fetch(apiUrl);
+        const targetUrl = `https://${apiHost}/download?url=${encodeURIComponent(cleanUrl)}`;
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+        
+        const response = await fetch(proxyUrl, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'x-rapidapi-host': apiHost,
+                'x-rapidapi-key': apiKey
+            }
+        });
+        
         const resJson = await response.json();
 
-        if (resJson && resJson.status && resJson.data && resJson.data.length > 0) {
-            const mediaItem = resJson.data[0];
-            const mediaUrl = mediaItem.url;
-            const isVideo = mediaItem.type === "video" || mediaUrl.includes(".mp4");
+        if (resJson && (resJson.url || resJson.download_url || resJson.result || resJson.media)) {
+            const mediaUrl = resJson.url || resJson.download_url || resJson.result || (resJson.media && resJson.media[0]?.url);
+            const isVideo = !mediaUrl.includes(".jpg") && !mediaUrl.includes(".png");
 
             return {
                 status: "success",
@@ -59,14 +70,14 @@ async function downloadInstagram(url) {
                 url: cleanUrl,
                 type: isVideo ? "video" : "image",
                 url_media: mediaUrl,
-                author: "instagram_user"
+                author: resJson.author || "instagram_user"
             };
         } else {
-            throw new Error("Gagal mengambil data dari server Instagram.");
+            throw new Error("Gagal mengambil data dari RapidAPI.");
         }
     } catch (error) {
         console.error("Error Instagram API:", error);
-        return { status: "error", message: "Gagal mengambil data Instagram. Pastikan link publik." };
+        return { status: "error", message: "Gagal mengambil data Instagram. Periksa link publiknya." };
     }
 }
 
