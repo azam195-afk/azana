@@ -4,7 +4,7 @@ const YT_API_KEY = "";
 const SPOTIFY_API_KEY = ""; 
 
 /**
- * FUNGSI TIKTOK DOWNLOADER (Stabil & Bypass CORS)
+ * FUNGSI TIKTOK DOWNLOADER (Menggunakan TikWM API yang stabil)
  */
 async function downloadTikTok(url) {
     if (!url) {
@@ -12,34 +12,30 @@ async function downloadTikTok(url) {
     }
     
     try {
-        const targetUrl = `https://tdownv4.sl-bjs.workers.dev/?down=${encodeURIComponent(url)}`;
+        const targetUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
         const apiUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
         
         const response = await fetch(apiUrl);
-        const data = await response.json();
+        const resJson = await response.json();
 
-        if (data && (data.download_url || data.video_url || data.result)) {
-            const videoLink = data.download_url || data.video_url || data.result;
-            const audioLink = data.audio_url || data.music;
-            const authorName = data.author?.nickname || data.author?.username || "Creator TikTok";
-            const videoTitle = data.title || "Video TikTok Tanpa Watermark";
-
+        if (resJson.code === 0 && resJson.data) {
+            const data = resJson.data;
             return {
                 status: "success",
                 platform: "tiktok",
                 url: url,
-                title: videoTitle,
-                author: authorName,
-                video_hd: videoLink,       
-                video_normal: videoLink,   
-                audio_mp3: audioLink       
+                title: data.title || "Video TikTok Tanpa Watermark",
+                author: data.author?.nickname || "Creator",
+                video_hd: data.hdplay || data.play, 
+                video_normal: data.play,
+                audio_mp3: data.music
             };
         } else {
-            throw new Error("Gagal mengambil data dari server.");
+            throw new Error(resJson.msg || "Gagal mengambil data dari server TikTok.");
         }
     } catch (error) {
         console.error("Error TikTok API:", error);
-        return { status: "error", message: "Gagal mengambil data. Pastikan link valid." };
+        return { status: "error", message: error.message };
     }
 }
 
