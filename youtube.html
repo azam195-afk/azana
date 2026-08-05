@@ -156,16 +156,15 @@ async function downloadMedia(fileUrl, filename, buttonElement) {
     buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
 
     try {
-        // Menggunakan CORS Proxy untuk mengunduh stream data mentah ke dalam memori browser (Blob)
-        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
+        // Menggunakan CORS proxy alternatif khusus video agar stream MP4 tertangkap murni sebagai file
+        const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl);
         const response = await fetch(proxyUrl);
         
-        if (!response.ok) throw new Error("Gagal mengunduh stream file.");
+        if (!response.ok) throw new Error("Stream fetch gagal.");
 
         const blob = await response.blob();
         const blobUrl = window.URL.createObjectURL(blob);
         
-        // Memaksa trigger download file murni
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = blobUrl;
@@ -176,15 +175,15 @@ async function downloadMedia(fileUrl, filename, buttonElement) {
         window.URL.revokeObjectURL(blobUrl);
         document.body.removeChild(a);
     } catch (err) {
-        // Jika proxy gagal, gunakan trik paksa unduh dengan atribut download tanpa membuka tab baru player
-        const a = document.createElement('a');
-        a.href = targetUrl;
-        a.download = filename;
-        a.setAttribute('download', filename);
-        // Jangan gunakan target='_blank' agar tidak melempar ke tab pemutar media baru
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        // Fallback aman tanpa membuka tab baru (menggunakan invisible iframe download trigger)
+        let iframe = document.getElementById('hidden-download-iframe');
+        if (!iframe) {
+            iframe = document.createElement('iframe');
+            iframe.id = 'hidden-download-iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+        }
+        iframe.src = targetUrl;
     } finally {
         setTimeout(() => {
             buttonElement.disabled = false;
