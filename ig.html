@@ -126,51 +126,53 @@
         }
 
         async function downloadMedia(fileUrl, filename, buttonElement) {
-            if (!fileUrl) {
-                alert("Link unduhan tidak tersedia!");
-                return;
-            }
+    if (!fileUrl) {
+        alert("Link unduhan tidak tersedia!");
+        return;
+    }
 
-            // Jika formatnya embed Instagram, buka di tab baru agar aman
-            if (fileUrl.includes('/embed')) {
-                window.open(fileUrl.replace('/embed', ''), '_blank');
-                return;
-            }
+    // Jika link masih berbentuk embed, ambil link dasar tanpa embed-nya
+    let mediaLink = fileUrl;
+    if (mediaLink.includes('/embed')) {
+        mediaLink = mediaLink.replace(/\/embed\/?$/, '');
+    }
 
-            const originalContent = buttonElement.innerHTML;
-            buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+    const originalContent = buttonElement.innerHTML;
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
 
-            try {
-                const response = await fetch(fileUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
-                const a = document.createElement('a');
-                a.href = fileUrl;
-                a.download = filename;
-                a.setAttribute('download', filename);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } finally {
-                setTimeout(() => {
-                    buttonElement.disabled = false;
-                    buttonElement.innerHTML = originalContent;
-                }, 2500);
-            }
+    try {
+        // Menggunakan fetch blob agar browser langsung mendownload file mentahnya
+        const response = await fetch(mediaLink);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+    } catch (err) {
+        // Fallback jika diblokir kebijakan CORS browser, arahkan ke tab baru untuk simpan manual
+        const a = document.createElement('a');
+        a.href = mediaLink;
+        a.target = '_blank';
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } finally {
+        setTimeout(() => {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalContent;
+        }, 2500);
+    }
         }
-
+        
         fetch('components/footer-ai.html')
         .then(response => response.text())
         .then(data => {
