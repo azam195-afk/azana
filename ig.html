@@ -140,52 +140,15 @@ async function downloadMedia(fileUrl, filename, buttonElement) {
 
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses Unduhan...`;
 
-    try {
-        // Menggunakan API Cobalt/Co.wuk untuk menarik link video mentah .mp4 secara instan
-        const response = await fetch("https://co.wuk.sh/api/json", {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                url: targetUrl,
-                vQuality: "max"
-            })
-        });
-
-        const data = await response.json();
-        const directVideoUrl = data.url || (data.picker && data.picker[0] && data.picker[0].url);
-
-        if (!directVideoUrl) {
-            throw new Error("Gagal mendapatkan link video.");
-        }
-
-        // Eksekusi download file .mp4 langsung ke HP
-        const videoResponse = await fetch(directVideoUrl);
-        const blob = await videoResponse.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
+    // Menggunakan layanan instan savefrom/SnapInsta yang langsung mendeteksi link dan memicu download
+    setTimeout(() => {
+        const downloadWindow = window.open(`https://en.savefrom.net/1-instagram-video-downloader-36/?url=${encodeURIComponent(targetUrl)}`, '_blank');
         
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = 'instagram_video.mp4';
-        document.body.appendChild(a);
-        a.click();
-        
-        window.URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(a);
-    } catch (err) {
-        console.error("Download Error:", err);
-        alert("Gagal mengunduh video otomatis. Pastikan link publik.");
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 2000);
-    }
+        buttonElement.disabled = false;
+        buttonElement.innerHTML = originalContent;
+    }, 1000);
 }
         
         
