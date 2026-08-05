@@ -127,7 +127,7 @@
             }
                 }
         
-            async function downloadMedia(fileUrl, filename, buttonElement) {
+                    async function downloadMedia(fileUrl, filename, buttonElement) {
             if (!fileUrl) {
                 alert("Link unduhan tidak tersedia!");
                 return;
@@ -137,15 +137,14 @@
             buttonElement.disabled = true;
             buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Membuka Unduhan...`;
 
-            // Langsung arahkan ke SnapInsta di tab baru agar user bisa langsung klik download video aslinya
+            // Menggunakan domain downloader utama yang stabil dan aktif
             setTimeout(() => {
-                window.open(`https://snapinsta.app/id?url=${encodeURIComponent(fileUrl)}`, '_blank');
+                window.open(`https://en.savefrom.net/1-instagram-video-downloader-36/?url=${encodeURIComponent(fileUrl)}`, '_blank');
                 buttonElement.disabled = false;
                 buttonElement.innerHTML = originalContent;
             }, 1000);
-            }
+                    }
         
-
 
 
         fetch('components/footer-ai.html')
