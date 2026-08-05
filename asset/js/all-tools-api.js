@@ -92,28 +92,25 @@ async function downloadYouTube(url) {
     try {
         let cleanUrl = url.trim();
 
-        // Tembak endpoint AIO (untuk video MP4) dan ytmp3 (untuk audio MP3) secara bersamaan
-        const [resAio, resMp3] = await Promise.all([
-            fetch(`https://api.nexray.eu.cc/downloader/aio?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null),
-            fetch(`https://api.nexray.eu.cc/downloader/ytmp3?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null)
+        // Tembak endpoint v1 ytmp4 dan ytmp3 secara bersamaan
+        const [resMp4, resMp3] = await Promise.all([
+            fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(cleanUrl)}&resolusi=1080`).then(r => r.json()).catch(() => null),
+            fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null)
         ]);
 
         let videoUrl = "";
+        let audioUrl = "";
         let title = "YouTube Video";
         let thumbnail = "";
 
-        // Ambil data video dari AIO
-        if (resAio && resAio.status === true && resAio.result) {
-            const item = Array.isArray(resAio.result) ? resAio.result[0] : resAio.result;
-            videoUrl = item.url || item.download || "";
-            title = item.title || title;
-            thumbnail = item.thumbnail || "";
+        if (resMp4 && resMp4.status === true && resMp4.result) {
+            videoUrl = resMp4.result.url || "";
+            title = resMp4.result.title || title;
+            thumbnail = resMp4.result.thumbnail || "";
         }
 
-        let audioUrl = "";
-        // Ambil data audio dari ytmp3
         if (resMp3 && resMp3.status === true && resMp3.result) {
-            audioUrl = resMp3.result.url || resMp3.result.download || "";
+            audioUrl = resMp3.result.url || "";
             if (title === "YouTube Video" && resMp3.result.title) {
                 title = resMp3.result.title;
             }
@@ -123,7 +120,7 @@ async function downloadYouTube(url) {
         }
 
         if (!videoUrl && !audioUrl) {
-            throw new Error("Gagal mengambil data dari server Nexray.");
+            throw new Error("Gagal mengambil link unduhan dari server.");
         }
 
         return {
