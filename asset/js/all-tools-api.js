@@ -1,7 +1,7 @@
-const TIKTOK_API_KEY = ""; // Kosongkan karena pakai TikWM public API gratis
-const IG_API_KEY = "";     // PASTE API KEY INSTAGRAM DISINI
-const YT_API_KEY = "";     // PASTE API KEY YOUTUBE DISINI
-const SPOTIFY_API_KEY = ""; // PASTE API KEY SPOTIFY DISINI
+const TIKTOK_API_KEY = ""; 
+const IG_API_KEY = "";     
+const YT_API_KEY = "";     
+const SPOTIFY_API_KEY = ""; 
 
 async function downloadTikTok(url) {
     if (!url) {
@@ -9,10 +9,7 @@ async function downloadTikTok(url) {
     }
     
     try {
-        // Menggunakan corsproxy.io atau allorigins supaya lolos blokir browser
-        const targetUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
-        const apiUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
-        
+        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
         const response = await fetch(apiUrl);
         const resJson = await response.json();
 
@@ -36,32 +33,9 @@ async function downloadTikTok(url) {
     }
 }
 
-async function downloadInstagram(url) {
-    // TODO: Isi endpoint third-party Instagram downloader di sini.
-    return { url, status: "pending" };
-}
-
-async function downloadYouTube(url) {
-    // TODO: Isi endpoint third-party YouTube downloader di sini.
-    return { url, status: "pending" };
-}
-
-async function downloadSpotify(url) {
-    // TODO: Isi endpoint third-party Spotify downloader di sini.
-    return { url, status: "pending" };
-}
-
-function generateSertifikatLucu(payload = {}) {
-    // TODO: Tambahkan logic generator sertifikat lucu.
-    return { payload, status: "pending" };
-}
-
-function generateBrat(payload = {}) {
-    // TODO: Tambahkan logic BRAT generator.
-    return { payload, status: "pending" };
-}
-
-function generateIqc(payload = {}) {
-    // TODO: Tambahkan logic IQC generator.
-    return { payload, status: "pending" };
-}
+async function downloadInstagram(url) { return { url, status: "pending" }; }
+async function downloadYouTube(url) { return { url, status: "pending" }; }
+async function downloadSpotify(url) { return { url, status: "pending" }; }
+function generateSertifikatLucu(payload = {}) { return { payload, status: "pending" }; }
+function generateBrat(payload = {}) { return { payload, status: "pending" }; }
+function generateIqc(payload = {}) { return { payload, status: "pending" }; }
