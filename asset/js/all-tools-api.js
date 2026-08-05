@@ -59,10 +59,26 @@ async function downloadInstagram(url) {
         });
         
         const resJson = await response.json();
+        console.log("Respon RapidAPI:", resJson); // Buat dipantau di console browser (F12)
 
-        if (resJson && (resJson.url || resJson.download_url || resJson.result || resJson.media)) {
-            const mediaUrl = resJson.url || resJson.download_url || resJson.result || (resJson.media && resJson.media[0]?.url);
-            const isVideo = !mediaUrl.includes(".jpg") && !mediaUrl.includes(".png");
+        // Deteksi berbagai kemungkinan struktur JSON dari RapidAPI
+        let mediaUrl = "";
+        if (typeof resJson === "string") {
+            mediaUrl = resJson;
+        } else if (resJson.url) {
+            mediaUrl = resJson.url;
+        } else if (resJson.download_url) {
+            mediaUrl = resJson.download_url;
+        } else if (resJson.result) {
+            mediaUrl = typeof resJson.result === "string" ? resJson.result : (resJson.result.url || resJson.result[0]?.url);
+        } else if (resJson.data) {
+            mediaUrl = typeof resJson.data === "string" ? resJson.data : (resJson.data.url || resJson.data[0]?.url || resJson.data[0]);
+        } else if (Array.isArray(resJson) && resJson.length > 0) {
+            mediaUrl = resJson[0].url || resJson[0];
+        }
+
+        if (mediaUrl) {
+            const isVideo = !mediaUrl.includes(".jpg") && !mediaUrl.includes(".png") && !mediaUrl.includes(".jpeg");
 
             return {
                 status: "success",
@@ -70,10 +86,10 @@ async function downloadInstagram(url) {
                 url: cleanUrl,
                 type: isVideo ? "video" : "image",
                 url_media: mediaUrl,
-                author: resJson.author || "instagram_user"
+                author: resJson.author || resJson.username || "instagram_user"
             };
         } else {
-            throw new Error("Gagal mengambil data dari RapidAPI.");
+            throw new Error("Format respon API tidak dikenali.");
         }
     } catch (error) {
         console.error("Error Instagram API:", error);
