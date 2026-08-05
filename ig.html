@@ -140,17 +140,26 @@ async function downloadMedia(fileUrl, filename, buttonElement) {
 
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses Unduhan...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
 
-    // Menggunakan layanan instan savefrom/SnapInsta yang langsung mendeteksi link dan memicu download
-    setTimeout(() => {
-        const downloadWindow = window.open(`https://en.savefrom.net/1-instagram-video-downloader-36/?url=${encodeURIComponent(targetUrl)}`, '_blank');
-        
-        buttonElement.disabled = false;
-        buttonElement.innerHTML = originalContent;
-    }, 1000);
+    try {
+        // Membuat elemen link unduhan langsung di halaman web lu sendiri
+        const a = document.createElement('a');
+        a.href = targetUrl;
+        a.setAttribute('download', 'instagram_video.mp4');
+        a.setAttribute('target', '_self');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } catch (err) {
+        window.location.href = targetUrl;
+    } finally {
+        setTimeout(() => {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalContent;
+        }, 2000);
+    }
 }
-        
         
 
         fetch('components/footer-ai.html')
