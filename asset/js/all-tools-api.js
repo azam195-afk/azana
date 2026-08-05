@@ -51,28 +51,33 @@ async function downloadInstagram(url) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        // Menggunakan API pihak ketiga publik yang langsung memberikan direct link file media
-        const response = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`);
+        const response = await fetch(`https://instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com/get_info?url=${encodeURIComponent(cleanUrl)}`, {
+            method: "GET",
+            headers: {
+                "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY", 
+                "X-RapidAPI-Host": "instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com"
+            }
+        });
+
         const json = await response.json();
+        
+        // Menyesuaikan struktur data direct link dari RapidAPI
+        let mediaUrl = json.video_url || json.url || (json.media && json.media[0]);
 
-        if (json && json.status && json.data && json.data.length > 0) {
-            const mediaData = json.data[0];
-            const mediaUrl = mediaData.url;
-            const isVideo = mediaData.type === "video" || mediaUrl.includes(".mp4");
-
+        if (mediaUrl) {
             return {
                 status: "success",
                 platform: "instagram",
-                type: isVideo ? "video" : "image",
+                type: "video",
                 url_media: mediaUrl,
                 is_embed: false
             };
         } else {
-            throw new Error("Gagal mendapatkan link media. Pastikan akun tidak diprivate.");
+            throw new Error("Gagal mengambil media dari RapidAPI.");
         }
     } catch (error) {
-        console.error("Error Instagram:", error);
-        return { status: "error", message: "Gagal memproses link. Coba gunakan tautan publik lainnya." };
+        console.error("API Error:", error);
+        return { status: "error", message: "Gagal memproses link dengan RapidAPI." };
     }
 }
 
