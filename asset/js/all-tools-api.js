@@ -51,36 +51,31 @@ async function downloadInstagram(url) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        const response = await fetch(`https://instagram-downloader38.p.rapidapi.com/dl?url=${encodeURIComponent(cleanUrl)}`, {
-            method: "GET",
-            headers: {
-                "x-rapidapi-key": "9cbf8bd8d4msh68c9733fe4041d3p14ea1fjsnd5afc4aba406",
-                "x-rapidapi-host": "instagram-downloader38.p.rapidapi.com"
-            }
-        });
-
+        const response = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`);
         const json = await response.json();
-        let mediaUrl = json.url || json.video_url || (json.data && (json.data.url || json.data[0]));
 
-        if (mediaUrl) {
+        if (json && json.status && json.data && json.data.length > 0) {
+            const mediaData = json.data[0];
+            const mediaUrl = mediaData.url;
+            const isVideo = mediaData.type === "video" || mediaUrl.includes(".mp4");
+
             return {
                 status: "success",
                 platform: "instagram",
-                type: "video",
+                type: isVideo ? "video" : "image",
                 url_media: mediaUrl,
                 is_embed: false
             };
         } else {
-            throw new Error("Gagal mengambil media dari RapidAPI.");
+            throw new Error("Gagal mengambil data dari server. Pastikan link publik.");
         }
     } catch (error) {
         console.error("API Error:", error);
-        return { status: "error", message: "Gagal memproses link dengan RapidAPI." };
+        return { status: "error", message: "Gagal memproses link Instagram." };
     }
 }
 
 window.downloadInstagram = downloadInstagram;
-
 
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
