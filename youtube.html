@@ -132,10 +132,32 @@
                 const result = await downloadYouTube(urlInput);
                 
                 if (result && result.status === "success") {
+    <script src="asset/js/all-tools-api.js"></script>
+    <script>
+        let currentVideoUrl = "";
+        let currentAudioUrl = "";
+
+        async function processYouTubeDownload() {
+            const urlInput = document.getElementById('yt-url').value.trim();
+            const loadingBox = document.getElementById('loading-box');
+            const previewContainer = document.getElementById('preview-container');
+
+            if (!urlInput) {
+                alert('Masukkan link YouTube terlebih dahulu, bro!');
+                return;
+            }
+
+            loadingBox.classList.remove('hidden');
+            previewContainer.classList.add('hidden');
+
+            try {
+                const result = await downloadYouTube(urlInput);
+                
+                if (result && result.status === "success") {
                     document.getElementById('preview-title').innerText = result.title;
                     document.getElementById('preview-thumb').src = result.thumbnail;
                     
-                    // Simpan link mentah ke variabel global mirip ig.html
+                    // Masukkan ke variabel global agar terbaca oleh tombol download
                     currentVideoUrl = result.video_url;
                     currentAudioUrl = result.audio_url;
                     
@@ -150,9 +172,11 @@
             }
         }
 
-        // Fungsi download meniru persis pola ig.html menggunakan Blob
+        // Fungsi download meniru persis pola ig.html
         async function downloadMedia(fileUrl, filename, buttonElement) {
-            const targetUrl = fileUrl;
+            // Jika argumen kosong, ambil dari variabel global
+            const targetUrl = fileUrl || (filename.includes('video') ? currentVideoUrl : currentAudioUrl);
+            
             if (!targetUrl) {
                 alert("Link unduhan untuk format ini tidak tersedia!");
                 return;
