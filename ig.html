@@ -67,13 +67,16 @@
                 <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data Instagram...
             </div>
 
-            <!-- PREVIEW CONTAINER -->
-            <div id="preview-container" class="hidden space-y-4 pt-2">
-                
-                <div class="relative w-full rounded-2xl overflow-hidden bg-black border border-purple-500/30 shadow-inner flex items-center justify-center">
-                    <video id="preview-video" class="w-full h-auto max-h-[380px] object-contain mx-auto hidden" controls playsinline></video>
-                    <img id="preview-image" class="w-full h-auto max-h-[380px] object-contain mx-auto hidden" alt="Preview Image">
-                </div>
+            <!-- Ganti bagian kontainer preview hasil download dengan logika penampil iframe ini -->
+<div id="preview-container" class="hidden mt-4 p-4 bg-zinc-900/80 border border-pink-500/30 rounded-2xl">
+    <div id="media-view-area" class="w-full overflow-hidden rounded-xl mb-3 flex justify-center">
+        <!-- Iframe akan dimuat secara dinamis di sini -->
+    </div>
+    <p id="media-author" class="text-xs text-pink-300 font-medium mb-3 text-center"></p>
+    <a id="download-btn-link" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-pink-600 hover:bg-pink-500 rounded-xl text-xs font-semibold text-white transition shadow-lg shadow-pink-600/30">
+        <i class="fa-solid fa-external-link"></i> Buka / Simpan Media di Instagram
+    </a>
+</div>
 
                 <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3.5 space-y-2.5">
                     <div class="flex items-center gap-2.5">
@@ -105,6 +108,16 @@
 
     <script src="asset/js/all-tools-api.js"></script>
     <script>
+        // Contoh penanganan di script halaman ig.html saat data berhasil didapat
+if (result.status === "success") {
+    const viewArea = document.getElementById("media-view-area");
+    if (result.is_embed) {
+        viewArea.innerHTML = `<iframe src="${result.url_media}" class="w-full h-[450px] rounded-xl border-0" scrolling="no" allowtransparency="true"></iframe>`;
+    }
+    document.getElementById("download-btn-link.href}").href = result.url;
+    document.getElementById("preview-container").classList.remove("hidden");
+}
+        
         let currentMediaUrl = "";
 
         async function processInstagramDownload() {
