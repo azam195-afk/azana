@@ -43,8 +43,6 @@ async function downloadInstagram(url) {
     
     try {
         let cleanUrl = url.trim();
-        
-        // Membersihkan query parameter yang tidak perlu agar bersih
         if (cleanUrl.includes('?')) {
             cleanUrl = cleanUrl.split('?')[0];
         }
@@ -53,26 +51,33 @@ async function downloadInstagram(url) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        // Membentuk URL embed publik resmi Instagram yang dijamin tembus tanpa blokir CORS
-        const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
+        // Menggunakan API pihak ketiga publik yang langsung memberikan direct link file media
+        const response = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`);
+        const json = await response.json();
 
-        return {
-            status: "success",
-            platform: "instagram",
-            url: cleanUrl,
-            type: "video",
-            url_media: embedUrl,
-            is_embed: true,
-            author: "instagram_user"
-        };
+        if (json && json.status && json.data && json.data.length > 0) {
+            const mediaData = json.data[0];
+            const mediaUrl = mediaData.url;
+            const isVideo = mediaData.type === "video" || mediaUrl.includes(".mp4");
+
+            return {
+                status: "success",
+                platform: "instagram",
+                type: isVideo ? "video" : "image",
+                url_media: mediaUrl,
+                is_embed: false
+            };
+        } else {
+            throw new Error("Gagal mendapatkan link media. Pastikan akun tidak diprivate.");
+        }
     } catch (error) {
         console.error("Error Instagram:", error);
-        return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
+        return { status: "error", message: "Gagal memproses link. Coba gunakan tautan publik lainnya." };
     }
 }
 
-// Mendaftarkan fungsi secara global agar terbaca sempurna oleh ig.html
 window.downloadInstagram = downloadInstagram;
+
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
 async function downloadSpotify(url) { return { url, status: "pending" }; }
