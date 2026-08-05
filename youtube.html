@@ -263,35 +263,37 @@
                 }, 2000);
             }
         }
-        async function triggerDownloadMP3(buttonElement) {
-            if (!audioDownloadUrl) {
-                alert("Link audio belum tersedia!");
+        
+        async function triggerDownloadMP3(fileUrl, filename, buttonElement) {
+            const targetUrl = fileUrl;
+            if (!targetUrl) {
+                alert("Link unduhan tidak tersedia!");
                 return;
             }
 
             const originalContent = buttonElement.innerHTML;
             buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Downloading MP3...`;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Download ing...`;
 
             try {
-                const response = await fetch(audioDownloadUrl);
+                const response = await fetch(targetUrl);
                 const blob = await response.blob();
                 const blobUrl = window.URL.createObjectURL(blob);
-
+                
                 const a = document.createElement('a');
                 a.style.display = 'none';
                 a.href = blobUrl;
-                a.download = 'YTSave_' + videoTitle + '.mp3';
+                a.download = filename;
                 document.body.appendChild(a);
                 a.click();
-
+                
                 window.URL.revokeObjectURL(blobUrl);
                 document.body.removeChild(a);
             } catch (err) {
                 const a = document.createElement('a');
-                a.href = audioDownloadUrl;
-                a.download = 'YTSave_' + videoTitle + '.mp3';
-                a.setAttribute('download', 'YTSave_' + videoTitle + '.mp3');
+                a.href = targetUrl;
+                a.setAttribute('download', filename);
+                a.setAttribute('target', '_blank');
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
