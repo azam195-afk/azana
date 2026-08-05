@@ -42,29 +42,34 @@ async function downloadInstagram(url) {
     }
     
     try {
-        const cleanUrl = url.trim();
+        let cleanUrl = url.trim();
+        
+        // Membersihkan query parameter yang tidak perlu agar bersih
+        if (cleanUrl.includes('?')) {
+            cleanUrl = cleanUrl.split('?')[0];
+        }
+
         if (!cleanUrl.includes("instagram.com")) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        // Menggunakan jalur langsung ke situs web downloader publik yang paling stabil dan permanen
-        const directDownloadUrl = `https://saveig.app/en?url=${encodeURIComponent(cleanUrl)}`;
+        // Membentuk URL embed publik resmi Instagram yang dijamin tembus tanpa blokir CORS
+        const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
 
         return {
             status: "success",
             platform: "instagram",
             url: cleanUrl,
             type: "video",
-            url_media: directDownloadUrl,
-            is_redirect: true,
+            url_media: embedUrl,
+            is_embed: true,
             author: "instagram_user"
         };
     } catch (error) {
         console.error("Error Instagram:", error);
-        return { status: "error", message: "Gagal memproses link Instagram." };
+        return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
     }
 }
-
 
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
