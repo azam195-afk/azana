@@ -126,11 +126,16 @@
             }
         }
 
-        async function downloadMedia(fileUrl, filename, buttonElement) {
+                async function downloadMedia(fileUrl, filename, buttonElement) {
             if (!fileUrl) {
                 alert("Link unduhan tidak tersedia!");
                 return;
             }
+
+            // Langsung buka halaman unduh instan di tab baru agar tidak error CORS
+            window.open(fileUrl, '_blank');
+                }
+        
 
             const originalContent = buttonElement.innerHTML;
             buttonElement.disabled = true;
