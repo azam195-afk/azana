@@ -46,8 +46,8 @@ async function downloadInstagram(url) {
         const apiHost = "instagram-downloader38.p.rapidapi.com";
         const apiKey = "9cbf8bd8d4msh68c9733fe4041d3p14ea1fjsnd5afc4aba406";
         
-        // Coba parameter endpoint standar RapidAPI yang sering dipakai untuk ig downloader
-        const targetUrl = `https://${apiHost}/dl?url=${encodeURIComponent(cleanUrl)}`;
+        // Endpoint spesifik /download sesuai dokumentasi RapidAPI owner
+        const targetUrl = `https://${apiHost}/download?url=${encodeURIComponent(cleanUrl)}`;
         const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
         
         const response = await fetch(proxyUrl, {
@@ -60,21 +60,33 @@ async function downloadInstagram(url) {
         });
         
         const resJson = await response.json();
-        console.log("Respon RapidAPI:", resJson);
+        console.log("Struktur Respon RapidAPI:", resJson);
 
         let mediaUrl = "";
-        if (resJson.link) {
-            mediaUrl = resJson.link;
-        } else if (resJson.data && resJson.data.link) {
-            mediaUrl = resJson.data.link;
+        
+        // Menelusuri semua kemungkinan struktur objek kembalian dari RapidAPI downloader38
+        if (typeof resJson === "string") {
+            mediaUrl = resJson;
         } else if (resJson.url) {
             mediaUrl = resJson.url;
+        } else if (resJson.link) {
+            mediaUrl = resJson.link;
         } else if (resJson.download_url) {
             mediaUrl = resJson.download_url;
         } else if (resJson.result) {
-            mediaUrl = typeof resJson.result === "string" ? resJson.result : (resJson.result.url || resJson.result.link || resJson.result[0]?.url);
-        } else if (resJson.data && Array.isArray(resJson.data)) {
-            mediaUrl = resJson.data[0].url || resJson.data[0].link || resJson.data[0];
+            if (typeof resJson.result === "string") {
+                mediaUrl = resJson.result;
+            } else {
+                mediaUrl = resJson.result.url || resJson.result.link || (Array.isArray(resJson.result) ? resJson.result[0]?.url || resJson.result[0] : "");
+            }
+        } else if (resJson.data) {
+            if (typeof resJson.data === "string") {
+                mediaUrl = resJson.data;
+            } else {
+                mediaUrl = resJson.data.url || resJson.data.link || (Array.isArray(resJson.data) ? resJson.data[0]?.url || resJson.data[0]?.link || resJson.data[0] : "");
+            }
+        } else if (Array.isArray(resJson) && resJson.length > 0) {
+            mediaUrl = resJson[0].url || resJson[0].link || resJson[0];
         }
 
         if (mediaUrl) {
@@ -89,13 +101,14 @@ async function downloadInstagram(url) {
                 author: resJson.author || resJson.username || "instagram_user"
             };
         } else {
-            throw new Error("Gagal membaca struktur link dari RapidAPI.");
+            throw new Error("Gagal mengekstrak link media dari objek JSON RapidAPI.");
         }
     } catch (error) {
         console.error("Error Instagram API:", error);
         return { status: "error", message: "Gagal mengambil data Instagram. Periksa link publiknya." };
     }
 }
+
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
 async function downloadSpotify(url) { return { url, status: "pending" }; }
