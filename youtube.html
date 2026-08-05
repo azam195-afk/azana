@@ -144,46 +144,55 @@
         }
 
         // Fungsi download meniru persis pola komposisi ig.html
-        async function downloadMedia(fileUrl, filename, buttonElement) {
-            const targetUrl = fileUrl;
-            if (!targetUrl) {
-                alert("Link unduhan tidak tersedia!");
-                return;
-            }
+async function downloadMedia(fileUrl, filename, buttonElement) {
+    const targetUrl = fileUrl;
+    if (!targetUrl) {
+        alert("Link unduhan tidak tersedia!");
+        return;
+    }
 
-            const originalContent = buttonElement.innerHTML;
-            buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
+    const originalContent = buttonElement.innerHTML;
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
 
-            try {
-                const response = await fetch(targetUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
-                const a = document.createElement('a');
-                a.href = targetUrl;
-                a.setAttribute('download', filename);
-                a.setAttribute('target', '_blank');
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } finally {
-                setTimeout(() => {
-                    buttonElement.disabled = false;
-                    buttonElement.innerHTML = originalContent;
-                }, 2000);
-            }
-        }
+    try {
+        // Menggunakan CORS Proxy untuk mengunduh stream data mentah ke dalam memori browser (Blob)
+        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) throw new Error("Gagal mengunduh stream file.");
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        // Memaksa trigger download file murni
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+    } catch (err) {
+        // Jika proxy gagal, gunakan trik paksa unduh dengan atribut download tanpa membuka tab baru player
+        const a = document.createElement('a');
+        a.href = targetUrl;
+        a.download = filename;
+        a.setAttribute('download', filename);
+        // Jangan gunakan target='_blank' agar tidak melempar ke tab pemutar media baru
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } finally {
+        setTimeout(() => {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalContent;
+        }, 2000);
+    }
+}
+        
 
         fetch('components/footer-ai.html')
         .then(response => response.text())
