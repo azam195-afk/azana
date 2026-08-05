@@ -278,27 +278,42 @@
         requestAnimationFrame(animateNodes);
       }
       window.onload = function() { initNodes(); animateNodes(); };
-                // Fungsi Download langsung ke file asli tanpa error JSON corsproxy
-        function downloadMedia(fileUrl, filename) {
+                        // Fungsi Download murni Blob agar langsung tersimpan di HP sebagai file .mp4 / .mp3
+        async function downloadMedia(fileUrl, filename) {
             if (!fileUrl) {
                 alert("Link unduhan tidak tersedia!");
                 return;
             }
 
-            alert("Mendownload file, silakan cek notifikasi unduhan...");
+            alert("Mendownload file, mohon tunggu sebentar...");
 
-            // Buat elemen anchor tersembunyi agar langsung di-trigger oleh browser
-            const a = document.createElement('a');
-            a.href = fileUrl;
-            a.download = filename;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
+            try {
+                // Fetch data biner file langsung dari CDN
+                const response = await fetch(fileUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                // Fallback jika diblokir CORS browser, gunakan trik attribute download sandaran
+                const a = document.createElement('a');
+                a.href = fileUrl;
+                a.download = filename;
+                a.setAttribute('download', filename);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+                               }
+        
     </script>
 </body>
 </html>
