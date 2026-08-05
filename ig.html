@@ -127,49 +127,29 @@
             }
                 }
         
-                            async function downloadMedia(fileUrl, filename, buttonElement) {
-            if (!fileUrl) {
-                alert("Link unduhan tidak tersedia!");
-                return;
-            }
+    async function downloadMedia(fileUrl, filename, buttonElement) {
+    if (!fileUrl) {
+        alert("Link unduhan tidak tersedia!");
+        return;
+    }
 
-            const originalContent = buttonElement.innerHTML;
-            buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh Video...`;
+    // Ambil link bersih postingan asli tanpa /embed/
+    let targetUrl = fileUrl;
+    if (targetUrl.includes('/embed')) {
+        targetUrl = targetUrl.replace(/\/embed\/?$/, '');
+    }
 
-            try {
-                // Mengambil langsung file video dari link bersih Instagram
-                const response = await fetch(fileUrl, { mode: 'no-cors' });
-                
-                // Jika browser mengizinkan fetch langsung
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = 'instagram_video.mp4';
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
-                // Jika terkena proteksi CORS ketat dari Instagram, arahkan sistem untuk memicu download via anchor direct link
-                const a = document.createElement('a');
-                a.href = fileUrl;
-                a.setAttribute('download', 'instagram_video.mp4');
-                a.setAttribute('target', '_blank');
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } finally {
-                setTimeout(() => {
-                    buttonElement.disabled = false;
-                    buttonElement.innerHTML = originalContent;
-                }, 2000);
-            }
-        }
+    const originalContent = buttonElement.innerHTML;
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Membuka Proses Unduh...`;
+
+    // Langsung arahkan ke layanan dlm tab baru yang otomatis nyiapin tombol download video
+    setTimeout(() => {
+        window.open(`https://sssinstagram.com/id?url=${encodeURIComponent(targetUrl)}`, '_blank');
+        buttonElement.disabled = false;
+        buttonElement.innerHTML = originalContent;
+    }, 1000);
+    }
         
 
 
