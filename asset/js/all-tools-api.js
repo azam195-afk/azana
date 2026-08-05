@@ -51,18 +51,16 @@ async function downloadInstagram(url) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        const response = await fetch(`https://instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com/get_info?url=${encodeURIComponent(cleanUrl)}`, {
+        const response = await fetch(`https://instagram-downloader38.p.rapidapi.com/dl?url=${encodeURIComponent(cleanUrl)}`, {
             method: "GET",
             headers: {
-                "X-RapidAPI-Key": "YOUR_RAPIDAPI_KEY", 
-                "X-RapidAPI-Host": "instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com"
+                "x-rapidapi-key": "9cbf8bd8d4msh68c9733fe4041d3p14ea1fjsnd5afc4aba406",
+                "x-rapidapi-host": "instagram-downloader38.p.rapidapi.com"
             }
         });
 
         const json = await response.json();
-        
-        // Menyesuaikan struktur data direct link dari RapidAPI
-        let mediaUrl = json.video_url || json.url || (json.media && json.media[0]);
+        let mediaUrl = json.url || json.video_url || (json.data && (json.data.url || json.data[0]));
 
         if (mediaUrl) {
             return {
@@ -82,6 +80,7 @@ async function downloadInstagram(url) {
 }
 
 window.downloadInstagram = downloadInstagram;
+
 
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
