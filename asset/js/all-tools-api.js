@@ -36,9 +36,6 @@ async function downloadTikTok(url) {
     }
 }
 
-/**
- * FUNGSI INSTAGRAM DOWNLOADER (Stabil & Otomatis)
- */
 async function downloadInstagram(url) {
     if (!url) {
         throw new Error("URL Instagram tidak boleh kosong!");
@@ -46,16 +43,26 @@ async function downloadInstagram(url) {
     
     try {
         const cleanUrl = url.trim();
-        // Menggunakan endpoint API publik downloader alternatif yang stabil
-        const apiUrl = `https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`;
+        // Menggunakan endpoint API publik pihak ketiga yang menerapkan metode parsing saveinsta/cobalt
+        const targetUrl = `https://co.wuk.sh/api/json`;
         
-        const response = await fetch(apiUrl);
+        const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(targetUrl)}`, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                url: cleanUrl,
+                vQuality: "max"
+            })
+        });
+        
         const resJson = await response.json();
 
-        if (resJson && resJson.status && resJson.data && resJson.data.length > 0) {
-            const mediaItem = resJson.data[0];
-            const mediaUrl = mediaItem.url;
-            const isVideo = mediaItem.type === "video" || mediaUrl.includes(".mp4");
+        if (resJson && (resJson.status === "stream" || resJson.status === "redirect" || resJson.url)) {
+            const mediaUrl = resJson.url || (resJson.picker && resJson.picker[0]?.url);
+            const isVideo = !mediaUrl.includes(".jpg") && !mediaUrl.includes(".png");
 
             return {
                 status: "success",
@@ -73,6 +80,7 @@ async function downloadInstagram(url) {
         return { status: "error", message: "Gagal mengambil data Instagram. Pastikan link publik." };
     }
 }
+
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
 async function downloadSpotify(url) { return { url, status: "pending" }; }
