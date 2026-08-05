@@ -51,27 +51,36 @@ async function downloadInstagram(url) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        // Menggunakan API publik stabil untuk mengambil data video & direct link CDN
-        const response = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`);
+        // Menggunakan endpoint resmi Nexray yang baru lu dapatkan
+        const response = await fetch(`https://api.nexray.eu.cc/downloader/instagram?url=${encodeURIComponent(cleanUrl)}`);
         const json = await response.json();
 
-        if (json && json.status && json.data && json.data.length > 0) {
-            const mediaItem = json.data[0];
+        // Menyesuaikan struktur JSON dari Nexray API
+        if (json && (json.status === true || json.code === 200 || json.success === true) && json.data) {
+            // Menangani berbagai kemungkinan struktur array/object data dari Nexray
+            const mediaData = Array.isArray(json.data) ? json.data[0] : json.data;
+            const mediaUrl = mediaData.url || mediaData.download || mediaData.dl;
+            const thumbnail = mediaData.thumbnail || mediaData.thumb || "";
+
+            if (!mediaUrl) {
+                throw new Error("Link video tidak ditemukan di dalam respon API.");
+            }
+
             return {
                 status: "success",
                 platform: "instagram",
                 type: "video",
                 url: cleanUrl,
-                url_media: mediaItem.url, // Ini link CDN langsung (mirip rapidcdn)
-                thumbnail: mediaItem.thumbnail || "",
+                url_media: mediaUrl,
+                thumbnail: thumbnail,
                 is_embed: false
             };
         } else {
-            throw new Error("Gagal memproses video. Pastikan link publik.");
+            throw new Error(json.message || "Gagal mengambil data dari Nexray API.");
         }
     } catch (error) {
-        console.error("Error Instagram:", error);
-        return { status: "error", message: "Gagal memproses link Instagram." };
+        console.error("Error Nexray Instagram:", error);
+        return { status: "error", message: error.message || "Gagal memproses link Instagram." };
     }
 }
 
