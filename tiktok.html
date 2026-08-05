@@ -151,7 +151,7 @@
             try {
                 const result = await downloadTikTok(urlInput);
                 
-                if (result.status === "success") {
+                if (result && result.status === "success") {
                     document.getElementById('preview-title').innerText = result.title;
                     document.getElementById('preview-author').innerText = "@" + result.author;
                     
@@ -164,7 +164,7 @@
                     loadingBox.classList.add('hidden');
                     previewContainer.classList.remove('hidden');
                 } else {
-                    throw new Error(result.message || "Gagal mengambil data.");
+                    throw new Error(result?.message || "Gagal mengambil data dari server.");
                 }
             } catch (err) {
                 loadingBox.classList.add('hidden');
@@ -172,7 +172,7 @@
             }
         }
 
-        // Fungsi Download menggunakan Blob agar murni menjadi file MP4/MP3 (Bukan JSON / Bukan ngebuka tab player)
+        // Fungsi Download murni file MP4/MP3 via Blob
         async function downloadMedia(fileUrl, filename) {
             if (!fileUrl) {
                 alert("Link unduhan tidak tersedia!");
@@ -182,7 +182,6 @@
             alert("Memproses unduhan file, mohon tunggu sebentar...");
 
             try {
-                // Lewatkan lewat corsproxy supaya file binari berhasil ditarik ke blob browser
                 const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(fileUrl)}`);
                 const blob = await response.blob();
                 const blobUrl = window.URL.createObjectURL(blob);
@@ -197,7 +196,6 @@
                 window.URL.revokeObjectURL(blobUrl);
                 document.body.removeChild(a);
             } catch (e) {
-                // Fallback aman jika fetch CORS diblokir total oleh jaringan
                 const a = document.createElement('a');
                 a.href = fileUrl;
                 a.download = filename;
@@ -208,7 +206,7 @@
             }
         }
 
-        // Fungsi Copy Caption ke Clipboard
+        // Fungsi Copy Caption
         function copyCaption() {
             const captionText = document.getElementById('preview-title').innerText;
             navigator.clipboard.writeText(captionText).then(() => {
