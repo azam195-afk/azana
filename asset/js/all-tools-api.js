@@ -4,8 +4,7 @@ const YT_API_KEY = "";
 const SPOTIFY_API_KEY = ""; 
 
 /**
- * FUNGSI TIKTOK DOWNLOADER 
- * Menggunakan endpoint stabil yang merespons metadata lengkap (Video HD, Audio, dan Caption)
+ * FUNGSI TIKTOK DOWNLOADER (Stabil & Bypass CORS)
  */
 async function downloadTikTok(url) {
     if (!url) {
@@ -13,13 +12,13 @@ async function downloadTikTok(url) {
     }
     
     try {
-        // Menggunakan endpoint worker stabil yang kompatibel dengan format data TikTok terbaru
-        const apiUrl = `https://tdownv4.sl-bjs.workers.dev/?down=${encodeURIComponent(url)}`;
+        const targetUrl = `https://tdownv4.sl-bjs.workers.dev/?down=${encodeURIComponent(url)}`;
+        const apiUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+        
         const response = await fetch(apiUrl);
         const data = await response.json();
 
         if (data && (data.download_url || data.video_url || data.result)) {
-            // Menyesuaikan struktur respon dari server API
             const videoLink = data.download_url || data.video_url || data.result;
             const audioLink = data.audio_url || data.music;
             const authorName = data.author?.nickname || data.author?.username || "Creator TikTok";
@@ -36,11 +35,11 @@ async function downloadTikTok(url) {
                 audio_mp3: audioLink       
             };
         } else {
-            throw new Error("Gagal memproses link TikTok. Pastikan link publik dan benar.");
+            throw new Error("Gagal mengambil data dari server.");
         }
     } catch (error) {
         console.error("Error TikTok API:", error);
-        return { status: "error", message: error.message };
+        return { status: "error", message: "Gagal mengambil data. Pastikan link valid." };
     }
 }
 
