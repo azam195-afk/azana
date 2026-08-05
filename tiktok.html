@@ -11,8 +11,17 @@
             background-color: #0b0f19;
             color: #ffffff;
             font-family: 'Inter', sans-serif;
-            background-image: radial-gradient(circle at 50% 50%, rgba(30, 27, 75, 0.4) 0%, rgba(11, 15, 25, 1) 100%);
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
         .card-glow {
             background: linear-gradient(135deg, rgba(18, 24, 38, 0.9), rgba(13, 17, 28, 0.9));
@@ -21,16 +30,21 @@
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen relative">
 
-    <header class="p-4 flex items-center justify-between border-b border-purple-900/30">
+    <!-- CANVAS BACKGROUND NEURAL ENGINE -->
+    <canvas id="neural-bg"></canvas>
+
+    <!-- HEADER -->
+    <header class="p-4 flex items-center justify-between border-b border-purple-900/30 relative z-10">
         <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2 text-sm font-semibold">
             <i class="fa-solid fa-arrow-left"></i> KEMBALI
         </a>
         <span class="text-xs tracking-widest text-purple-400 uppercase font-bold">TikTok Room</span>
     </header>
 
-    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full">
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
         <div class="card-glow rounded-3xl p-6 w-full text-center">
             
             <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-black/40 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-3xl shadow-[0_0_15px_rgba(6,182,212,0.3)]">
@@ -45,7 +59,7 @@
                         class="w-full bg-black/50 border border-purple-500/30 rounded-2xl py-3 px-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition">
                 </div>
                 <button onclick="processTikTokDownload()" id="btn-process" 
-                    class="w-full py-3.5 rounded-2xl font-bold text-sm bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white shadow-lg shadow-purple-900/40 transition flex items-center justify-center gap-2">
+                    class="w-full py-3.5 rounded-2xl font-bold text-sm bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white shadow-lg shadow-purple-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Proses Video
                 </button>
             </div>
@@ -54,9 +68,10 @@
                 <i class="fa-solid fa-spinner fa-spin mr-2"></i> Sedang mengambil data dari server...
             </div>
 
+            <!-- PREVIEW CONTAINER -->
             <div id="preview-container" class="hidden mt-6 text-left bg-black/60 border border-purple-500/30 rounded-2xl p-4 space-y-4">
                 <div class="flex items-center gap-3">
-                    <video id="preview-video" class="w-20 h-28 object-cover rounded-xl bg-black" controls></video>
+                    <video id="preview-video" class="w-20 h-28 object-cover rounded-xl bg-black" controls playsinline></video>
                     <div class="flex-grow overflow-hidden">
                         <span class="inline-block bg-cyan-500/20 text-cyan-400 text-[10px] font-bold px-2 py-0.5 rounded-full mb-1">Berhasil Dimuat</span>
                         <p id="preview-title" class="text-xs text-gray-300 line-clamp-2">Judul video akan tampil di sini...</p>
@@ -64,26 +79,29 @@
                     </div>
                 </div>
 
+                <!-- TOMBOL DOWNLOAD LANGSUNG (MENGGUNAKAN BLOB/FORCE DOWNLOAD) -->
                 <div class="grid grid-cols-2 gap-2 pt-2">
-                    <a id="btn-dl-hd" href="#" target="_blank" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 rounded-xl text-xs font-semibold text-purple-200 transition">
+                    <button onclick="downloadFile(currentVideoUrl, 'tiktok_video_hd.mp4')" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 rounded-xl text-xs font-semibold text-purple-200 transition cursor-pointer">
                         <i class="fa-solid fa-download"></i> MP4 HD
-                    </a>
-                    <a id="btn-dl-mp3" href="#" target="_blank" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 rounded-xl text-xs font-semibold text-cyan-200 transition">
+                    </button>
+                    <button onclick="downloadFile(currentAudioUrl, 'tiktok_audio.mp3')" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 rounded-xl text-xs font-semibold text-cyan-200 transition cursor-pointer">
                         <i class="fa-solid fa-music"></i> Audio MP3
-                    </a>
+                    </button>
                 </div>
             </div>
 
         </div>
     </main>
 
-    <footer class="text-center py-6 text-xs text-gray-500 border-t border-purple-900/30 mt-auto">
-        <p class="font-semibold text-gray-400">AZANA DESIGN</p>
-        <p class="mt-1">© 2026 All Rights Reserved.</p>
-    </footer>
+    <!-- FOOTER KOMPONEN -->
+    <div id="footer" class="relative z-10"></div>
 
+    <!-- SCRIPT API & LOGIC -->
     <script src="asset/js/all-tools-api.js"></script>
     <script>
+        let currentVideoUrl = "";
+        let currentAudioUrl = "";
+
         async function processTikTokDownload() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
@@ -94,22 +112,24 @@
                 return;
             }
 
-            // Tampilkan loading, sembunyikan preview lama
             loadingBox.classList.remove('hidden');
             previewContainer.classList.add('hidden');
 
             try {
-                // Panggil fungsi API dari all-tools-api.js
                 const result = await downloadTikTok(urlInput);
                 
                 if (result.status === "success") {
-                    // Masukkan data hasil API ke elemen HTML
                     document.getElementById('preview-title').innerText = result.title;
                     document.getElementById('preview-author').innerText = "@" + result.author;
-                    document.getElementById('btn-dl-hd').href = result.video_hd;
-                    document.getElementById('btn-dl-mp3').href = result.audio_mp3;
                     
-                    // Sembunyikan loading, tampilkan kotak preview
+                    // Simpan link unduhan ke variabel global
+                    currentVideoUrl = result.video_hd;
+                    currentAudioUrl = result.audio_mp3;
+
+                    // Set video source untuk preview (bisa diputar dulu)
+                    const videoElement = document.getElementById('preview-video');
+                    videoElement.src = currentVideoUrl;
+                    
                     loadingBox.classList.add('hidden');
                     previewContainer.classList.remove('hidden');
                 } else {
@@ -120,6 +140,102 @@
                 alert("Terjadi kesalahan: " + err.message);
             }
         }
+
+        // Fungsi agar tombol langsung mendownload file, bukan membuka video di tab/browser player
+        async function downloadFile(fileUrl, filename) {
+            if (!fileUrl || fileUrl === "#") {
+                alert("Link download tidak valid!");
+                return;
+            }
+            
+            // Indikator proses download
+            alert("Memproses unduhan, silakan tunggu sebentar...");
+
+            try {
+                const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(fileUrl)}`);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (e) {
+                // Fallback jika fetch blob gagal, buka di tab baru sebagai pengaman
+                window.open(fileUrl, '_blank');
+            }
+        }
+
+        // Load Footer Component
+        fetch('components/footer-ai.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        }).catch(err => console.log("Footer load error:", err));
+    </script>
+
+    <!-- SCRIPT NEURAL ENGINE BACKGROUND -->
+    <script>
+      const canvas = document.getElementById('neural-bg');
+      const ctx = canvas.getContext('2d');
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
+      resizeCanvas();
+      const particlesArray = [];
+      const colors = ['#00f2fe', '#bc13fe'];
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 1.5 + 0.5;
+          this.speedX = (Math.random() * 0.5) - 0.25;
+          this.speedY = (Math.random() * 0.5) - 0.25;
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+        update() {
+          this.x += this.speedX; this.y += this.speedY;
+          if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+        draw() {
+          ctx.fillStyle = this.color;
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+      function initNodes() {
+        particlesArray.length = 0;
+        let numberOfParticles = (canvas.height * canvas.width) / 9500;
+        if (numberOfParticles > 130) numberOfParticles = 130;
+        for (let i = 0; i < numberOfParticles; i++) { particlesArray.push(new Particle()); }
+      }
+      function animateNodes() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+          particlesArray[i].update();
+          particlesArray[i].draw();
+          for (let j = i; j < particlesArray.length; j++) {
+            const dx = particlesArray[i].x - particlesArray[j].x;
+            const dy = particlesArray[i].y - particlesArray[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 150) {
+              ctx.beginPath(); ctx.strokeStyle = particlesArray[i].color;
+              ctx.globalAlpha = 1 - (distance / 150);
+              ctx.lineWidth = 0.6; ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+              ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.globalAlpha = 1;
+            }
+          }
+        }
+        requestAnimationFrame(animateNodes);
+      }
+      window.onload = function() { initNodes(); animateNodes(); };
     </script>
 </body>
 </html>
