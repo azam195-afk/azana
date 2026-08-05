@@ -100,7 +100,7 @@
                             <p class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-film mr-1"></i> MP4 Video</p>
                             <span class="text-[10px] text-gray-400">Format MP4 High Quality</span>
                         </div>
-                        <button onclick="triggerDownload(videoDownloadUrl, 'youtube_video.mp4', this)" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                        <button onclick="triggerDownloadmp4(videoDownloadUrl, 'youtube_video.mp4', this)" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
                             ↓ Download MP4
                         </button>
                     </div>
@@ -113,7 +113,7 @@
                             <p class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-music mr-1"></i> Audio MP3</p>
                             <span class="text-[10px] text-gray-400">Kualitas tinggi (Audio Viral)</span>
                         </div>
-                        <button onclick="triggerDownload(audioDownloadUrl, 'youtube_audio.mp3', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                        <button onclick="triggerDownloadmp3(audioDownloadUrl, 'youtube_audio.mp3', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
                             ↓ Download MP3
                         </button>
                     </div>
@@ -222,7 +222,7 @@
         }
 
         // Trik mutlak agar HP mendownload file biner secara langsung dan tidak nge-play di tab baru
-        async function triggerDownload(fileUrl, filename, buttonElement) {
+        async function triggerDownloadmp4(fileUrl, filename, buttonElement) {
             if (!fileUrl) {
                 alert("Link unduhan belum tersedia!");
                 return;
@@ -253,6 +253,45 @@
                 a.href = fileUrl;
                 a.download = filename;
                 a.setAttribute('download', filename);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
+        }
+        async function triggerDownloadMP3(buttonElement) {
+            if (!audioDownloadUrl) {
+                alert("Link audio belum tersedia!");
+                return;
+            }
+
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Downloading MP3...`;
+
+            try {
+                const response = await fetch(audioDownloadUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = 'YTSave_' + videoTitle + '.mp3';
+                document.body.appendChild(a);
+                a.click();
+
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                const a = document.createElement('a');
+                a.href = audioDownloadUrl;
+                a.download = 'YTSave_' + videoTitle + '.mp3';
+                a.setAttribute('download', 'YTSave_' + videoTitle + '.mp3');
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
