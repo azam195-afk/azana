@@ -51,16 +51,14 @@ async function downloadInstagram(url) {
             throw new Error("Bukan link Instagram yang valid.");
         }
 
-        // Menggunakan endpoint resmi Nexray yang baru lu dapatkan
         const response = await fetch(`https://api.nexray.eu.cc/downloader/instagram?url=${encodeURIComponent(cleanUrl)}`);
         const json = await response.json();
 
-        // Menyesuaikan struktur JSON dari Nexray API
-        if (json && (json.status === true || json.code === 200 || json.success === true) && json.data) {
-            // Menangani berbagai kemungkinan struktur array/object data dari Nexray
-            const mediaData = Array.isArray(json.data) ? json.data[0] : json.data;
-            const mediaUrl = mediaData.url || mediaData.download || mediaData.dl;
-            const thumbnail = mediaData.thumbnail || mediaData.thumb || "";
+        // Mengambil dari json.result[0] karena result berupa array
+        if (json && json.status === true && json.result && json.result.length > 0) {
+            const mediaItem = json.result[0];
+            const mediaUrl = mediaItem.url;
+            const thumbnail = mediaItem.thumbnail || "";
 
             if (!mediaUrl) {
                 throw new Error("Link video tidak ditemukan di dalam respon API.");
@@ -76,7 +74,7 @@ async function downloadInstagram(url) {
                 is_embed: false
             };
         } else {
-            throw new Error(json.message || "Gagal mengambil data dari Nexray API.");
+            throw new Error("Gagal mengambil data dari Nexray API.");
         }
     } catch (error) {
         console.error("Error Nexray Instagram:", error);
@@ -85,6 +83,7 @@ async function downloadInstagram(url) {
 }
 
 window.downloadInstagram = downloadInstagram;
+
 
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
