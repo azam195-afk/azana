@@ -36,47 +36,40 @@ async function downloadTikTok(url) {
     }
 }
 
-async function downloadInstagram(url) {
-    if (!url) {
-        throw new Error("URL Instagram tidak boleh kosong!");
+Async function downloadInstagram(url) {
+    If (!url) {
+        Throw new Error("URL Instagram tidak boleh kosong!");
     }
     
-    try {
-        let cleanUrl = url.trim();
-        if (cleanUrl.includes('?')) {
-            cleanUrl = cleanUrl.split('?')[0];
+    Try {
+        Let cleanUrl = url.trim();
+        
+        If (cleanUrl.includes('?')) {
+            CleanUrl = cleanUrl.split('?')[0];
         }
 
-        if (!cleanUrl.includes("instagram.com")) {
-            throw new Error("Bukan link Instagram yang valid.");
+        If (!cleanUrl.includes("instagram.com")) {
+            Throw new Error("Bukan link Instagram yang valid.");
         }
 
-        // Menggunakan API publik gratis untuk mendapatkan direct link file video mentah
-        const response = await fetch(`https://api.siputzx.my.id/api/d/igdl?url=${encodeURIComponent(cleanUrl)}`);
-        const json = await response.json();
+        Const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
 
-        if (json && json.status && json.data && json.data.length > 0) {
-            const mediaData = json.data[0];
-            const mediaUrl = mediaData.url;
-
-            return {
-                status: "success",
-                platform: "instagram",
-                type: "video",
-                url: mediaUrl,
-                url_media: mediaUrl,
-                is_embed: false
-            };
-        } else {
-            throw new Error("Gagal mengambil file media. Pastikan akun tidak diprivate.");
-        }
+        Return {
+            Status: "success",
+            Platform: "instagram",
+            Url: cleanUrl,
+            Type: "video",
+            Url_media: embedUrl,
+            Is_embed: true,
+            Author: "instagram_user"
+        };
     } catch (error) {
-        console.error("Error Instagram:", error);
-        return { status: "error", message: "Gagal memproses link Instagram." };
+        Console.error("Error Instagram:", error);
+        Return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
     }
 }
 
-window.downloadInstagram = downloadInstagram;
+Window.downloadInstagram = downloadInstagram;
 
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
