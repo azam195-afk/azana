@@ -131,37 +131,34 @@
         return;
     }
 
-    // Jika link masih berbentuk embed, ambil link dasar tanpa embed-nya
-    let mediaLink = fileUrl;
-    if (mediaLink.includes('/embed')) {
-        mediaLink = mediaLink.replace(/\/embed\/?$/, '');
-    }
+    // Bersihkan link embed jadi link reel murni
+    let targetUrl = fileUrl.replace(/\/embed\/?$/, '');
 
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses Unduhan...`;
 
     try {
-        // Menggunakan fetch blob agar browser langsung mendownload file mentahnya
-        const response = await fetch(mediaLink);
+        // Memaksa download langsung file media tanpa pindah halaman
+        const response = await fetch(targetUrl);
         const blob = await response.blob();
         const blobUrl = window.URL.createObjectURL(blob);
         
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = blobUrl;
-        a.download = filename;
+        a.download = 'instagram_video.mp4';
         document.body.appendChild(a);
         a.click();
         
         window.URL.revokeObjectURL(blobUrl);
         document.body.removeChild(a);
     } catch (err) {
-        // Fallback jika diblokir kebijakan CORS browser, arahkan ke tab baru untuk simpan manual
+        // Fallback jika browser membatasi CORS
         const a = document.createElement('a');
-        a.href = mediaLink;
+        a.href = targetUrl;
         a.target = '_blank';
-        a.download = filename;
+        a.download = 'instagram_video.mp4';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -169,7 +166,7 @@
         setTimeout(() => {
             buttonElement.disabled = false;
             buttonElement.innerHTML = originalContent;
-        }, 2500);
+        }, 2000);
     }
         }
         
