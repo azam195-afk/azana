@@ -1,17 +1,15 @@
-const TIKTOK_API_KEY = ""; 
-const IG_API_KEY = "";     
-const YT_API_KEY = "";     
-const SPOTIFY_API_KEY = ""; 
+const TIKTOK_API_KEY = ""; // Kosongkan karena pakai TikWM public API gratis
+const IG_API_KEY = "";     // PASTE API KEY INSTAGRAM DISINI
+const YT_API_KEY = "";     // PASTE API KEY YOUTUBE DISINI
+const SPOTIFY_API_KEY = ""; // PASTE API KEY SPOTIFY DISINI
 
-/**
- * FUNGSI TIKTOK DOWNLOADER (Menggunakan TikWM API yang stabil)
- */
 async function downloadTikTok(url) {
     if (!url) {
         throw new Error("URL TikTok tidak boleh kosong!");
     }
     
     try {
+        // Menggunakan corsproxy.io atau allorigins supaya lolos blokir browser
         const targetUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
         const apiUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
         
@@ -27,7 +25,6 @@ async function downloadTikTok(url) {
                 title: data.title || "Video TikTok Tanpa Watermark",
                 author: data.author?.nickname || "Creator",
                 video_hd: data.hdplay || data.play, 
-                video_normal: data.play,
                 audio_mp3: data.music
             };
         } else {
@@ -39,9 +36,32 @@ async function downloadTikTok(url) {
     }
 }
 
-async function downloadInstagram(url) { return { url, status: "pending" }; }
-async function downloadYouTube(url) { return { url, status: "pending" }; }
-async function downloadSpotify(url) { return { url, status: "pending" }; }
-function generateSertifikatLucu(payload = {}) { return { payload, status: "pending" }; }
-function generateBrat(payload = {}) { return { payload, status: "pending" }; }
-function generateIqc(payload = {}) { return { payload, status: "pending" }; }
+async function downloadInstagram(url) {
+    // TODO: Isi endpoint third-party Instagram downloader di sini.
+    return { url, status: "pending" };
+}
+
+async function downloadYouTube(url) {
+    // TODO: Isi endpoint third-party YouTube downloader di sini.
+    return { url, status: "pending" };
+}
+
+async function downloadSpotify(url) {
+    // TODO: Isi endpoint third-party Spotify downloader di sini.
+    return { url, status: "pending" };
+}
+
+function generateSertifikatLucu(payload = {}) {
+    // TODO: Tambahkan logic generator sertifikat lucu.
+    return { payload, status: "pending" };
+}
+
+function generateBrat(payload = {}) {
+    // TODO: Tambahkan logic BRAT generator.
+    return { payload, status: "pending" };
+}
+
+function generateIqc(payload = {}) {
+    // TODO: Tambahkan logic IQC generator.
+    return { payload, status: "pending" };
+}
