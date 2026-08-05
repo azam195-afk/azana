@@ -174,60 +174,54 @@
 
         // Fungsi download meniru persis pola ig.html
         async function downloadMedia(fileUrl, filename, buttonElement) {
-            // Jika argumen kosong, ambil dari variabel global
-            const targetUrl = fileUrl || (filename.includes('video') ? currentVideoUrl : currentAudioUrl);
-            
-            if (!targetUrl) {
-                alert("Link unduhan untuk format ini tidak tersedia!");
-                return;
-            }
+    const targetUrl = fileUrl;
+    if (!targetUrl) {
+        alert("Link unduhan tidak tersedia!");
+        return;
+    }
 
-            const originalContent = buttonElement.innerHTML;
-            buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
+    const originalContent = buttonElement.innerHTML;
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
 
-            try {
-                const response = await fetch(targetUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
-                const a = document.createElement('a');
-                a.href = targetUrl;
-                a.setAttribute('download', filename);
-                a.setAttribute('target', '_blank');
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } finally {
-                setTimeout(() => {
-                    buttonElement.disabled = false;
-                    buttonElement.innerHTML = originalContent;
-                }, 2000);
-            }
+    try {
+        // Menggunakan CORS Proxy publik supaya file dari googlevideo.com bisa di-download sebagai blob
+        const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(targetUrl);
+        const response = await fetch(proxyUrl);
+        
+        if (!response.ok) throw new Error("Gagal mengambil file.");
+
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+    } catch (err) {
+        // Fallback terakhir jika proxy gagal: unduh via iframe tersembunyi agar tidak membuka tab baru / nge-play di browser
+        console.warn("Blob fetch gagal, menggunakan hidden iframe download...");
+        let iframe = document.getElementById('download-iframe');
+        if (!iframe) {
+            iframe = document.createElement('iframe');
+            iframe.id = 'download-iframe';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
         }
-
-        function copyTitle() {
-            const titleText = document.getElementById('preview-title').innerText;
-            navigator.clipboard.writeText(titleText).then(() => {
-                const copyTextSpan = document.getElementById('copy-text');
-                copyTextSpan.innerText = "Copied!";
-                setTimeout(() => {
-                    copyTextSpan.innerText = "Copy Title";
-                }, 2000);
-            }).catch(err => {
-                alert("Gagal menyalin judul!");
-            });
+        iframe.src = targetUrl;
+    } finally {
+        setTimeout(() => {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalContent;
+        }, 2000);
+    }
         }
+        
 
         fetch('components/footer-ai.html')
         .then(response => response.text())
