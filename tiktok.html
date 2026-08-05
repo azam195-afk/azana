@@ -98,21 +98,21 @@
                     </div>
                 </div>
 
-                <!-- PILIHAN FORMAT DOWNLOAD -->
+                <!-- PILIHAN FORMAT DOWNLOAD DENGAN INDIKATOR LOADING DI TOMBOL -->
                 <div class="space-y-2 pt-1">
                     <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest text-center">Pilih Format Unduhan</p>
                     
-                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_hd.mp4')" class="w-full flex items-center justify-between py-3 px-4 bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 rounded-xl text-xs font-semibold text-purple-200 transition cursor-pointer">
+                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_hd.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 rounded-xl text-xs font-semibold text-purple-200 transition cursor-pointer">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-download text-cyan-400"></i> MP4 HD (Tanpa Watermark)</span>
                         <span class="text-[10px] bg-purple-500/20 px-2 py-0.5 rounded text-purple-300">HD</span>
                     </button>
 
-                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_standard.mp4')" class="w-full flex items-center justify-between py-3 px-4 bg-black/40 hover:bg-black/60 border border-purple-500/20 rounded-xl text-xs font-semibold text-gray-300 transition cursor-pointer">
+                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_standard.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-black/40 hover:bg-black/60 border border-purple-500/20 rounded-xl text-xs font-semibold text-gray-300 transition cursor-pointer">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-download text-gray-400"></i> MP4 Standar / Watermark</span>
                         <span class="text-[10px] bg-gray-800 px-2 py-0.5 rounded text-gray-400">SD</span>
                     </button>
 
-                    <button onclick="downloadMedia(currentAudioUrl, 'tiktok_audio.mp3')" class="w-full flex items-center justify-between py-3 px-4 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 rounded-xl text-xs font-semibold text-cyan-200 transition cursor-pointer">
+                    <button onclick="downloadMedia(currentAudioUrl, 'tiktok_audio.mp3', this)" class="w-full flex items-center justify-between py-3 px-4 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 rounded-xl text-xs font-semibold text-cyan-200 transition cursor-pointer">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-music text-cyan-400"></i> Audio MP3 (Original Sound)</span>
                         <span class="text-[10px] bg-cyan-500/20 px-2 py-0.5 rounded text-cyan-300">MP3</span>
                     </button>
@@ -167,17 +167,19 @@
             }
         }
 
-        // Fungsi unduh murni file media tanpa ngebuka tab pemutar video
-        async function downloadMedia(fileUrl, filename) {
+        // Fungsi unduh murni Blob dengan animasi loading di tombol (Tanpa Pop-up Alert)
+        async function downloadMedia(fileUrl, filename, buttonElement) {
             if (!fileUrl) {
                 alert("Link unduhan tidak tersedia!");
                 return;
             }
 
-            alert("Mengunduh file, mohon tunggu sebentar...");
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
 
             try {
-                const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(fileUrl)}`);
+                const response = await fetch(fileUrl);
                 const blob = await response.blob();
                 const blobUrl = window.URL.createObjectURL(blob);
                 
@@ -190,14 +192,19 @@
                 
                 window.URL.revokeObjectURL(blobUrl);
                 document.body.removeChild(a);
-            } catch (e) {
+            } catch (err) {
                 const a = document.createElement('a');
                 a.href = fileUrl;
                 a.download = filename;
-                a.target = '_blank';
+                a.setAttribute('download', filename);
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2500);
             }
         }
 
@@ -278,42 +285,6 @@
         requestAnimationFrame(animateNodes);
       }
       window.onload = function() { initNodes(); animateNodes(); };
-                        // Fungsi Download murni Blob agar langsung tersimpan di HP sebagai file .mp4 / .mp3
-        async function downloadMedia(fileUrl, filename) {
-            if (!fileUrl) {
-                alert("Link unduhan tidak tersedia!");
-                return;
-            }
-
-            alert("Mendownload file, mohon tunggu sebentar...");
-
-            try {
-                // Fetch data biner file langsung dari CDN
-                const response = await fetch(fileUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
-                // Fallback jika diblokir CORS browser, gunakan trik attribute download sandaran
-                const a = document.createElement('a');
-                a.href = fileUrl;
-                a.download = filename;
-                a.setAttribute('download', filename);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }
-                               }
-        
     </script>
 </body>
 </html>
