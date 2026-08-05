@@ -151,57 +151,49 @@
 
         // Fungsi unduh paksa lewat blob/link agar tidak nyangkut keputer di browser
         async function downloadMedia(fileUrl, filename, buttonElement) {
-            if (!fileUrl) {
-                alert("Link unduhan untuk format ini tidak tersedia!");
-                return;
-            }
+    if (!fileUrl) {
+        alert("Link unduhan untuk format ini tidak tersedia!");
+        return;
+    }
 
-            const originalContent = buttonElement.innerHTML;
-            buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+    const originalContent = buttonElement.innerHTML;
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
 
-            try {
-                const response = await fetch(fileUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
-                const a = document.createElement('a');
-                a.href = fileUrl;
-                a.download = filename;
-                a.setAttribute('download', filename);
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } finally {
-                setTimeout(() => {
-                    buttonElement.disabled = false;
-                    buttonElement.innerHTML = originalContent;
-                }, 2500);
-            }
+    try {
+        // Menggunakan teknik fetch dengan blob & CORS proxy aman untuk server streaming YouTube
+        const corsProxy = "https://api.allorigins.win/raw?url=" + encodeURIComponent(fileUrl);
+        const response = await fetch(corsProxy);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+    } catch (err) {
+        // Fallback langsung paksa download via anchor download attribute
+        const a = document.createElement('a');
+        a.href = fileUrl;
+        a.download = filename;
+        a.setAttribute('download', filename);
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    } finally {
+        setTimeout(() => {
+            buttonElement.disabled = false;
+            buttonElement.innerHTML = originalContent;
+        }, 2500);
+    }
         }
-
-        function copyTitle() {
-            const titleText = document.getElementById('preview-title').innerText;
-            navigator.clipboard.writeText(titleText).then(() => {
-                const copyTextSpan = document.getElementById('copy-text');
-                copyTextSpan.innerText = "Copied!";
-                setTimeout(() => {
-                    copyTextSpan.innerText = "Copy Title";
-                }, 2000);
-            }).catch(err => {
-                alert("Gagal menyalin judul!");
-            });
-        }
+        
 
         fetch('components/footer-ai.html')
         .then(response => response.text())
