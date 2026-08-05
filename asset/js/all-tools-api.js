@@ -36,60 +36,44 @@ async function downloadTikTok(url) {
     }
 }
 
-async function downloadMedia(fileUrl, filename, buttonElement) {
-    if (!fileUrl) {
-        alert("Link unduhan tidak tersedia!");
-        return;
+async function downloadInstagram(url) {
+    if (!url) {
+        throw new Error("URL Instagram tidak boleh kosong!");
     }
-
-    // Mengubah link embed Instagram kembali menjadi link postingan asli
-    let targetUrl = fileUrl;
-    if (targetUrl.includes('/embed')) {
-        targetUrl = targetUrl.replace(/\/embed\/?$/, '');
-    }
-
-    const originalContent = buttonElement.innerHTML;
-    buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyiapkan Unduhan...`;
-
+    
     try {
-        // Menggunakan layanan downloader instan publik berbasis web secara otomatis 
-        // agar browser langsung mendownload file mentahnya ke HP lu
-        const directDownloadLink = `https://co.wuk.sh/api/json`;
+        let cleanUrl = url.trim();
         
-        const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(directDownloadLink)}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url: targetUrl, vQuality: "max" })
-        });
-        
-        const data = await response.json();
-        const finalMediaUrl = data.url || data.picker?.[0]?.url || targetUrl;
+        // Membersihkan query parameter yang tidak perlu agar bersih
+        if (cleanUrl.includes('?')) {
+            cleanUrl = cleanUrl.split('?')[0];
+        }
 
-        // Eksekusi download file
-        const res = await fetch(finalMediaUrl);
-        const blob = await res.blob();
-        const blobUrl = window.URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = 'instagram_video.mp4';
-        document.body.appendChild(a);
-        a.click();
-        
-        window.URL.revokeObjectURL(blobUrl);
-        document.body.removeChild(a);
-    } catch (err) {
-        // Fallback darurat jika ada kendala jaringan, arahkan ke tab unduh langsung
-        window.open(`https://saveig.app/en?url=${encodeURIComponent(targetUrl)}`, '_blank');
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 2000);
+        if (!cleanUrl.includes("instagram.com")) {
+            throw new Error("Bukan link Instagram yang valid.");
+        }
+
+        // Membentuk URL embed publik resmi Instagram yang dijamin tembus tanpa blokir CORS
+        const embedUrl = cleanUrl.endsWith('/') ? `${cleanUrl}embed/` : `${cleanUrl}/embed/`;
+
+        return {
+            status: "success",
+            platform: "instagram",
+            url: cleanUrl,
+            type: "video",
+            url_media: embedUrl,
+            is_embed: true,
+            author: "instagram_user"
+        };
+    } catch (error) {
+        console.error("Error Instagram:", error);
+        return { status: "error", message: "Gagal memproses link Instagram. Pastikan link publik." };
     }
 }
+
+// Mendaftarkan fungsi secara global agar terbaca sempurna oleh ig.html
+window.downloadInstagram = downloadInstagram;
+
 
 async function downloadYouTube(url) { return { url, status: "pending" }; }
 async function downloadSpotify(url) { return { url, status: "pending" }; }
