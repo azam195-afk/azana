@@ -32,10 +32,8 @@
 </head>
 <body class="flex flex-col min-h-screen relative">
 
-    <!-- CANVAS BACKGROUND NEURAL ENGINE -->
     <canvas id="neural-bg"></canvas>
 
-    <!-- HEADER -->
     <header class="p-4 flex items-center justify-between border-b border-purple-900/30 relative z-10">
         <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2 text-sm font-semibold">
             <i class="fa-solid fa-arrow-left"></i> KEMBALI
@@ -43,7 +41,6 @@
         <span class="text-xs tracking-widest text-purple-400 uppercase font-bold">TikTok Room</span>
     </header>
 
-    <!-- MAIN CONTENT -->
     <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
         <div class="card-glow rounded-3xl p-6 w-full text-center">
             
@@ -68,7 +65,6 @@
                 <i class="fa-solid fa-spinner fa-spin mr-2"></i> Sedang mengambil data dari server...
             </div>
 
-            <!-- PREVIEW CONTAINER -->
             <div id="preview-container" class="hidden mt-6 text-left bg-black/60 border border-purple-500/30 rounded-2xl p-4 space-y-4">
                 <div class="flex items-center gap-3">
                     <video id="preview-video" class="w-20 h-28 object-cover rounded-xl bg-black" controls playsinline></video>
@@ -79,29 +75,23 @@
                     </div>
                 </div>
 
-                <!-- TOMBOL DOWNLOAD (MENGGUNAKAN ATRIBUT FORCE DOWNLOAD JS) -->
                 <div class="grid grid-cols-2 gap-2 pt-2">
-                    <button onclick="triggerDownload(currentVideoUrl, 'tiktok_video_hd.mp4')" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 rounded-xl text-xs font-semibold text-purple-200 transition cursor-pointer">
+                    <a id="btn-dl-hd" href="#" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 rounded-xl text-xs font-semibold text-purple-200 transition">
                         <i class="fa-solid fa-download"></i> MP4 HD
-                    </button>
-                    <button onclick="triggerDownload(currentAudioUrl, 'tiktok_audio.mp3')" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 rounded-xl text-xs font-semibold text-cyan-200 transition cursor-pointer">
+                    </a>
+                    <a id="btn-dl-mp3" href="#" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 py-2.5 px-3 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 rounded-xl text-xs font-semibold text-cyan-200 transition">
                         <i class="fa-solid fa-music"></i> Audio MP3
-                    </button>
+                    </a>
                 </div>
             </div>
 
         </div>
     </main>
 
-    <!-- FOOTER KOMPONEN -->
     <div id="footer" class="relative z-10"></div>
 
-    <!-- SCRIPT API & LOGIC -->
     <script src="asset/js/all-tools-api.js"></script>
     <script>
-        let currentVideoUrl = "";
-        let currentAudioUrl = "";
-
         async function processTikTokDownload() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
@@ -121,14 +111,12 @@
                 if (result.status === "success") {
                     document.getElementById('preview-title').innerText = result.title;
                     document.getElementById('preview-author').innerText = "@" + result.author;
+                    document.getElementById('btn-dl-hd').href = result.video_hd;
+                    document.getElementById('btn-dl-mp3').href = result.audio_mp3;
                     
-                    currentVideoUrl = result.video_hd;
-                    currentAudioUrl = result.audio_mp3;
-
-                    // Set video source untuk preview agar bisa diputar
                     const videoElement = document.getElementById('preview-video');
-                    videoElement.src = currentVideoUrl;
-                    
+                    videoElement.src = result.video_hd;
+
                     loadingBox.classList.add('hidden');
                     previewContainer.classList.remove('hidden');
                 } else {
@@ -140,27 +128,6 @@
             }
         }
 
-        // Fungsi unduh paksa agar tidak membuka media player browser
-        function triggerDownload(fileUrl, filename) {
-            if (!fileUrl || fileUrl === "#") {
-                alert("Link download tidak valid!");
-                return;
-            }
-
-            // Buat elemen <a> tersembunyi dengan atribut download agar di-force download oleh browser HP
-            const a = document.createElement('a');
-            a.href = fileUrl;
-            a.download = filename;
-            a.target = '_blank';
-            // Beberapa browser mobile butuh penambahan attribute rel
-            a.rel = 'noopener noreferrer';
-            
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        // Load Footer Component
         fetch('components/footer-ai.html')
         .then(response => response.text())
         .then(data => {
@@ -168,7 +135,6 @@
         }).catch(err => console.log("Footer load error:", err));
     </script>
 
-    <!-- SCRIPT NEURAL ENGINE BACKGROUND -->
     <script>
       const canvas = document.getElementById('neural-bg');
       const ctx = canvas.getContext('2d');
