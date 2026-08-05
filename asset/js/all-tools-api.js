@@ -9,7 +9,10 @@ async function downloadTikTok(url) {
     }
     
     try {
-        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(url)}`;
+        // Membersihkan dan memastikan URL terpampang valid untuk di-fetch
+        const cleanUrl = url.trim();
+        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
+        
         const response = await fetch(apiUrl);
         const resJson = await response.json();
 
@@ -18,7 +21,7 @@ async function downloadTikTok(url) {
             return {
                 status: "success",
                 platform: "tiktok",
-                url: url,
+                url: cleanUrl,
                 title: data.title || "Video TikTok Tanpa Watermark",
                 author: data.author?.nickname || "Creator",
                 video_hd: data.hdplay || data.play, 
