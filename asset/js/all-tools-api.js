@@ -92,7 +92,7 @@ async function downloadYouTube(url) {
     try {
         let cleanUrl = url.trim();
 
-        // Tembak endpoint aio (untuk video) dan ytmp3 (untuk audio) dari Nexray
+        // Tembak endpoint aio dan ytmp3 dari Nexray API secara bersamaan
         const [resAio, resMp3] = await Promise.all([
             fetch(`https://api.nexray.eu.cc/downloader/aio?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null),
             fetch(`https://api.nexray.eu.cc/downloader/ytmp3?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null)
@@ -102,7 +102,8 @@ async function downloadYouTube(url) {
         let title = "YouTube Video";
         let thumbnail = "";
 
-        if (resAio && resAio.status && resAio.result) {
+        // Menyesuaikan struktur result dari endpoint aio Nexray
+        if (resAio && resAio.status === true && resAio.result) {
             const item = Array.isArray(resAio.result) ? resAio.result[0] : resAio.result;
             videoUrl = item.url || item.download || "";
             title = item.title || title;
@@ -110,14 +111,19 @@ async function downloadYouTube(url) {
         }
 
         let audioUrl = "";
-        if (resMp3 && resMp3.status && resMp3.result) {
-            audioUrl = resMp3.result.url || "";
-            if (!title && resMp3.result.title) title = resMp3.result.title;
-            if (!thumbnail && resMp3.result.thumbnail) thumbnail = resMp3.result.thumbnail;
+        // Menyesuaikan struktur result dari endpoint ytmp3 Nexray
+        if (resMp3 && resMp3.status === true && resMp3.result) {
+            audioUrl = resMp3.result.url || resMp3.result.download || "";
+            if (title === "YouTube Video" && resMp3.result.title) {
+                title = resMp3.result.title;
+            }
+            if (!thumbnail && resMp3.result.thumbnail) {
+                thumbnail = resMp3.result.thumbnail;
+            }
         }
 
         if (!videoUrl && !audioUrl) {
-            throw new Error("Gagal mengambil data dari server Nexray.");
+            throw new Error("Link unduhan tidak ditemukan di dalam respon API.");
         }
 
         return {
@@ -128,7 +134,7 @@ async function downloadYouTube(url) {
             audio_url: audioUrl
         };
     } catch (error) {
-        console.error("Error YouTube:", error);
+        console.error("Error YouTube API:", error);
         return { status: "error", message: error.message || "Gagal memproses link YouTube." };
     }
 }
