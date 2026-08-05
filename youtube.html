@@ -155,86 +155,109 @@
 
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+        // 1. Fungsi khusus MP3 (TIDAK BOLEH DIUBAH karena sudah sukses download MP3)
+        async function downloadMedia(fileUrl, filename, buttonElement) {
+            const targetUrl = fileUrl;
+            if (!targetUrl) {
+                alert("Link unduhan tidak tersedia!");
+                return;
+            }
 
-    try {
-        // Trik direct download instan tanpa loading fetch blob
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = targetUrl;
-        a.download = filename;
-        a.setAttribute('download', filename);
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } catch (err) {
-        window.open(targetUrl, '_blank');
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 1500);
-    }
-    }
-        // Fungsi khusus untuk menangani download MP4 agar tidak mengganggu MP3
-async function downloadMP4Only(fileUrl, filename, buttonElement) {
-    const urlInput = document.getElementById('yt-url').value.trim();
-    if (!urlInput) {
-        alert("Masukkan link YouTube dulu, bro!");
-        return;
-    }
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
 
-    const originalContent = buttonElement.innerHTML;
-    buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh MP4...`;
-
-    try {
-        const response = await fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`);
-        const res = await response.json();
-
-        if (res && res.status === true && res.result && res.result.url) {
-            const directVideoUrl = res.result.url;
-            const finalFilename = (res.result.title ? res.result.title.replace(/[\/\\?%*:|"<>]/g, '') : 'youtube_video') + '.mp4';
-
-            // Paksa fetch data video ke memory blob agar browser tidak ngebuka tab player
-            const fileResponse = await fetch(directVideoUrl);
-            const blob = await fileResponse.blob();
-            const blobUrl = window.URL.createObjectURL(blob);
-
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = blobUrl;
-            a.download = finalFilename;
-            document.body.appendChild(a);
-            a.click();
-            
-            window.URL.revokeObjectURL(blobUrl);
-            document.body.removeChild(a);
-        } else {
-            throw new Error(res?.error || "Gagal mendapatkan link download MP4.");
-        }
-    } catch (err) {
-        // Fallback jika fetch blob diblokir CORS total: gunakan direct download anchor tanpa target blank
-        try {
-            const resFallback = await fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json());
-            if (resFallback && resFallback.result && resFallback.result.url) {
+            try {
+                const response = await fetch(targetUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                
                 const a = document.createElement('a');
-                a.href = resFallback.result.url;
-                a.setAttribute('download', 'youtube_video.mp4');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                const a = document.createElement('a');
+                a.href = targetUrl;
+                a.setAttribute('download', filename);
+                a.setAttribute('target', '_blank');
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
             }
-        } catch (e) {
-            alert("Terjadi kesalahan: " + err.message);
         }
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 2500);
-    }
-}
+
+        // 2. Fungsi khusus MP4 (Mengambil dari API v1 Nexray dan memaksa unduhan murni)
+        async function downloadMP4Only(fileUrl, filename, buttonElement) {
+            const urlInput = document.getElementById('yt-url').value.trim();
+            if (!urlInput) {
+                alert("Masukkan link YouTube dulu, bro!");
+                return;
+            }
+
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh MP4...`;
+
+            try {
+                const response = await fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`);
+                const res = await response.json();
+
+                if (res && res.status === true && res.result && res.result.url) {
+                    const directVideoUrl = res.result.url;
+                    const finalFilename = (res.result.title ? res.result.title.replace(/[\/\\?%*:|"<>]/g, '') : 'youtube_video') + '.mp4';
+
+                    // Menggunakan fetch blob khusus MP4 agar browser tidak ngebuka tab player video
+                    const videoRes = await fetch(directVideoUrl);
+                    const videoBlob = await videoRes.blob();
+                    const videoBlobUrl = window.URL.createObjectURL(videoBlob);
+
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = videoBlobUrl;
+                    a.download = finalFilename;
+                    document.body.appendChild(a);
+                    a.click();
+
+                    window.URL.revokeObjectURL(videoBlobUrl);
+                    document.body.removeChild(a);
+                } else {
+                    throw new Error(res?.error || "Gagal mengambil link MP4.");
+                }
+            } catch (err) {
+                // Fallback direct download jika fetch blob diblokir total
+                try {
+                    const resFallback = await fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json());
+                    if (resFallback && resFallback.result && resFallback.result.url) {
+                        const a = document.createElement('a');
+                        a.href = resFallback.result.url;
+                        // Trik agar HP mendownload file, bukan muter video
+                        a.setAttribute('download', 'youtube_video.mp4');
+                        a.setAttribute('href', resFallback.result.url + '&title=download');
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                } catch (e) {
+                    alert("Gagal mendownload video: " + err.message);
+                }
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2500);
+            }
+        }
         
 
         fetch('components/footer-ai.html')
