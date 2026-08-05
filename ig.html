@@ -83,76 +83,85 @@
 
     <script src="asset/js/all-tools-api.js"></script>
     <script>
-        let currentMediaUrl = "";
 
-                async function processInstagramDownload() {
-            const urlInput = document.getElementById('ig-url').value.trim();
-            const loadingBox = document.getElementById('loading-box');
-            const previewContainer = document.getElementById('preview-container');
-            const viewArea = document.getElementById('media-view-area');
+        let currentDirectUrl = "";
 
-            if (!urlInput) {
-                alert('Masukkan link Instagram terlebih dahulu, bro!');
-                return;
-            }
+async function processInstagramDownload() {
+    const urlInput = document.getElementById('ig-url').value.trim();
+    const loadingBox = document.getElementById('loading-box');
+    const previewContainer = document.getElementById('preview-container');
+    const viewArea = document.getElementById('media-view-area');
 
-            loadingBox.classList.remove('hidden');
-            previewContainer.classList.add('hidden');
+    if (!urlInput) {
+        alert('Masukkan link Instagram dulu, bro!');
+        return;
+    }
 
-            try {
-                const result = await downloadInstagram(urlInput);
-                
-                if (result && result.status === "success") {
-                    currentMediaUrl = result.url;
+    loadingBox.classList.remove('hidden');
+    previewContainer.classList.add('hidden');
 
-                    // Tampilkan kotak info bersih tanpa iframe yang diblokir IG
-                    viewArea.innerHTML = `
-                        <div class="p-6 text-center space-y-3">
-                            <div class="w-16 h-16 mx-auto bg-pink-500/20 rounded-full flex items-center justify-center text-pink-400 text-3xl">
-                                <i class="fa-solid fa-circle-check"></i>
-                            </div>
-                            <h3 class="text-sm font-bold text-white">Link Instagram Berhasil Diproses!</h3>
-                            <p class="text-[11px] text-gray-400 break-all px-2">${result.url}</p>
-                        </div>
-                    `;
-                    
-                    loadingBox.classList.add('hidden');
-                    previewContainer.classList.remove('hidden');
-                } else {
-                    throw new Error(result?.message || "Gagal mengambil data Instagram.");
-                }
-            } catch (err) {
-                loadingBox.classList.add('hidden');
-                alert("Terjadi kesalahan: " + err.message);
-            }
-                }
+    try {
+        const result = await downloadInstagram(urlInput);
         
+        if (result && result.status === "success") {
+            currentDirectUrl = result.url_media;
+
+            // Render video player asli di web lu (mirip web temen lu)
+            viewArea.innerHTML = `
+                <div class="p-4 text-center space-y-3">
+                    <div class="rounded-xl overflow-hidden bg-black aspect-[9/16] max-h-[350px] mx-auto flex items-center justify-center">
+                        <video src="${currentDirectUrl}" controls class="w-full h-full object-contain" poster="${result.thumbnail || ''}"></video>
+                    </div>
+                    <p class="text-xs text-gray-400">Instagram Video / Reels</p>
+                </div>
+            `;
+            
+            loadingBox.classList.add('hidden');
+            previewContainer.classList.remove('hidden');
+        } else {
+            throw new Error(result?.message || "Gagal mengambil data.");
+        }
+    } catch (err) {
+        loadingBox.classList.add('hidden');
+        alert("Terjadi kesalahan: " + err.message);
+    }
+}
+
 async function downloadMedia(fileUrl, filename, buttonElement) {
-    if (!fileUrl) {
+    const targetUrl = currentDirectUrl || fileUrl;
+    if (!targetUrl) {
         alert("Link unduhan tidak tersedia!");
         return;
     }
 
-    let targetUrl = fileUrl;
-    if (targetUrl.includes('/embed')) {
-        targetUrl = targetUrl.replace(/\/embed\/?$/, '');
-    }
-
     const originalContent = buttonElement.innerHTML;
     buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...`;
 
     try {
-        // Membuat elemen link unduhan langsung di halaman web lu sendiri
+        // Mengunduh file langsung melalui blob agar browser langsung mendownload filenya
+        const response = await fetch(targetUrl);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = 'instagram_video.mp4';
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+    } catch (err) {
+        // Fallback jika diblokir CORS, buka link CDN di tab baru agar langsung terdownload
         const a = document.createElement('a');
         a.href = targetUrl;
         a.setAttribute('download', 'instagram_video.mp4');
-        a.setAttribute('target', '_self');
+        a.setAttribute('target', '_blank');
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-    } catch (err) {
-        window.location.href = targetUrl;
     } finally {
         setTimeout(() => {
             buttonElement.disabled = false;
