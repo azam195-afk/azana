@@ -92,7 +92,7 @@ async function downloadYouTube(url) {
     try {
         let cleanUrl = url.trim();
 
-        // Tembak endpoint aio dan ytmp3 dari Nexray API secara bersamaan
+        // Tembak endpoint AIO (untuk video MP4) dan ytmp3 (untuk audio MP3) secara bersamaan
         const [resAio, resMp3] = await Promise.all([
             fetch(`https://api.nexray.eu.cc/downloader/aio?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null),
             fetch(`https://api.nexray.eu.cc/downloader/ytmp3?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null)
@@ -102,7 +102,7 @@ async function downloadYouTube(url) {
         let title = "YouTube Video";
         let thumbnail = "";
 
-        // Menyesuaikan struktur result dari endpoint aio Nexray
+        // Ambil data video dari AIO
         if (resAio && resAio.status === true && resAio.result) {
             const item = Array.isArray(resAio.result) ? resAio.result[0] : resAio.result;
             videoUrl = item.url || item.download || "";
@@ -111,7 +111,7 @@ async function downloadYouTube(url) {
         }
 
         let audioUrl = "";
-        // Menyesuaikan struktur result dari endpoint ytmp3 Nexray
+        // Ambil data audio dari ytmp3
         if (resMp3 && resMp3.status === true && resMp3.result) {
             audioUrl = resMp3.result.url || resMp3.result.download || "";
             if (title === "YouTube Video" && resMp3.result.title) {
@@ -123,7 +123,7 @@ async function downloadYouTube(url) {
         }
 
         if (!videoUrl && !audioUrl) {
-            throw new Error("Link unduhan tidak ditemukan di dalam respon API.");
+            throw new Error("Gagal mengambil data dari server Nexray.");
         }
 
         return {
@@ -140,6 +140,7 @@ async function downloadYouTube(url) {
 }
 
 window.downloadYouTube = downloadYouTube;
+
 
 async function downloadSpotify(url) { return { url, status: "pending" }; }
 function generateSertifikatLucu(payload = {}) { return { payload, status: "pending" }; }
