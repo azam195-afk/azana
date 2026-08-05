@@ -49,7 +49,7 @@
                     <i class="fa-brands fa-youtube"></i>
                 </div>
                 <h1 class="text-xl font-extrabold tracking-wider mb-1">YOUTUBE DOWNLOADER</h1>
-                <p class="text-[11px] text-gray-400">Pilih video MP4 multi-resolusi atau audio MP3 dengan mudah.</p>
+                <p class="text-[11px] text-gray-400">Pilih video MP4 atau audio MP3 dengan Nexray API.</p>
             </div>
 
             <!-- Input Form -->
@@ -93,45 +93,15 @@
                     </button>
                 </div>
 
-                <!-- Konten Tab MP4 (Multi Resolusi) -->
+                <!-- Konten Tab MP4 -->
                 <div id="content-mp4" class="space-y-2.5">
                     <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-film mr-1"></i> 360p Low</p>
-                            <span class="text-[10px] text-gray-400">MP4 • Ukuran kecil</span>
+                            <p class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-film mr-1"></i> MP4 Video</p>
+                            <span class="text-[10px] text-gray-400">Format MP4 High Quality</span>
                         </div>
-                        <button onclick="triggerDownload(videoLinks['360'] || videoLinks['default'], 'video_360p.mp4', this)" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs px-3.5 py-2 rounded-xl transition shadow">
-                            ↓ 360p
-                        </button>
-                    </div>
-
-                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-film mr-1"></i> 480p SD</p>
-                            <span class="text-[10px] text-gray-400">MP4 • Kualitas standar</span>
-                        </div>
-                        <button onclick="triggerDownload(videoLinks['480'] || videoLinks['default'], 'video_480p.mp4', this)" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs px-3.5 py-2 rounded-xl transition shadow">
-                            ↓ 480p
-                        </button>
-                    </div>
-
-                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-purple-400"><i class="fa-solid fa-film mr-1"></i> 720p HD</p>
-                            <span class="text-[10px] text-gray-400">MP4 • Kualitas bagus</span>
-                        </div>
-                        <button onclick="triggerDownload(videoLinks['720'] || videoLinks['default'], 'video_720p.mp4', this)" class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition shadow">
-                            ↓ 720p
-                        </button>
-                    </div>
-
-                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-film mr-1"></i> 1080p Full HD</p>
-                            <span class="text-[10px] text-gray-400">MP4 • Resolusi terbaik</span>
-                        </div>
-                        <button onclick="triggerDownload(videoLinks['1080'] || videoLinks['default'], 'video_1080p.mp4', this)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-2 rounded-xl transition shadow">
-                            ↓ 1080p
+                        <button onclick="triggerDownload(videoDownloadUrl, 'youtube_video.mp4', this)" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                            ↓ Download MP4
                         </button>
                     </div>
                 </div>
@@ -141,10 +111,10 @@
                     <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3.5 flex items-center justify-between">
                         <div>
                             <p class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-music mr-1"></i> Audio MP3</p>
-                            <span class="text-[10px] text-gray-400">Kualitas tinggi (320kbps)</span>
+                            <span class="text-[10px] text-gray-400">Kualitas tinggi (Audio Viral)</span>
                         </div>
-                        <button onclick="triggerDownload(audioLink, 'audio_youtube.mp3', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
-                            ↓ MP3
+                        <button onclick="triggerDownload(audioDownloadUrl, 'youtube_audio.mp3', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                            ↓ Download MP3
                         </button>
                     </div>
                 </div>
@@ -157,10 +127,10 @@
     <div id="footer" class="relative z-10"></div>
 
     <script>
-        let videoLinks = {};
-        let audioLink = "";
+        let videoDownloadUrl = "";
+        let audioDownloadUrl = "";
 
-                async function processYouTubeDownload() {
+        async function processYouTubeDownload() {
             const urlInput = document.getElementById('yt-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
             const previewContainer = document.getElementById('preview-container');
@@ -174,58 +144,51 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // Tembak endpoint v1 ytmp4 dengan berbagai variasi resolusi atau endpoint aio/ytmp4 nexray
-                const [res360, res480, res720, res1080, resMp3] = await Promise.all([
-                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=360`).then(r => r.json()).catch(() => null),
-                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=480`).then(r => r.json()).catch(() => null),
-                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=720`).then(r => r.json()).catch(() => null),
-                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
-                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
+                // Tembak endpoint nexray ytmp4 dan ytmp3 secara bersamaan
+                const [resMp4, resMp3] = await Promise.all([
+                    fetch(`https://api.nexray.eu.cc/downloader/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
+                    fetch(`https://api.nexray.eu.cc/downloader/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
                 ]);
 
                 let title = "YouTube Video";
-                let thumbnail = "";
+                let thumbnail = "https://i.ytimg.com/vi/3cjbQF5y3BE/hqdefault.jpg";
 
-                videoLinks = {};
-
-                // Mapping link berdasarkan respons resolusi dari Nexray API v1
-                if (res360 && res360.status && res360.result) {
-                    videoLinks['360'] = res360.result.url;
-                    title = res360.result.title;
-                    thumbnail = res360.result.thumbnail;
-                }
-                if (res480 && res480.status && res480.result) {
-                    videoLinks['480'] = res480.result.url;
-                    title = res480.result.title || title;
-                    thumbnail = res480.result.thumbnail || thumbnail;
-                }
-                if (res720 && res720.status && res720.result) {
-                    videoLinks['720'] = res720.result.url;
-                    title = res720.result.title || title;
-                    thumbnail = res720.result.thumbnail || thumbnail;
-                }
-                if (res1080 && res1080.status && res1080.result) {
-                    videoLinks['1080'] = res1080.result.url;
-                    title = res1080.result.title || title;
-                    thumbnail = res1080.result.thumbnail || thumbnail;
+                // Ambil link MP4
+                if (resMp4 && resMp4.status === true && resMp4.result && resMp4.result.url) {
+                    videoDownloadUrl = resMp4.result.url;
+                    if (resMp4.result.title) title = resMp4.result.title;
+                    if (resMp4.result.thumbnail) thumbnail = resMp4.result.thumbnail;
                 }
 
-                if (resMp3 && resMp3.status && resMp3.result) {
-                    audioLink = resMp3.result.url || "";
-                    if (title === "YouTube Video" && resMp3.result.title) title = resMp3.result.title;
-                    if (!thumbnail && resMp3.result.thumbnail) thumbnail = resMp3.result.thumbnail;
+                // Ambil link MP3
+                if (resMp3 && resMp3.status === true && resMp3.result && resMp3.result.url) {
+                    audioDownloadUrl = resMp3.result.url;
+                    if (resMp3.result.title) title = resMp3.result.title;
+                    if (resMp3.result.thumbnail) thumbnail = resMp3.result.thumbnail;
                 }
 
-                // Fallback jika salah satu kosong
-                const fallbackUrl = videoLinks['1080'] || videoLinks['720'] || videoLinks['480'] || videoLinks['360'];
-                if (!fallbackUrl && !audioLink) {
-                    throw new Error("Gagal mengambil data dari server Nexray API.");
+                // Fallback ke endpoint v1 jika endpoint utama kosong
+                if (!videoDownloadUrl || !audioDownloadUrl) {
+                    const [v1Mp4, v1Mp3] = await Promise.all([
+                        fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
+                        fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
+                    ]);
+
+                    if (v1Mp4 && v1Mp4.status && v1Mp4.result) {
+                        videoDownloadUrl = v1Mp4.result.url;
+                        if (v1Mp4.result.title) title = v1Mp4.result.title;
+                        if (v1Mp4.result.thumbnail) thumbnail = v1Mp4.result.thumbnail;
+                    }
+                    if (v1Mp3 && v1Mp3.status && v1Mp3.result) {
+                        audioDownloadUrl = v1Mp3.result.url;
+                        if (v1Mp3.result.title) title = v1Mp3.result.title;
+                        if (v1Mp3.result.thumbnail) thumbnail = v1Mp3.result.thumbnail;
+                    }
                 }
 
-                // Set default jika ada resolusi yang kosong
-                ['360', '480', '720', '1080'].forEach(res => {
-                    if (!videoLinks[res]) videoLinks[res] = fallbackUrl;
-                });
+                if (!videoDownloadUrl && !audioDownloadUrl) {
+                    throw new Error("Gagal mendapatkan link dari Nexray API.");
+                }
 
                 document.getElementById('vid-title').innerText = title;
                 document.getElementById('vid-thumbnail').src = thumbnail;
@@ -239,19 +202,38 @@
             }
         }
 
-        // Fungsi download aman yang memaksa download file via Blob stream agar tidak nge-play di tab baru
+        function switchTab(type) {
+            const btnMp4 = document.getElementById('tab-btn-mp4');
+            const btnMp3 = document.getElementById('tab-btn-mp3');
+            const contentMp4 = document.getElementById('content-mp4');
+            const contentMp3 = document.getElementById('content-mp3');
+
+            if (type === 'mp4') {
+                btnMp4.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 bg-purple-600 text-white shadow";
+                btnMp3.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 text-gray-400 hover:text-white";
+                contentMp4.classList.remove('hidden');
+                contentMp3.classList.add('hidden');
+            } else {
+                btnMp3.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 bg-cyan-600 text-white shadow";
+                btnMp4.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 text-gray-400 hover:text-white";
+                contentMp3.classList.remove('hidden');
+                contentMp4.classList.add('hidden');
+            }
+        }
+
+        // Trik mutlak agar HP mendownload file biner secara langsung dan tidak nge-play di tab baru
         async function triggerDownload(fileUrl, filename, buttonElement) {
             if (!fileUrl) {
-                alert("Link unduhan untuk resolusi ini belum tersedia!");
+                alert("Link unduhan belum tersedia!");
                 return;
             }
 
             const originalContent = buttonElement.innerHTML;
             buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Downloading...`;
 
             try {
-                // Fetch blob murni agar browser memprosesnya sebagai file biner download
+                // Paksa fetch sebagai blob agar browser men-download file biner murni
                 const response = await fetch(fileUrl);
                 const blob = await response.blob();
                 const blobUrl = window.URL.createObjectURL(blob);
@@ -266,7 +248,7 @@
                 window.URL.revokeObjectURL(blobUrl);
                 document.body.removeChild(a);
             } catch (err) {
-                // Fallback jika blob diblokir CORS: gunakan trik parameter paksa unduh
+                // Fallback langsung menggunakan anchor download
                 const a = document.createElement('a');
                 a.href = fileUrl;
                 a.download = filename;
