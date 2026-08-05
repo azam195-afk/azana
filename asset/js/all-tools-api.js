@@ -84,9 +84,57 @@ async function downloadInstagram(url) {
 
 window.downloadInstagram = downloadInstagram;
 
+async function downloadYouTube(url) {
+    if (!url) {
+        throw new Error("URL YouTube tidak boleh kosong!");
+    }
+    
+    try {
+        let cleanUrl = url.trim();
 
+        // Tembak endpoint aio (untuk video) dan ytmp3 (untuk audio) dari Nexray
+        const [resAio, resMp3] = await Promise.all([
+            fetch(`https://api.nexray.eu.cc/downloader/aio?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null),
+            fetch(`https://api.nexray.eu.cc/downloader/ytmp3?url=${encodeURIComponent(cleanUrl)}`).then(r => r.json()).catch(() => null)
+        ]);
 
-async function downloadYouTube(url) { return { url, status: "pending" }; }
+        let videoUrl = "";
+        let title = "YouTube Video";
+        let thumbnail = "";
+
+        if (resAio && resAio.status && resAio.result) {
+            const item = Array.isArray(resAio.result) ? resAio.result[0] : resAio.result;
+            videoUrl = item.url || item.download || "";
+            title = item.title || title;
+            thumbnail = item.thumbnail || "";
+        }
+
+        let audioUrl = "";
+        if (resMp3 && resMp3.status && resMp3.result) {
+            audioUrl = resMp3.result.url || "";
+            if (!title && resMp3.result.title) title = resMp3.result.title;
+            if (!thumbnail && resMp3.result.thumbnail) thumbnail = resMp3.result.thumbnail;
+        }
+
+        if (!videoUrl && !audioUrl) {
+            throw new Error("Gagal mengambil data dari server Nexray.");
+        }
+
+        return {
+            status: "success",
+            title: title,
+            thumbnail: thumbnail,
+            video_url: videoUrl,
+            audio_url: audioUrl
+        };
+    } catch (error) {
+        console.error("Error YouTube:", error);
+        return { status: "error", message: error.message || "Gagal memproses link YouTube." };
+    }
+}
+
+window.downloadYouTube = downloadYouTube;
+
 async function downloadSpotify(url) { return { url, status: "pending" }; }
 function generateSertifikatLucu(payload = {}) { return { payload, status: "pending" }; }
 function generateBrat(payload = {}) { return { payload, status: "pending" }; }
