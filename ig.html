@@ -67,28 +67,15 @@
             </div>
 
             <div id="preview-container" class="hidden mt-4 space-y-3">
-                <div id="media-view-area" class="w-full overflow-hidden rounded-2xl bg-black/40 border border-pink-500/30 flex justify-center">
-                    <!-- Preview embed/media akan muncul di sini -->
+                <div class="w-full overflow-hidden rounded-2xl bg-black/40 border border-pink-500/30 flex justify-center">
+                    <video id="preview-video" controls class="w-full max-h-[400px] object-contain hidden"></video>
+                    <img id="preview-image" class="w-full max-h-[400px] object-contain hidden">
                 </div>
 
-                <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3.5 flex items-center gap-2.5">
-    <div class="w-8 h-8 rounded-full bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-pink-400 text-xs font-bold">
-        <i class="fa-solid fa-user"></i>
-    </div>
-    <div>
-        <p id="preview-author" class="text-xs font-bold text-white">@instagram_user</p>
-        <span class="text-[9px] text-pink-400 uppercase tracking-wider">MEDIA INSTAGRAM</span>
-    </div>
-                </div>
-                
-                <div class="space-y-2 pt-1">
-                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest text-center">Pilih Format Unduhan</p>
-                    
-                    <button onclick="downloadMedia(currentMediaUrl, 'instagram_media.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-pink-600/30 hover:bg-pink-600/50 border border-pink-500/40 rounded-xl text-xs font-semibold text-pink-200 transition cursor-pointer">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-download text-pink-400"></i> Buka / Unduh Media</span>
-                        <span class="text-[10px] bg-pink-500/20 px-2 py-0.5 rounded text-pink-300">HD</span>
-                    </button>
-                </div>
+                <button onclick="downloadMedia(currentMediaUrl, 'instagram_media.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-pink-600/30 hover:bg-pink-600/50 border border-pink-500/40 rounded-xl text-xs font-semibold text-pink-200 transition cursor-pointer">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-download text-pink-400"></i> Download Media (Video/Foto)</span>
+                    <span class="text-[10px] bg-pink-500/20 px-2 py-0.5 rounded text-pink-300">HD</span>
+                </button>
             </div>
 
         </div>
@@ -104,7 +91,8 @@
             const urlInput = document.getElementById('ig-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
             const previewContainer = document.getElementById('preview-container');
-            const viewArea = document.getElementById('media-view-area');
+            const videoElement = document.getElementById('preview-video');
+            const imageElement = document.getElementById('preview-image');
 
             if (!urlInput) {
                 alert('Masukkan link Instagram terlebih dahulu, bro!');
@@ -119,14 +107,15 @@
                 
                 if (result && result.status === "success") {
                     currentMediaUrl = result.url_media;
-                    document.getElementById('preview-author').innerText = "@" + (result.author || "instagram_user");
 
-                    if (result.is_embed) {
-                        viewArea.innerHTML = `<iframe src="${currentMediaUrl}" class="w-full h-[400px] rounded-2xl border-0" scrolling="no" allowtransparency="true"></iframe>`;
-                    } else if (result.type === "video") {
-                        viewArea.innerHTML = `<video src="${currentMediaUrl}" controls class="w-full max-h-[400px] object-contain rounded-2xl"></video>`;
+                    if (result.type === "video") {
+                        videoElement.src = currentMediaUrl;
+                        videoElement.classList.remove('hidden');
+                        imageElement.classList.add('hidden');
                     } else {
-                        viewArea.innerHTML = `<img src="${currentMediaUrl}" class="w-full max-h-[400px] object-contain rounded-2xl">`;
+                        imageElement.src = currentMediaUrl;
+                        imageElement.classList.remove('hidden');
+                        videoElement.classList.add('hidden');
                     }
                     
                     loadingBox.classList.add('hidden');
@@ -143,11 +132,6 @@
         async function downloadMedia(fileUrl, filename, buttonElement) {
             if (!fileUrl) {
                 alert("Link unduhan tidak tersedia!");
-                return;
-            }
-
-            if (fileUrl.includes('/embed')) {
-                window.open(fileUrl.replace('/embed', ''), '_blank');
                 return;
             }
 
@@ -192,7 +176,6 @@
         }).catch(err => console.log("Footer load error:", err));
     </script>
 
-    <!-- NEURAL BACKGROUND -->
     <script>
       const canvas = document.getElementById('neural-bg');
       const ctx = canvas.getContext('2d');
