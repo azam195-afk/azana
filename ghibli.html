@@ -305,10 +305,40 @@
       if (file) tangkapFoto(file);
     });
 
-    async function prosesGhibli(file) {
+        async function prosesGhibli(file) {
       let progress = 0;
       const interval = setInterval(() => { if(progress < 90) { progress += 2; progressBar.style.width = progress + '%'; } }, 200);
       
+      try {
+        statusText.innerText = "Memproses gaya Ghibli...";
+        
+        const localImageUrl = URL.createObjectURL(file);
+        const ghibliRes = await fetch(`https://api.nexray.eu.cc/ephoto/ghibli?url=${encodeURIComponent(localImageUrl)}`);
+        
+        if (!ghibliRes.ok) throw new Error("Gagal memproses AI Ghibli.");
+        
+        const blob = await ghibliRes.blob();
+        const resultUrl = URL.createObjectURL(blob);
+
+        clearInterval(interval);
+        progressBar.style.width = '100%';
+        statusText.innerText = "SELESAI!";
+
+        setTimeout(() => {
+          processingArea.classList.add('hidden');
+          resultArea.classList.remove('hidden');
+          resultArea.classList.add('flex');
+          document.getElementById('result-enhanced').src = resultUrl;
+          document.getElementById('download-btn').href = resultUrl;
+        }, 600);
+
+      } catch (err) {
+        clearInterval(interval);
+        alert("Error: " + err.message);
+        location.reload();
+      }
+        }
+
       try {
         // 1. Upload gambar lokal ke Catbox.moe agar mendapatkan URL publik
         statusText.innerText = "Mengunggah gambar...";
