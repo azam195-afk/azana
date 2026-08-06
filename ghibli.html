@@ -305,43 +305,14 @@
       if (file) tangkapFoto(file);
     });
 
-        async function prosesGhibli(file) {
+    async function prosesGhibli(file) {
       let progress = 0;
       const interval = setInterval(() => { if(progress < 90) { progress += 2; progressBar.style.width = progress + '%'; } }, 200);
       
       try {
-        statusText.innerText = "Memproses gaya Ghibli...";
+        statusText.innerText = "Mengunggah gambar sementara...";
         
-        const localImageUrl = URL.createObjectURL(file);
-        const ghibliRes = await fetch(`https://api.nexray.eu.cc/ephoto/ghibli?url=${encodeURIComponent(localImageUrl)}`);
-        
-        if (!ghibliRes.ok) throw new Error("Gagal memproses AI Ghibli.");
-        
-        const blob = await ghibliRes.blob();
-        const resultUrl = URL.createObjectURL(blob);
-
-        clearInterval(interval);
-        progressBar.style.width = '100%';
-        statusText.innerText = "SELESAI!";
-
-        setTimeout(() => {
-          processingArea.classList.add('hidden');
-          resultArea.classList.remove('hidden');
-          resultArea.classList.add('flex');
-          document.getElementById('result-enhanced').src = resultUrl;
-          document.getElementById('download-btn').href = resultUrl;
-        }, 600);
-
-      } catch (err) {
-        clearInterval(interval);
-        alert("Error: " + err.message);
-        location.reload();
-      }
-        }
-
-      try {
-        // 1. Upload gambar lokal ke Catbox.moe agar mendapatkan URL publik
-        statusText.innerText = "Mengunggah gambar...";
+        // Menggunakan teknik upload publik yang mulus untuk mendapatkan URL gambar
         const formData = new FormData();
         formData.append('reqtype', 'fileupload');
         formData.append('fileToUpload', file);
@@ -350,21 +321,19 @@
           method: 'POST',
           body: formData
         });
-        
-        if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar sementara.");
+
+        if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar ke server.");
         const imageUrl = await uploadRes.text();
 
-        if (!imageUrl.startsWith('http')) {
+        if (!imageUrl || !imageUrl.startsWith('http')) {
           throw new Error("Gagal mendapatkan link publik gambar.");
         }
 
-        // 2. Tembak Nexray API Ghibli
         statusText.innerText = "Memproses gaya Ghibli...";
         const ghibliRes = await fetch(`https://api.nexray.eu.cc/ephoto/ghibli?url=${encodeURIComponent(imageUrl)}`);
         
         if (!ghibliRes.ok) throw new Error("Gagal memproses AI Ghibli.");
         
-        // Ambil hasil gambar sebagai blob
         const blob = await ghibliRes.blob();
         const resultUrl = URL.createObjectURL(blob);
 
