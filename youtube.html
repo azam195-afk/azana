@@ -263,16 +263,19 @@ async function triggerDownloadMP3(buttonElement) {
     buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh MP3...`;
 
     try {
-        // Buat elemen anchor langsung agar tombol selalu responsif dan tidak macet
+        // Ambil judul langsung dari elemen HTML teks judul supaya tidak pernah "not defined"
+        const titleEl = document.getElementById('vid-title');
+        const safeTitle = titleEl && titleEl.innerText ? titleEl.innerText.replace(/[\/\\?%*:|"<>]/g, '') : 'audio_youtube';
+
         const a = document.createElement('a');
         a.href = audioDownloadUrl;
-        a.download = 'YTSave_' + videoTitle + '.mp3';
-        a.setAttribute('download', 'YTSave_' + videoTitle + '.mp3');
+        a.download = 'YTSave_' + safeTitle + '.mp3';
+        a.setAttribute('download', 'YTSave_' + safeTitle + '.mp3');
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
     } catch (err) {
-        alert("Gagal mengunduh audio: " + err.message);
+        alert("Gagal mengunduh: " + err.message);
     } finally {
         setTimeout(() => {
             buttonElement.disabled = false;
@@ -280,6 +283,7 @@ async function triggerDownloadMP3(buttonElement) {
         }, 2000);
     }
 }
+    
         
         
         // Load Footer
