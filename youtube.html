@@ -3,132 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Downloader - Azana Tools</title>
+    <title>YouTube Downloader</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        #neural-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .card-glow {
-            background: linear-gradient(135deg, rgba(18, 24, 38, 0.95), rgba(13, 17, 28, 0.95));
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-        }
-    </style>
 </head>
-<body class="flex flex-col min-h-screen relative">
+<body class="bg-black text-white min-h-screen flex flex-col justify-between p-4">
 
-    <canvas id="neural-bg"></canvas>
+    <div class="max-w-md mx-auto w-full space-y-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center bg-zinc-900/80 p-3 rounded-2xl border border-zinc-800">
+            <a href="index.html" class="text-xs bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-xl transition">← KEMBALI</a>
+            <span class="text-xs font-bold text-purple-400">YOUTUBE ROOM</span>
+        </div>
 
-    <header class="p-4 flex items-center justify-between border-b border-purple-900/30 relative z-10">
-        <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2 text-sm font-semibold">
-            <i class="fa-solid fa-arrow-left"></i> KEMBALI
-        </a>
-        <span class="text-xs tracking-widest text-purple-400 uppercase font-bold">YOUTUBE ROOM</span>
-    </header>
-
-    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
-        <div class="card-glow rounded-3xl p-5 w-full">
-            
-            <div class="text-center mb-5">
-                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-black/40 border border-red-500/30 flex items-center justify-center text-red-500 text-2xl shadow-[0_0_15px_rgba(239,68,68,0.3)]">
-                    <i class="fa-brands fa-youtube"></i>
-                </div>
-                <h1 class="text-xl font-extrabold tracking-wider mb-1">YOUTUBE DOWNLOADER</h1>
-                <p class="text-[11px] text-gray-400">Pilih video MP4 atau audio MP3 dengan Nexray API.</p>
+        <!-- Main Card -->
+        <div class="bg-zinc-950 border border-purple-500/30 p-4 rounded-3xl shadow-xl space-y-4 text-center">
+            <div class="w-12 h-12 bg-red-600/20 text-red-500 rounded-2xl mx-auto flex items-center justify-center text-xl">
+                <i class="fa-brands fa-youtube"></i>
             </div>
+            
+            <h1 class="text-base font-bold">YOUTUBE DOWNLOADER</h1>
+            <p class="text-xs text-zinc-400">Pilih video MP4 atau audio MP3 dengan Nexray API.</p>
 
             <!-- Input Form -->
-            <div class="space-y-3 mb-4">
-                <div class="relative">
-                    <input type="text" id="yt-url" placeholder="Tempel link YouTube di sini..." 
-                        class="w-full bg-black/50 border border-purple-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition">
-                </div>
-                <button onclick="processYouTubeDownload()" id="btn-process" 
-                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-500 hover:to-purple-500 text-white shadow-lg shadow-purple-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
+            <div class="space-y-2">
+                <input type="text" id="yt-url" placeholder="Tempel link YouTube di sini..." class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-purple-500 text-center">
+                <button onclick="processYouTubeDownload()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-bold text-xs py-3 rounded-2xl transition shadow-lg flex items-center justify-center gap-2">
                     <i class="fa-solid fa-bolt"></i> Ambil Info Video
                 </button>
             </div>
 
             <!-- Loading Box -->
-            <div id="loading-box" class="hidden text-center py-6 text-cyan-400 text-xs">
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil informasi dari Nexray API...
+            <div id="loading-box" class="hidden py-6">
+                <i class="fa-solid fa-spinner fa-spin text-2xl text-purple-500"></i>
+                <p class="text-xs text-zinc-400 mt-2">Sedang memproses...</p>
             </div>
 
-            <!-- PREVIEW & HASIL DOWNLOAD CONTAINER -->
-            <div id="preview-container" class="hidden space-y-4 pt-2">
-                
+            <!-- Preview Container -->
+            <div id="preview-container" class="hidden space-y-3 pt-2 text-left">
                 <!-- Thumbnail & Judul -->
                 <div class="space-y-3 text-center">
-                    <div class="rounded-xl overflow-hidden bg-black aspect-video max-h-[180px] mx-auto flex items-center justify-center border border-purple-500/30">
+                    <div class="rounded-xl overflow-hidden bg-black aspect-video max-h-[180px] mx-auto flex items-center justify-center border border-zinc-800">
                         <img id="vid-thumbnail" src="" class="w-full h-full object-cover" alt="Thumbnail">
                     </div>
                     <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3 text-left">
                         <span class="text-[10px] text-gray-400 font-semibold uppercase">Judul Video:</span>
-                        <p id="vid-title" class="text-xs text-gray-200 line-clamp-2 mt-0.5 font-medium">-</p>
+                        <p id="vid-title" class="text-xs text-gray-200 line-clamp-2 mt-0.5 font-medium"></p>
                     </div>
                 </div>
 
-                <!-- Tab Menu (Video MP4 vs Audio MP3) -->
-                <div class="flex bg-black/40 p-1 rounded-2xl border border-purple-500/20 gap-1">
-                    <button onclick="switchTab('mp4')" id="tab-btn-mp4" class="flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 bg-purple-600 text-white shadow">
-                        <i class="fa-solid fa-video"></i> Video MP4
-                    </button>
-                    <button onclick="switchTab('mp3')" id="tab-btn-mp3" class="flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 text-gray-400 hover:text-white">
-                        <i class="fa-solid fa-music"></i> Audio MP3
-                    </button>
-                </div>
-
-                <!-- Konten Tab MP4 -->
-                <div id="content-mp4" class="space-y-2.5">
+                <!-- Konten Tombol Download -->
+                <div class="space-y-2 pt-2">
+                    <!-- Tombol MP4 -->
                     <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-film mr-1"></i> MP4 Video</p>
-                            <span class="text-[10px] text-gray-400">Format MP4 High Quality</span>
+                            <p class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-film mr-1"></i>Format MP4</p>
+                            <span class="text-[10px] text-gray-400">High Quality Video</span>
                         </div>
-                        <button onclick="triggerDownloadMP4(videoDownloadUrl, 'youtube_video.mp4', this)" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                        <button onclick="triggerDownloadMP4(this)" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs px-4 py-2.5 rounded-xl transition shadow">
                             ↓ Download MP4
                         </button>
                     </div>
-                </div>
 
-                <!-- Konten Tab MP3 -->
-                <div id="content-mp3" class="hidden space-y-3">
-                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3.5 flex items-center justify-between">
+                    <!-- Tombol MP3 -->
+                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
                         <div>
-                            <p class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-music mr-1"></i> Audio MP3</p>
-                            <span class="text-[10px] text-gray-400">Kualitas tinggi (Audio Viral)</span>
+                            <p class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-music mr-1"></i>Format MP3</p>
+                            <span class="text-[10px] text-gray-400">High Quality Audio</span>
                         </div>
-                        <button onclick="triggerDownloadMP3(audioDownloadUrl, 'youtube_audio.mp3', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                        <button onclick="triggerDownloadMP3(this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2.5 rounded-xl transition shadow">
                             ↓ Download MP3
                         </button>
                     </div>
                 </div>
-
             </div>
-
         </div>
-    </main>
+    </div>
 
-    <div id="footer" class="relative z-10"></div>
+    <!-- Footer -->
+    <div id="footer" class="text-center text-[10px] text-zinc-500 py-4">AZANA DESIGN</div>
 
     <script>
         let videoDownloadUrl = "";
         let audioDownloadUrl = "";
+        let videoTitle = "youtube_media";
 
         async function processYouTubeDownload() {
             const urlInput = document.getElementById('yt-url').value.trim();
@@ -144,7 +102,6 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // Gunakan endpoint v1 terbaru untuk MP4 dan MP3 Nexray API
                 const [resMp4, resMp3] = await Promise.all([
                     fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
                     fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
@@ -169,7 +126,7 @@
                     throw new Error("Gagal mendapatkan link dari Nexray API.");
                 }
 
-                videoTitle = title.replace(/[\/\\?%*:|"<>]/g, '');
+                videoTitle = title.replace(/[\/\\?%*:|"<>]/g, '').trim();
                 document.getElementById('vid-title').innerText = title;
                 document.getElementById('vid-thumbnail').src = thumbnail;
 
@@ -181,154 +138,88 @@
                 alert("Terjadi kesalahan: " + err.message);
             }
         }
-        function switchTab(type) {
-            const btnMp4 = document.getElementById('tab-btn-mp4');
-            const btnMp3 = document.getElementById('tab-btn-mp3');
-            const contentMp4 = document.getElementById('content-mp4');
-            const contentMp3 = document.getElementById('content-mp3');
 
-            if (type === 'mp4') {
-                btnMp4.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 bg-purple-600 text-white shadow";
-                btnMp3.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 text-gray-400 hover:text-white";
-                contentMp4.classList.remove('hidden');
-                contentMp3.classList.add('hidden');
-            } else {
-                btnMp3.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 bg-cyan-600 text-white shadow";
-                btnMp4.className = "flex-1 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 text-gray-400 hover:text-white";
-                contentMp3.classList.remove('hidden');
-                contentMp4.classList.add('hidden');
+        // Fungsi Download MP4 Murni (Anti Tab Baru)
+        async function triggerDownloadMP4(buttonElement) {
+            if (!videoDownloadUrl) {
+                alert("Link video belum tersedia!");
+                return;
+            }
+
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+
+            try {
+                const response = await fetch(videoDownloadUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = videoTitle + '.mp4';
+                document.body.appendChild(a);
+                a.click();
+
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                const a = document.createElement('a');
+                a.href = videoDownloadUrl;
+                a.download = videoTitle + '.mp4';
+                a.setAttribute('download', videoTitle + '.mp4');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
             }
         }
 
-
-        // Trigger Download MP4
-async function triggerDownloadMP4(buttonElement) {
-    if (!videoDownloadUrl) {
-        alert("Link video belum tersedia!");
-        return;
-    }
-
-    const originalContent = buttonElement.innerHTML;
-    buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh MP4...`;
-
-    try {
-        const a = document.createElement('a');
-        a.href = videoDownloadUrl;
-        a.download = videoTitle + '.mp4';
-        a.setAttribute('download', videoTitle + '.mp4');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } catch (err) {
-        window.open(videoDownloadUrl, '_blank');
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 2000);
-    }
-}
-
-// Trigger Download MP3 (Sama persis polanya dengan MP4)
-async function triggerDownloadMP3(buttonElement) {
-    if (!audioDownloadUrl) {
-        alert("Link audio belum tersedia!");
-        return;
-    }
-
-    const originalContent = buttonElement.innerHTML;
-    buttonElement.disabled = true;
-    buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh MP3...`;
-
-    try {
-        // Ambil judul langsung dari elemen HTML teks judul supaya tidak pernah "not defined"
-        const titleEl = document.getElementById('vid-title');
-        const safeTitle = titleEl && titleEl.innerText ? titleEl.innerText.replace(/[\/\\?%*:|"<>]/g, '') : 'audio_youtube';
-
-        const a = document.createElement('a');
-        a.href = audioDownloadUrl;
-        a.download = 'YTSave_' + safeTitle + '.mp3';
-        a.setAttribute('download', 'YTSave_' + safeTitle + '.mp3');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    } catch (err) {
-        alert("Gagal mengunduh: " + err.message);
-    } finally {
-        setTimeout(() => {
-            buttonElement.disabled = false;
-            buttonElement.innerHTML = originalContent;
-        }, 2000);
-    }
-}
-    
-        
-        
-        // Load Footer
-        fetch('components/footer-ai.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('footer').innerHTML = data;
-        }).catch(err => console.log("Footer load error:", err));
-    </script>
-
-    <script>
-      const canvas = document.getElementById('neural-bg');
-      const ctx = canvas.getContext('2d');
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
-      resizeCanvas();
-      const particlesArray = [];
-      const colors = ['#00f2fe', '#bc13fe'];
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 1.5 + 0.5;
-          this.speedX = (Math.random() * 0.5) - 0.25;
-          this.speedY = (Math.random() * 0.5) - 0.25;
-          this.color = colors[Math.floor(Math.random() * colors.length)];
-        }
-        update() {
-          this.x += this.speedX; this.y += this.speedY;
-          if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-          if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-        }
-        draw() {
-          ctx.fillStyle = this.color;
-          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-        }
-      }
-      function initNodes() {
-        particlesArray.length = 0;
-        let numberOfParticles = (canvas.height * canvas.width) / 9500;
-        if (numberOfParticles > 130) numberOfParticles = 130;
-        for (let i = 0; i < numberOfParticles; i++) { particlesArray.push(new Particle()); }
-      }
-      function animateNodes() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particlesArray.length; i++) {
-          particlesArray[i].update();
-          particlesArray[i].draw();
-          for (let j = i; j < particlesArray.length; j++) {
-            const dx = particlesArray[i].x - particlesArray[j].x;
-            const dy = particlesArray[i].y - particlesArray[j].y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 150) {
-              ctx.beginPath(); ctx.strokeStyle = particlesArray[i].color;
-              ctx.globalAlpha = 1 - (distance / 150);
-              ctx.lineWidth = 0.6; ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-              ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.globalAlpha = 1;
+        // Fungsi Download MP3 Murni (Anti Tab Baru)
+        async function triggerDownloadMP3(buttonElement) {
+            if (!audioDownloadUrl) {
+                alert("Link audio belum tersedia!");
+                return;
             }
-          }
+
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+
+            try {
+                const response = await fetch(audioDownloadUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = 'YTSave_' + videoTitle + '.mp3';
+                document.body.appendChild(a);
+                a.click();
+
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                const a = document.createElement('a');
+                a.href = audioDownloadUrl;
+                a.download = 'YTSave_' + videoTitle + '.mp3';
+                a.setAttribute('download', 'YTSave_' + videoTitle + '.mp3');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
         }
-        requestAnimationFrame(animateNodes);
-      }
-      window.onload = function() { initNodes(); animateNodes(); };
     </script>
 </body>
 </html>
