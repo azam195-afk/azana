@@ -72,7 +72,7 @@
             <!-- PREVIEW & HASIL DOWNLOAD CONTAINER -->
             <div id="preview-container" class="hidden space-y-4 pt-2">
                 
-                <!-- Media Preview (Video / Cover) -->
+                <!-- Media Preview -->
                 <div class="space-y-3 text-center">
                     <div id="video-preview-wrapper" class="rounded-xl overflow-hidden bg-black aspect-[9/16] max-h-[320px] mx-auto flex items-center justify-center border border-cyan-500/30 relative">
                         <video id="vid-preview" controls class="w-full h-full object-contain hidden"></video>
@@ -93,7 +93,7 @@
                 <div class="space-y-2">
                     <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase px-1">Pilih Format Unduhan:</p>
                     <div id="download-options-list" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
-                        <!-- Dynamically injected links/buttons (MP4, MP3, or Slide JPGs) -->
+                        <!-- Dynamically injected links/buttons -->
                     </div>
                 </div>
 
@@ -124,34 +124,39 @@
             try {
                 const res = await fetch(`https://api.nexray.eu.cc/downloader/tiktok?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
 
-                if (!res || !res.status) {
-                    throw new Error("Gagal mengambil data dari server. Periksa kembali link Anda.");
+                if (!res) {
+                    throw new Error("Gagal terhubung ke server API.");
                 }
 
-                currentData = res.result || res.data;
+                currentData = res.result || res.data || res;
                 
-                // Set Caption & Author (Diperbaiki di sini)
-                document.getElementById('video-caption').innerText = currentData.title || currentData.caption || "Tanpa caption";
-                document.getElementById('author-name').innerText = "@" + (currentData.author?.nickname || currentData.author || "TikTok User");
+                // Ambil Caption & Author dengan aman
+                const captionText = currentData.title || currentData.caption || "Tanpa caption";
+                const authorText = currentData.author?.nickname || currentData.author?.unique_id || currentData.author || "TikTok User";
+                
+                document.getElementById('video-caption').innerText = captionText;
+                document.getElementById('author-name').innerText = "@" + authorText;
 
                 const vidElement = document.getElementById('vid-preview');
                 const imgElement = document.getElementById('img-preview');
                 const listContainer = document.getElementById('download-options-list');
                 listContainer.innerHTML = '';
 
-                // Cek apakah ini video biasa atau slide foto (image carousel)
-                if (currentData.images && currentData.images.length > 0) {
+                // Cek array gambar / slide foto carousel
+                let imageList = currentData.images || currentData.photo_list || currentData.slide;
+
+                if (imageList && Array.isArray(imageList) && imageList.length > 0) {
                     // Kasus: Slide Foto (Carousel)
                     vidElement.classList.add('hidden');
                     imgElement.classList.remove('hidden');
-                    imgElement.src = currentData.images[0];
+                    imgElement.src = imageList[0];
 
                     if (currentData.music || currentData.audio) {
                         const audioUrl = currentData.music || currentData.audio;
                         addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "audio.mp3", "text-cyan-400");
                     }
 
-                    currentData.images.forEach((imgUrl, index) => {
+                    imageList.forEach((imgUrl, index) => {
                         addItemToList(listContainer, `JPG Foto #${index + 1} (Slide TikTok)`, "fa-image", imgUrl, `tiktok_photo_${index + 1}.jpg`, "text-emerald-400");
                     });
 
@@ -159,15 +164,21 @@
                     // Kasus: Video TikTok Biasa
                     imgElement.classList.add('hidden');
                     vidElement.classList.remove('hidden');
-                    vidElement.src = currentData.nowm || currentData.hd || currentData.url;
-
-                    const videoUrl = currentData.nowm || currentData.hd || currentData.url;
+                    
+                    const videoUrl = currentData.nowm || currentData.hd || currentData.url || currentData.video;
                     const wmUrl = currentData.wm || videoUrl;
                     const audioUrl = currentData.music || currentData.audio;
 
-                    if (videoUrl) addItemToList(listContainer, "MP4 HD (Tanpa Watermark)", "fa-video", videoUrl, "tiktok_hd.mp4", "text-cyan-400");
-                    if (wmUrl) addItemToList(listContainer, "MP4 Standar (Dengan Watermark)", "fa-video", wmUrl, "tiktok_wm.mp4", "text-yellow-400");
-                    if (audioUrl) addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "tiktok_audio.mp3", "text-purple-400");
+                    if (videoUrl) {
+                        vidElement.src = videoUrl;
+                        addItemToList(listContainer, "MP4 HD (Tanpa Watermark)", "fa-video", videoUrl, "tiktok_hd.mp4", "text-cyan-400");
+                    }
+                    if (wmUrl) {
+                        addItemToList(listContainer, "MP4 Standar (Dengan Watermark)", "fa-video", wmUrl, "tiktok_wm.mp4", "text-yellow-400");
+                    }
+                    if (audioUrl) {
+                        addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "tiktok_audio.mp3", "text-purple-400");
+                    }
                 }
 
                 loadingBox.classList.add('hidden');
