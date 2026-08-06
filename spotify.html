@@ -286,13 +286,11 @@
           progressBar.style.width = '100%';
           statusText.innerText = "SELESAI!";
 
-                    // Menyesuaikan struktur data hasil respons Nexray Spotify Downloader & Thumbnail Asli
+           // Menyesuaikan struktur data hasil respons Nexray Spotify Downloader
           const info = data.data || data.result || data;
           const title = info.title || info.name || "Lagu Spotify";
           const artist = info.artist || info.authors || "Artis Tidak Diketahui";
-          
-          // Memastikan mengambil thumbnail asli lagu/album, jika kosong gunakan placeholder bersih
-          const thumb = info.thumbnail || info.image || info.cover || info.cover_url || "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=500&auto=format&fit=crop&q=60";
+          const thumb = info.thumbnail || info.image || "https://azana.my.id/asset/img/globe.png";
           const downloadUrl = info.download || info.url || info.audio;
           
           if (!downloadUrl) throw new Error("Pautan unduhan fail audio tidak ditemui.");
