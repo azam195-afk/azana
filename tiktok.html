@@ -66,7 +66,7 @@
 
             <!-- Loading Box -->
             <div id="loading-box" class="hidden text-center py-6 text-cyan-400 text-xs">
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data video / slide foto...
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data via RapidAPI...
             </div>
 
             <!-- PREVIEW & HASIL DOWNLOAD CONTAINER -->
@@ -122,16 +122,31 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // Menggunakan endpoint API downloader stabil yang mendukung slide foto & video
-                const res = await fetch(`https://api.nexray.eu.cc/downloader/tiktok?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
+                const settings = {
+                    async: true,
+                    crossDomain: true,
+                    url: 'https://download-tiktok-videos-slide-images.p.rapidapi.com/api',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-rapidapi-host': 'download-tiktok-videos-slide-images.p.rapidapi.com',
+                        'x-rapidapi-key': '9cbf8bd8d4msh68c9733fe4041d3p14ea1fjsnd5afc4aba406'
+                    },
+                    body: JSON.stringify({ url: urlInput })
+                };
 
-                if (!res) {
-                    throw new Error("Gagal terhubung ke server API.");
-                }
+                const response = await fetch(settings.url, {
+                    method: settings.method,
+                    headers: settings.headers,
+                    body: settings.body
+                });
+
+                if (!response.ok) throw new Error("Gagal mengambil data dari RapidAPI.");
+                const res = await response.json();
 
                 currentData = res.result || res.data || res;
                 
-                const captionText = currentData.title || currentData.caption || "Tanpa caption";
+                const captionText = currentData.title || currentData.caption || currentData.desc || "Tanpa caption";
                 const authorText = currentData.author?.nickname || currentData.author?.unique_id || currentData.author || "TikTok User";
                 
                 document.getElementById('video-caption').innerText = captionText;
@@ -142,7 +157,7 @@
                 const listContainer = document.getElementById('download-options-list');
                 listContainer.innerHTML = '';
 
-                // Deteksi slide foto / images carousel (mendukung berbagai variasi key dari API)
+                // Deteksi slide foto / images carousel dari RapidAPI
                 let imageList = currentData.images || currentData.photo_list || currentData.slide || currentData.photos;
 
                 if (imageList && Array.isArray(imageList) && imageList.length > 0) {
