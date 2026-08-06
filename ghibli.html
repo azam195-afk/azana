@@ -309,20 +309,20 @@
       try {
         statusText.innerText = "Mengunggah gambar...";
         
-        // Menggunakan layanan transfer file publik bebas CORS untuk mendapatkan URL gambar
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('reqtype', 'fileupload');
+        formData.append('fileToUpload', file);
 
-        const uploadRes = await fetch('https://envs.sh', {
+        const uploadRes = await fetch('https://catbox.moe/user/api.php', {
           method: 'POST',
           body: formData
         });
 
-        if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar sementara.");
+        if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar.");
         const imageUrl = (await uploadRes.text()).trim();
 
         if (!imageUrl || !imageUrl.startsWith('http')) {
-          throw new Error("Gagal mendapatkan tautan publik gambar.");
+          throw new Error("Gagal mendapatkan link publik.");
         }
 
         statusText.innerText = "Memproses gaya Ghibli...";
