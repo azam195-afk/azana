@@ -90,7 +90,7 @@
                             <p class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-music mr-1"></i> Audio MP3</p>
                             <span class="text-[10px] text-gray-400">Kualitas Tinggi (High Quality)</span>
                         </div>
-                        <button onclick="triggerDownload(audioDownloadUrl, 'youtube_audio.mp3', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                        <button onclick="downloadMedia(audioDownloadUrl, 'youtube_audio.mp3', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
                             ↓ Download MP3
                         </button>
                     </div>
@@ -104,89 +104,90 @@
     <div id="footer" class="relative z-10"></div>
 
     <script>
-    let audioDownloadUrl = "";
-    let audioTitleClean = "youtube_audio";
+        let audioDownloadUrl = "";
+        let videoTitle = "youtube_audio";
 
-    async function processYouTubeDownload() {
-        const urlInput = document.getElementById('yt-url').value.trim();
-        const loadingBox = document.getElementById('loading-box');
-        const previewContainer = document.getElementById('preview-container');
+        async function processYouTubeDownload() {
+            const urlInput = document.getElementById('yt-url').value.trim();
+            const loadingBox = document.getElementById('loading-box');
+            const previewContainer = document.getElementById('preview-container');
 
-        if (!urlInput) {
-            alert('Masukkan link YouTube dulu, bro!');
-            return;
-        }
-
-        loadingBox.classList.remove('hidden');
-        previewContainer.classList.add('hidden');
-
-        try {
-            let res = await fetch(`https://api.nexray.eu.cc/downloader/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
-            
-            if (!res || !res.status || !res.result || !res.result.url) {
-                res = await fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
+            if (!urlInput) {
+                alert('Masukkan link YouTube dulu, bro!');
+                return;
             }
 
-            if (!res || !res.status || !res.result || !res.result.url) {
-                throw new Error("Gagal mendapatkan link MP3 dari Nexray API.");
+            loadingBox.classList.remove('hidden');
+            previewContainer.classList.add('hidden');
+
+            try {
+                // Menggunakan endpoint v1 ytmp3 sesuai kode yang lu berikan
+                const res = await fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
+
+                let title = "YouTube Video";
+                let thumbnail = "https://i.ytimg.com/vi/3cjbQF5y3BE/hqdefault.jpg";
+
+                if (res && res.status === true && res.result && res.result.url) {
+                    audioDownloadUrl = res.result.url;
+                    if (res.result.title) title = res.result.title;
+                    if (res.result.thumbnail) thumbnail = res.result.thumbnail;
+                }
+
+                if (!audioDownloadUrl) {
+                    throw new Error("Gagal mendapatkan link MP3 dari Nexray API.");
+                }
+
+                videoTitle = title.replace(/[\/\\?%*:|"<>]/g, '');
+                document.getElementById('vid-title').innerText = title;
+                document.getElementById('vid-thumbnail').src = thumbnail;
+
+                loadingBox.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+
+            } catch (err) {
+                loadingBox.classList.add('hidden');
+                alert("Terjadi kesalahan: " + err.message);
+            }
+        }
+
+        // Fungsi khusus MP3 menggunakan metode yang terbukti berhasil
+        async function downloadMedia(fileUrl, filename, buttonElement) {
+            const targetUrl = audioDownloadUrl;
+            if (!targetUrl) {
+                alert("Link unduhan audio belum tersedia!");
+                return;
             }
 
-            audioDownloadUrl = res.result.url;
-            let title = res.result.title || "YouTube Audio";
-            let thumbnail = res.result.thumbnail || "https://i.ytimg.com/vi/3cjbQF5y3BE/hqdefault.jpg";
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh MP3...`;
 
-            audioTitleClean = title.replace(/[\/\\?%*:|"<>]/g, '').trim();
-
-            document.getElementById('vid-title').innerText = title;
-            document.getElementById('vid-thumbnail').src = thumbnail;
-
-            loadingBox.classList.add('hidden');
-            previewContainer.classList.remove('hidden');
-
-        } catch (err) {
-            loadingBox.classList.add('hidden');
-            alert("Terjadi kesalahan: " + err.message);
-        }
-    }
-
-    // Fungsi download murni tanpa fetch blob agar langsung tersimpan tanpa nge-play
-    async function triggerDownload(fileUrl, filename, buttonElement) {
-        if (!fileUrl) {
-            alert("Link unduhan belum tersedia!");
-            return;
+            try {
+                const a = document.createElement('a');
+                a.href = targetUrl;
+                a.download = videoTitle + '.mp3';
+                a.setAttribute('download', videoTitle + '.mp3');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch (err) {
+                window.open(targetUrl, '_blank');
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
         }
 
-        const finalFilename = 'YTSave_' + (audioTitleClean ? audioTitleClean + '.mp3' : filename);
-        const originalContent = buttonElement.innerHTML;
-        buttonElement.disabled = true;
-        buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Downloading...`;
-
-        try {
-            const a = document.createElement('a');
-            a.href = fileUrl;
-            a.download = finalFilename;
-            a.setAttribute('download', finalFilename);
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        } catch (err) {
-            alert("Gagal mengunduh: " + err.message);
-        } finally {
-            setTimeout(() => {
-                buttonElement.disabled = false;
-                buttonElement.innerHTML = originalContent;
-            }, 2000);
-        }
-    }
-
-    // Load Footer
-    fetch('components/footer-ai.html')
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('footer').innerHTML = data;
-    }).catch(err => console.log("Footer load error:", err));
+        // Load Footer
+        fetch('components/footer-ai.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        }).catch(err => console.log("Footer load error:", err));
     </script>
-    
+
     <script>
       const canvas = document.getElementById('neural-bg');
       const ctx = canvas.getContext('2d');
