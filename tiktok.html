@@ -122,7 +122,6 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // Menggunakan endpoint multi-downloader tikwm / nexray
                 const res = await fetch(`https://api.nexray.eu.cc/downloader/tiktok?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
 
                 if (!res || !res.status) {
@@ -131,9 +130,9 @@
 
                 currentData = res.result || res.data;
                 
-                // Set Caption & Author
+                // Set Caption & Author (Diperbaiki di sini)
                 document.getElementById('video-caption').innerText = currentData.title || currentData.caption || "Tanpa caption";
-                document.getElementById('author-name.innerText') = "@" + (currentData.author?.nickname || currentData.author || "TikTok User");
+                document.getElementById('author-name').innerText = "@" + (currentData.author?.nickname || currentData.author || "TikTok User");
 
                 const vidElement = document.getElementById('vid-preview');
                 const imgElement = document.getElementById('img-preview');
@@ -147,13 +146,11 @@
                     imgElement.classList.remove('hidden');
                     imgElement.src = currentData.images[0];
 
-                    // Tombol untuk Audio MP3 (jika ada)
                     if (currentData.music || currentData.audio) {
                         const audioUrl = currentData.music || currentData.audio;
                         addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "audio.mp3", "text-cyan-400");
                     }
 
-                    // Looping semua foto slide JPG satu persatu
                     currentData.images.forEach((imgUrl, index) => {
                         addItemToList(listContainer, `JPG Foto #${index + 1} (Slide TikTok)`, "fa-image", imgUrl, `tiktok_photo_${index + 1}.jpg`, "text-emerald-400");
                     });
