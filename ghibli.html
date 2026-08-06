@@ -254,7 +254,9 @@
       animateNodes();
     };
 
-    // --- LOGIKA UTAMA: UPLOAD -> PREVIEW -> TOMBOL EKSEKUSI ---
+    // --- LOGIKA WAVESPEED AI GHIBLI ---
+    let API_KEY_WAVESPEED = window.AZANA_API_KEYS?.WAVESPEED_API_KEY || localStorage.getItem('AZANA_WAVESPEED_API_KEY') || 'wsk_live_l3PfragpbCHfTeMI2yIwgRSio3EIkpeQ5r5GmRZv2WY';
+    
     let selectedFile = null;
     const fileInput = document.getElementById('file-input');
     const uploadArea = document.getElementById('upload-area');
@@ -267,7 +269,7 @@
     function tangkapFoto(file) {
       if (!file) return;
       if (!file.type.startsWith('image/')) {
-        alert('File harus berupa gambar PNG, JPG, JPEG, atau WEBP.');
+        alert('Fail mesti berupa imej PNG, JPG, JPEG, atau WEBP.');
         return;
       }
       selectedFile = file;
@@ -309,19 +311,23 @@
       if (file) tangkapFoto(file);
     });
 
-        async function mulaiProsesGhibli() {
+    async function mulaiProsesGhibli() {
       if (!selectedFile) return;
 
       previewArea.classList.add('hidden');
       processingArea.classList.remove('hidden');
       processingArea.classList.add('flex');
 
-      let progress = 0;
-      const interval = setInterval(() => { if(progress < 90) { progress += 2; progressBar.style.width = progress + '%'; } }, 200);
-      
+      let progress = 10;
+      progressBar.style.width = progress + '%';
+
       try {
-        statusText.innerText = "Mengunggah foto ke peladen...";
-        
+        if (!API_KEY_WAVESPEED) {
+          throw new Error('API Key Wavespeed belum dikonfigurasi.');
+        }
+
+        // 1. Upload fail sementara untuk dapatkan URL publik
+        statusText.innerText = "Memuat naik fail...";
         const formData = new FormData();
         formData.append('file', selectedFile);
 
@@ -330,24 +336,58 @@
           body: formData
         });
 
-        if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar.");
+        if (!uploadRes.ok) throw new Error("Gagal memuat naik imej.");
         const uploadResult = await uploadRes.json();
-
-        if (!uploadResult || !uploadResult[0] || !uploadResult[0].src) {
-          throw new Error("Gagal mendapatkan link publik gambar.");
-        }
+        if (!uploadResult?.[0]?.src) throw new Error("Gagal mendapatkan pautan publik.");
 
         const imageUrl = 'https://telegra.ph' + uploadResult[0].src;
+        progress = 40;
+        progressBar.style.width = progress + '%';
 
+        // 2. Hantar task ke Wavespeed AI Ghibli endpoint
         statusText.innerText = "Memproses gaya Ghibli...";
-        const ghibliRes = await fetch(`https://api.nexray.eu.cc/ephoto/ghibli?url=${encodeURIComponent(imageUrl)}`);
-        
-        if (!ghibliRes.ok) throw new Error("Gagal memproses AI Ghibli.");
-        
-        const blob = await ghibliRes.blob();
-        const resultUrl = URL.createObjectURL(blob);
+        const taskRes = await fetch('https://api.wavespeed.ai/api/v3/wavespeed-ai/ghibli', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${API_KEY_WAVESPEED}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ image: imageUrl, output_format: "jpeg" })
+        });
 
-        clearInterval(interval);
+        if (!taskRes.ok) throw new Error("Gagal menghubungi server Wavespeed AI.");
+        const taskData = await taskRes.json();
+        
+        const taskId = taskData.data?.task_id || taskData.task_id || taskData.id;
+        const resultUrlEndpoint = taskData.data?.url || taskData.url;
+
+        // 3. Jika async task (perlu polling status)
+        let finalImageUrl = resultUrlEndpoint;
+        if (!finalImageUrl && taskId) {
+          statusText.innerText = "Menunggu hasil render AI...";
+          while (true) {
+            await new Promise(r => setTimeout(r, 3000));
+            progress = Math.min(progress + 15, 90);
+            progressBar.style.width = progress + '%';
+
+            const checkRes = await fetch(`https://api.wavespeed.ai/api/v3/predictions/${taskId}/result`, {
+              headers: { 'Authorization': `Bearer ${API_KEY_WAVESPEED}` }
+            });
+            if (checkRes.ok) {
+              const checkData = await checkRes.json();
+              const status = checkData.data?.status || checkData.status;
+              if (status === 'completed') {
+                finalImageUrl = checkData.data?.outputs?.[0] || checkData.data?.url || checkData.url;
+                break;
+              } else if (status === 'failed' || status === 'cancelled') {
+                throw new Error("Proses AI dibatalkan atau gagal.");
+              }
+            }
+          }
+        }
+
+        if (!finalImageUrl) throw new Error("Gagal mendapatkan hasil imej Ghibli.");
+
         progressBar.style.width = '100%';
         statusText.innerText = "SELESAI!";
 
@@ -355,17 +395,15 @@
           processingArea.classList.add('hidden');
           resultArea.classList.remove('hidden');
           resultArea.classList.add('flex');
-          document.getElementById('result-enhanced').src = resultUrl;
-          document.getElementById('download-btn').href = resultUrl;
+          document.getElementById('result-enhanced').src = finalImageUrl;
+          document.getElementById('download-btn').href = finalImageUrl;
         }, 600);
 
       } catch (err) {
-        clearInterval(interval);
-        alert("Error: " + err.message);
+        alert("Ralat: " + err.message);
         location.reload();
       }
-     }
-    
+    }
   </script>
 </body>
 </html>
