@@ -108,7 +108,7 @@
     <script>
         let currentData = null;
 
-        async function processTikTokDownload() {
+                async function processTikTokDownload() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
             const previewContainer = document.getElementById('preview-container');
@@ -128,9 +128,12 @@
                     throw new Error("Gagal terhubung ke server API.");
                 }
 
+                // DEBUG: Menampilkan struktur data mentah dari API untuk dicek
+                console.log("API Response:", res);
+
                 currentData = res.result || res.data || res;
                 
-                // Ambil Caption & Author dengan aman
+                // Ambil Caption & Author
                 const captionText = currentData.title || currentData.caption || "Tanpa caption";
                 const authorText = currentData.author?.nickname || currentData.author?.unique_id || currentData.author || "TikTok User";
                 
@@ -142,8 +145,13 @@
                 const listContainer = document.getElementById('download-options-list');
                 listContainer.innerHTML = '';
 
-                // Cek array gambar / slide foto carousel
-                let imageList = currentData.images || currentData.photo_list || currentData.slide;
+                // Menangkap berbagai kemungkinan nama properti gambar slide dari API
+                let imageList = currentData.images || currentData.photo_list || currentData.slide || currentData.photos || currentData.img;
+
+                // Jika berupa string tunggal atau objek tersembunyi, kita normalisasikan
+                if (currentData.type === 'image' && currentData.url) {
+                    imageList = [currentData.url];
+                }
 
                 if (imageList && Array.isArray(imageList) && imageList.length > 0) {
                     // Kasus: Slide Foto (Carousel)
@@ -151,8 +159,8 @@
                     imgElement.classList.remove('hidden');
                     imgElement.src = imageList[0];
 
-                    if (currentData.music || currentData.audio) {
-                        const audioUrl = currentData.music || currentData.audio;
+                    if (currentData.music || currentData.audio || currentData.sound) {
+                        const audioUrl = currentData.music || currentData.audio || currentData.sound;
                         addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "audio.mp3", "text-cyan-400");
                     }
 
@@ -165,9 +173,9 @@
                     imgElement.classList.add('hidden');
                     vidElement.classList.remove('hidden');
                     
-                    const videoUrl = currentData.nowm || currentData.hd || currentData.url || currentData.video;
-                    const wmUrl = currentData.wm || videoUrl;
-                    const audioUrl = currentData.music || currentData.audio;
+                    const videoUrl = currentData.nowm || currentData.hd || currentData.url || currentData.video || currentData.play;
+                    const wmUrl = currentData.wm || currentData.watermark;
+                    const audioUrl = currentData.music || currentData.audio || currentData.sound;
 
                     if (videoUrl) {
                         vidElement.src = videoUrl;
@@ -188,7 +196,8 @@
                 loadingBox.classList.add('hidden');
                 alert("Terjadi kesalahan: " + err.message);
             }
-        }
+         }
+    
 
         function addItemToList(container, label, iconClass, fileUrl, filename, colorClass) {
             const item = document.createElement('div');
