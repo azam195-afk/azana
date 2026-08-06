@@ -16,11 +16,8 @@
     <meta property="og:description" content="Tool AZANA Ghibli AI untuk mengubah foto Anda menjadi gaya seni Studio Ghibli secara otomatis dan instan.">
     <meta property="og:url" content="https://azana.my.id/ghibli.html">
     <meta property="og:image" content="https://azana.my.id/asset/img/globe.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="AZANA Ghibli AI - Ubah Foto Jadi Gaya Studio Ghibli">
-    <meta name="twitter:description" content="Tool AZANA Ghibli AI untuk mengubah foto Anda menjadi gaya seni Studio Ghibli secara otomatis dan instan.">
-    <meta name="twitter:image" content="https://azana.my.id/asset/img/globe.png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="asset/js/api-config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 
@@ -252,7 +249,7 @@
       animateNodes();
     };
 
-    // --- LOGIKA GHIBLI AI ---
+    // --- LOGIKA GHIBLI AI DENGAN API CONFIG & HOSTING PUBLIK AMAN CORS ---
     const fileInput = document.getElementById('file-input');
     const uploadArea = document.getElementById('upload-area');
     const processingArea = document.getElementById('processing-area');
@@ -310,23 +307,22 @@
       const interval = setInterval(() => { if(progress < 90) { progress += 2; progressBar.style.width = progress + '%'; } }, 200);
       
       try {
-        statusText.innerText = "Mengunggah gambar sementara...";
+        statusText.innerText = "Mengunggah gambar...";
         
-        // Menggunakan teknik upload publik yang mulus untuk mendapatkan URL gambar
+        // Menggunakan layanan transfer file publik bebas CORS untuk mendapatkan URL gambar
         const formData = new FormData();
-        formData.append('reqtype', 'fileupload');
-        formData.append('fileToUpload', file);
+        formData.append('file', file);
 
-        const uploadRes = await fetch('https://catbox.moe/user/api.php', {
+        const uploadRes = await fetch('https://envs.sh', {
           method: 'POST',
           body: formData
         });
 
-        if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar ke server.");
-        const imageUrl = await uploadRes.text();
+        if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar sementara.");
+        const imageUrl = (await uploadRes.text()).trim();
 
         if (!imageUrl || !imageUrl.startsWith('http')) {
-          throw new Error("Gagal mendapatkan link publik gambar.");
+          throw new Error("Gagal mendapatkan tautan publik gambar.");
         }
 
         statusText.innerText = "Memproses gaya Ghibli...";
