@@ -27,8 +27,6 @@
       .logo-neon-outline {
         animation: cyberOutline 2.5s infinite alternate ease-in-out;
         transition: transform 0.3s ease;
-
-        /* --- BUMBU ANTI-LAG (GPU ACCELERATION) --- */
         will-change: filter, transform;
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
@@ -36,7 +34,6 @@
       }
 
       html {
-        /* Sesuaikan angkanya dengan tinggi navbar lu (sekitar 80px - 100px) */
         scroll-behavior: smooth;
         scroll-padding-top: 100px;
       }
@@ -45,10 +42,8 @@
         transform: scale(1.05) translateZ(0);
       }
 
-      /* Outline putih ditipisin sisa 20-40% aja + Aura Neon */
       @keyframes cyberOutline {
         0% {
-          /* Cuma pakai 1px putih transparan */
           filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 6px #00f2fe);
         }
         100% {
@@ -63,17 +58,17 @@
           extend: {
             fontFamily: {
               sans: ['Poppins', 'sans-serif'],
-              tech: ['Rajdhani', 'sans-serif'], // Font bernuansa teknologi untuk heading
+              tech: ['Rajdhani', 'sans-serif'],
             },
             colors: {
               neon: {
-                cyan: '#00f2fe',   // Warna biru neon dari logo
-                purple: '#a855f7', // Warna ungu dari logo
-                magenta: '#d946ef', // Warna pinggiran logo
+                cyan: '#00f2fe',
+                purple: '#a855f7',
+                magenta: '#d946ef',
               },
               dark: {
                 950: '#050508',
-                900: '#0a0a0f', // Latar belakang sangat gelap mirip logo
+                900: '#0a0a0f',
                 800: '#13131a',
                 700: '#1c1c26',
                 600: '#252532',
@@ -102,20 +97,18 @@
       .glow-button:hover {
         box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
       }
-      /* Motif garis sirkuit halus di background hero */
       .circuit-bg {
         background-image: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
         background-size: cover;
         background-position: center;
-        /* background-attachment: fixed; <-- INI YANG BIKIN NGELAG UDAH SAYA HAPUS */
       }
     </style>
   </head>
   <body class="text-slate-300 font-sans antialiased selection:bg-neon-cyan selection:text-dark-900">
 
-    <!-- Hero Section -->
+    <div id="navbar"></div>
+
     <section id="beranda" class="circuit-bg min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
-      <!-- Efek Glow Latar Belakang -->
       <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse"></div>
       <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse delay-1000"></div>
 
@@ -131,9 +124,7 @@
           Kami hadir dengan teknologi dan kreativitas untuk memenuhi segala kebutuhan visual Anda. Dari perbaikan foto, desain grafis profesional, hingga editing video sinematik.
         </p>
         <div class="max-w-6xl mx-auto text-center relative z-10 px-2">
-        <!-- ========================================== -->
-        <!-- PEMBATAS 0: STUDIO VISUAL -->
-        <!-- ========================================== -->
+        
         <div class="max-w-4xl mx-auto my-4 flex items-center gap-3" aria-label="Pembatas Studio Visual">
           <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-neon-cyan/60 to-neon-purple/30"></div>
           <div class="relative px-4 py-1.5 rounded-full bg-dark-800/90 border border-neon-cyan/25 shadow-[0_0_12px_rgba(0,242,254,0.12)] flex items-center justify-center">
@@ -178,7 +169,6 @@
           </div>
         </div>
 
-                      <!-- PEMBATAS 1: TOOLS DOWNLOADER -->
         <div class="max-w-4xl mx-auto my-4 flex items-center gap-3" aria-label="Pembatas Tools Downloader">
           <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-neon-cyan/60 to-neon-purple/30"></div>
           <div class="relative px-4 py-1.5 rounded-full bg-dark-800/90 border border-neon-cyan/25 shadow-[0_0_12px_rgba(0,242,254,0.12)] flex items-center justify-center">
@@ -187,9 +177,7 @@
           <div class="h-[0.5px] flex-1 bg-gradient-to-r from-neon-purple/30 via-neon-cyan/60 to-transparent"></div>
         </div>
 
-        <!-- KELOMPOK 1: DOWNLOADER TOOLS (3 KOLOM RINGKAS) -->
         <div class="grid grid-cols-3 gap-2 md:gap-4">
-          <!-- TikTok -->
           <a href="tiktok.html" class="group relative overflow-hidden rounded-xl border border-neon-cyan/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(0,242,254,0.25)] hover:shadow-[0_0_25px_rgba(0,242,254,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
             <div class="absolute inset-0 bg-gradient-to-br from-neon-cyan/15 via-transparent to-neon-purple/10 opacity-80"></div>
             <div class="relative">
@@ -202,7 +190,6 @@
             </div>
           </a>
 
-          <!-- Instagram -->
           <a href="ig.html" class="group relative overflow-hidden rounded-xl border border-neon-purple/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
             <div class="absolute inset-0 bg-gradient-to-br from-neon-purple/15 via-transparent to-neon-magenta/10 opacity-80"></div>
             <div class="relative">
@@ -215,7 +202,6 @@
             </div>
           </a>
 
-          <!-- YouTube MP4 -->
           <a href="ytmp4.html" class="group relative overflow-hidden rounded-xl border border-yellow-400/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(250,204,21,0.25)] hover:shadow-[0_0_25px_rgba(250,204,21,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
             <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/15 via-transparent to-red-500/10 opacity-80"></div>
             <div class="relative">
@@ -228,7 +214,6 @@
             </div>
           </a>
 
-          <!-- YouTube MP3 -->
           <a href="ytmp3.html" class="group relative overflow-hidden rounded-xl border border-cyan-400/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(34,211,238,0.25)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
             <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/15 via-transparent to-blue-500/10 opacity-80"></div>
             <div class="relative">
@@ -241,7 +226,6 @@
             </div>
           </a>
 
-          <!-- Spotify -->
           <a href="spotify.html" class="group relative overflow-hidden rounded-xl border border-emerald-400/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(52,211,153,0.25)] hover:shadow-[0_0_25px_rgba(52,211,153,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
             <div class="absolute inset-0 bg-gradient-to-br from-emerald-400/15 via-transparent to-neon-cyan/10 opacity-80"></div>
             <div class="relative">
@@ -255,7 +239,6 @@
           </a>
         </div>
 
-        <!-- PEMBATAS 2: TOOLS AI MAKER -->
         <div class="max-w-4xl mx-auto my-4 flex items-center gap-3" aria-label="Pembatas Tools AI Maker">
           <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-neon-purple/60 to-neon-cyan/30"></div>
           <div class="relative px-4 py-1.5 rounded-full bg-dark-800/90 border border-neon-purple/25 shadow-[0_0_12px_rgba(188,19,254,0.12)] flex items-center justify-center">
@@ -264,9 +247,7 @@
           <div class="h-[0.5px] flex-1 bg-gradient-to-r from-neon-cyan/30 via-neon-purple/60 to-transparent"></div>
         </div>
 
-        <!-- KELOMPOK 2: TOOLS AI MAKER & GENERATOR -->
         <div class="grid grid-cols-3 gap-2 md:gap-4">
-          <!-- Sertifikat Lucu -->
           <a href="sertifikat.html" class="group relative overflow-hidden rounded-xl border border-yellow-400/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(250,204,21,0.25)] hover:shadow-[0_0_25px_rgba(250,204,21,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
             <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/15 via-transparent to-neon-purple/10 opacity-80"></div>
             <div class="relative">
@@ -279,7 +260,6 @@
             </div>
           </a>
 
-          <!-- BRAT Generator -->
           <a href="brat.html" class="group relative overflow-hidden rounded-xl border border-neon-cyan/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(0,242,254,0.25)] hover:shadow-[0_0_25px_rgba(0,242,254,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
             <div class="absolute inset-0 bg-gradient-to-br from-neon-cyan/15 via-transparent to-lime-400/10 opacity-80"></div>
             <div class="relative">
@@ -292,7 +272,6 @@
             </div>
           </a>
 
-          <!-- IQC Generator -->
           <a href="iqc.html" class="group relative overflow-hidden rounded-xl border border-neon-purple/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
             <div class="absolute inset-0 bg-gradient-to-br from-neon-purple/15 via-transparent to-neon-cyan/10 opacity-80"></div>
             <div class="relative">
@@ -306,27 +285,21 @@
           </a>
         </div>
           
-          
-          
           <div class="w-full mt-10 mb-16 relative z-20">
             <div class="w-full mt-10 mb-20 relative z-20">
               <div class="flex flex-col gap-4 px-4 max-w-md mx-auto">
-
                 <a href="#layanan" class="flex items-center justify-center gap-3 bg-gradient-to-r from-neon-cyan to-neon-purple text-white py-4 px-6 rounded-full font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(0,242,254,0.3)] active:scale-95 transition-all">
                   <i class="fas fa-th-large text-lg"></i>
                   <span class="text-sm">Layanan Editing</span>
                 </a>
-
                 <a href="#kontak" class="flex items-center justify-center gap-3 bg-transparent border-2 border-neon-cyan text-neon-cyan py-4 px-6 rounded-full font-bold uppercase tracking-widest active:scale-95 transition-all">
                   <i class="fas fa-edit text-lg"></i>
                   <span class="text-sm">Jasa Editing</span>
                 </a>
-
                 <a href="blogs.html" class="flex items-center justify-center gap-3 bg-dark-800 border border-yellow-400/30 text-yellow-400 py-4 px-6 rounded-full font-bold uppercase tracking-widest active:scale-95 transition-all hover:bg-yellow-400 hover:text-dark-900 shadow-[0_0_15px_rgba(250,204,21,0.15)]">
                   <i class="fas fa-lightbulb text-lg"></i>
                   <span class="text-sm">Tutorial Edit Pakai AI</span>
                 </a>
-
               </div>
             </div>
           </div>
@@ -341,7 +314,6 @@
             </div>
 
             <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6">
-
               <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-cyan/40 to-neon-purple/40 shadow-[0_0_15px_rgba(0,242,254,0.05)] group hover:scale-[1.02] transition-all">
                 <div class="bg-dark-800 p-4 rounded-2xl h-full">
                   <div class="w-10 h-10 bg-dark-900 border border-neon-cyan/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.2)]">
@@ -405,10 +377,8 @@
           </div>
         </section>
 
-        <!-- Mini Portofolio / Proses Section -->
         <section id="portofolio-section" class="py-12 bg-dark-900 border-t border-dark-700">
           <div class="container mx-auto px-6">
-
             <div class="mb-12 max-w-2xl mx-auto">
               <h2 class="text-xs font-bold text-neon-purple tracking-widest uppercase mb-3 font-tech text-center">Tentang Kualitas Kami</h2>
               <h3 class="text-2xl md:text-4xl font-bold text-white mb-6 text-center leading-tight uppercase italic">Estetika Futuristik dengan Hasil Presisi</h3>
@@ -427,15 +397,12 @@
               <div class="relative p-[1.5px] rounded-2xl bg-gradient-to-b from-neon-cyan/20 to-transparent shadow-[0_0_20px_rgba(0,242,254,0.1)]">
                 <div class="swiper mySwiper rounded-2xl overflow-hidden bg-dark-800 aspect-square">
                   <div id="otomatis-portfolio" class="swiper-wrapper">
-
                     <div class="swiper-slide">
                       <img src="asset/img/penjernih.png" class="w-full h-full object-contain" alt="Hasil edit foto jernih">
                     </div>
-
                     <div class="swiper-slide">
                       <img src="asset/img/removebg.png" class="w-full h-full object-contain" alt="Hapus background otomatis">
                     </div>
-
                   </div>
                   <div class="swiper-pagination"></div>
                 </div>
@@ -472,26 +439,21 @@
 
         <section class="py-16 bg-dark-900 border-t border-dark-700">
           <div class="max-w-4xl mx-auto px-6 text-center">
-
             <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 font-tech uppercase italic">
               Teknologi AI untuk Editing Foto Profesional
             </h2>
-
             <p class="text-slate-400 text-sm leading-relaxed mb-4">
               AZANA DESIGN menghadirkan solusi editing modern berbasis kecerdasan buatan (AI) yang mampu meningkatkan kualitas visual secara instan dan profesional. Dengan teknologi terbaru, pengguna dapat menghapus background, menghilangkan objek yang mengganggu, serta meningkatkan kejernihan foto hanya dalam hitungan detik tanpa perlu keahlian khusus.
             </p>
-
             <p class="text-slate-400 text-sm leading-relaxed mb-4">
               Selain menyediakan fitur otomatis, kami juga menawarkan jasa editing manual dengan sentuhan kreatif untuk menghasilkan desain yang lebih unik dan sesuai kebutuhan. Kombinasi antara teknologi AI dan kreativitas manusia menjadikan AZANA DESIGN sebagai solusi terbaik untuk kebutuhan visual digital masa kini.
             </p>
-
             <p class="text-slate-400 text-sm leading-relaxed">
               Platform ini dirancang untuk memberikan pengalaman cepat, mudah, dan berkualitas tinggi baik untuk keperluan pribadi, bisnis, maupun konten media sosial.
             </p>
-
           </div>
         </section>
-
+    
         <section id="faq" class="py-16 bg-dark-950 border-t border-dark-700">
           <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-10">
@@ -528,7 +490,6 @@
           <div class="max-w-md mx-auto px-6 relative z-10">
             <div class="relative p-[1px] rounded-3xl bg-gradient-to-br from-neon-cyan/40 via-transparent to-neon-purple/40 shadow-[0_0_40px_rgba(0,0,0,0.7)]">
               <div class="bg-dark-800/90 backdrop-blur-2xl rounded-3xl p-8 text-center">
-
                 <div class="w-14 h-14 bg-dark-900 border border-neon-cyan/30 rounded-2xl flex items-center justify-center mx-auto mb-5 transform rotate-3 shadow-[0_0_15px_rgba(0,242,254,0.1)]">
                   <span class="text-neon-cyan text-xl"><i class="fas fa-comment-dots"></i></span>
                 </div>
@@ -552,40 +513,88 @@
           </div>
         </section>
 
-        <div id="navbar"></div>
-        <div id="footer"></div>
+        <footer class="bg-dark-950 pt-16 pb-8 border-t border-dark-700">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+              <div class="col-span-2 md:col-span-1">
+                <h3 class="text-xl font-bold text-white mb-4 neon-text">AZANA<span class="text-neon-purple"> DESIGN</span></h3>
+                <p class="text-[11px] text-slate-500 leading-relaxed mb-6">AZANA DESIGN adalah platform digital yang menyediakan layanan editing foto dan video berbasis AI serta jasa desain profesional. Kami berkomitmen memberikan hasil berkualitas tinggi dengan proses cepat dan harga terjangkau.</p>
+
+                <div class="inline-flex items-center gap-2 bg-dark-800 border border-dark-700 px-3 py-2 rounded-lg text-[10px] text-slate-300">
+                  <i class="fas fa-globe text-neon-cyan"></i>
+                  <select id="languageSelect" class="bg-transparent focus:outline-none cursor-pointer">
+                    <option value="id">Bahasa Indonesia</option>
+                    <option value="en">English</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Fitur AI</h4>
+                <ul class="text-[11px] space-y-2 text-slate-500">
+                  <li><a href="penjernih.html" target="_blank" rel="noopener noreferrer" class="hover:text-neon-cyan transition">AI Enhancer</a></li>
+                  <li><a href="removebg.html" target="_blank" rel="noopener noreferrer" class="hover:text-neon-cyan transition">Remove BG</a></li>
+                  <li><a href="eraser.html" target="_blank" rel="noopener noreferrer" class="hover:text-neon-cyan transition">Magic Eraser</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Support</h4>
+                <ul class="text-[11px] space-y-2 text-slate-500">
+                  <li><a href="privacy-policy.html" class="hover:text-neon-cyan transition">Privacy Policy</a></li>
+                  <li><a href="terms.html" class="hover:text-neon-cyan transition">Terms of Service</a></li>
+                  <li><a href="about.html" class="hover:text-neon-cyan transition">About Azana</a></li>
+                  <li><a href="mailto:maulanaazam195@gmail.com" class="hover:text-neon-cyan transition">Email Admin</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Follow Us</h4>
+                <div class="flex gap-4">
+                  <a href="https://www.instagram.com/zamm_azana?igsh=aXlobmJzZDl6aHJ2" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr hover:from-yellow-500 hover:to-purple-500 hover:text-white transition-all shadow-lg">
+                    <i class="fab fa-instagram text-sm"></i>
+                  </a>
+                  <a href="https://www.facebook.com/maulana.azam.165" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-lg">
+                    <i class="fab fa-facebook-f text-xs"></i>
+                  </a>
+                  <a href="https://youtube.com/@azanaastory?si=DMQHZ0Cl9HGGhEk2" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-lg">
+                    <i class="fab fa-youtube text-xs"></i>
+                  </a>
+                  <a href="https://www.tiktok.com/@azam.195?_r=1&_t=ZS-965J24jNOL7" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-lg">
+                    <i class="fab fa-tiktok text-xs"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-8 border-t border-dark-800 text-center">
+              <p class="text-[10px] text-slate-600">© 2026 AZANA DESIGN. Crafted with Passion.</p>
+            </div>
+          </div>
+        </footer>
 
         <script>
-          // --- PROSES MANGGIL NAVBAR ---
+          // --- PROSES MANGGIL NAVBAR VIA JS (TETAP) ---
           fetch('components/navbar.html')
           .then(response => response.text())
           .then(data => {
             document.getElementById('navbar').innerHTML = data;
-
             initNavbarInteractions();
             initScrollNavbar();
           })
           .catch(err => console.error('Gagal load navbar:', err));
 
-          // --- PROSES MANGGIL FOOTER ---
-          fetch('components/footer-main.html')
-          .then(response => response.text())
-          .then(data => {
-            document.getElementById('footer').innerHTML = data;
-
-            // Logika Ganti Bahasa (Pindahkan ke sini karena elemennya di dalam footer)
-            const langSelect = document.getElementById('languageSelect');
-            if (langSelect) {
-              langSelect.addEventListener('change', function() {
-                if(this.value === 'en') {
-                  window.location.href = "https://translate.google.com/translate?sl=id&tl=en&u=" + window.location.href;
-                } else {
-                  window.location.reload();
-                }
-              });
-            }
-          })
-          .catch(err => console.error('Gagal load footer:', err));
+          // --- LOGIKA GANTI BAHASA ---
+          const langSelect = document.getElementById('languageSelect');
+          if (langSelect) {
+            langSelect.addEventListener('change', function() {
+              if(this.value === 'en') {
+                window.location.href = "https://translate.google.com/translate?sl=id&tl=en&u=" + window.location.href;
+              } else {
+                window.location.reload();
+              }
+            });
+          }
 
           // --- FUNGSI SCROLL NAVBAR ---
           function initScrollNavbar() {
@@ -605,50 +614,29 @@
           }
 
           function initNavbarInteractions() {
-
             const menuBtn = document.getElementById('menu-btn');
-
             const mobileMenu = document.getElementById('mobile-menu');
-
             if (menuBtn && mobileMenu) {
-
               menuBtn.addEventListener('click', (e) => {
-
                 e.stopPropagation();
-
                 mobileMenu.classList.toggle('hidden');
-
               });
-
             }
 
-            const isStandalone = window.matchMedia('(display-mode: standalone)').matches
-
-            || window.navigator.standalone;
-
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
             const isPWAUrl = new URLSearchParams(window.location.search).get('utm_source') === 'pwa';
-
             if (isStandalone || isPWAUrl) {
-
               document.getElementById('apk-download-desktop')?.style.setProperty('display', 'none', 'important');
-
               document.getElementById('apk-download-mobile')?.style.setProperty('display', 'none', 'important');
-
             }
-
           }
 
           // --- LOGIKA OFFLINE & SERVICE WORKER ---
-
           if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-
               navigator.serviceWorker.register('sw.js')
-
               .then(() => console.log('ServiceWorker registration successful'))
-
               .catch(err => console.log("SW Error:", err));
-
             });
           }
 
@@ -671,7 +659,7 @@
               return res.json();
             })
             .then(files => {
-              if (!Array.isArray(files)) throw new Error('Format portfolio tidak valid')
+              if (!Array.isArray(files)) throw new Error('Format portfolio tidak valid');
               const fragment = document.createDocumentFragment();
               files
               .filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file.name) && file.download_url)
@@ -693,29 +681,26 @@
               container.replaceChildren(fragment);
               initPortfolioSwiper();
             })
-
             .catch(err => {
               console.log("Portfolio Error:", err);
               container.innerHTML = `
-                        <div class="swiper-slide h-full w-full flex flex-col items-center justify-center p-8 bg-dark-900/50 text-center">
-                            <i class="fas fa-image text-3xl text-neon-cyan/70 mb-4"></i>
-                            <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-tech">Portfolio belum bisa dimuat</p>
-                        </div>`;
+                <div class="swiper-slide h-full w-full flex flex-col items-center justify-center p-8 bg-dark-900/50 text-center">
+                    <i class="fas fa-image text-3xl text-neon-cyan/70 mb-4"></i>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-tech">Portfolio belum bisa dimuat</p>
+                </div>`;
               initPortfolioSwiper();
             });
           });
         </script>
 
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858"
-          crossorigin="anonymous"></script>
-          <!-- first sds -->
-          <ins class="adsbygoogle"
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
           style="display:inline-block;width:728px;height:90px"
           data-ad-client="ca-pub-3077542320658858"
           data-ad-slot="6308845946"></ins>
-          <script>
+        <script>
           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+        </script>
 
     </body>
-  </html>
+</html>
