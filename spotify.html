@@ -1,195 +1,203 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AZANA Spotify Downloader - Unduh Musik MP3 Instan</title>
-    <meta name="description" content="Tool AZANA Spotify Downloader untuk mengunduh lagu atau audio dari tautan Spotify secara mudah dan cepat.">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="author" content="AZANA DESIGN">
-    <meta name="theme-color" content="#050508">
-    <link rel="canonical" href="https://azana.my.id/spotify.html">
-    <meta property="og:locale" content="id_ID">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="AZANA DESIGN">
-    <meta property="og:title" content="AZANA Spotify Downloader - Unduh Musik MP3 Instan">
-    <meta property="og:description" content="Tool AZANA Spotify Downloader untuk mengunduh lagu atau audio dari tautan Spotify secara mudah dan cepat.">
-    <meta property="og:url" content="https://azana.my.id/spotify.html">
-    <meta property="og:image" content="https://azana.my.id/asset/img/globe.png">
+    <title>Spotify Downloader - Azana Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="asset/js/api-config.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
-
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'] },
-            colors: { neon: { cyan: '#00f2fe', purple: '#bc13fe', emerald: '#34d399' }, dark: { 950: '#070708', 900: '#0a0a0f', 800: '#13131a', 700: '#1c1c26' } }
-          }
-        }
-      }
-    </script>
     <style>
-      body {
-        background-color: #050508;
-        color: #cbd5e1;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        margin: 0;
-        position: relative;
-        overflow-x: hidden;
-      }
-
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background:
-        radial-gradient(circle at 10% 10%, rgba(52, 211, 153, 0.1) 0%, transparent 45%),
-        radial-gradient(circle at 90% 90%, rgba(0, 242, 254, 0.1) 0%, transparent 45%);
-        z-index: -1;
-        filter: blur(80px);
-        pointer-events: none;
-      }
-
-      #neural-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -2;
-        display: block;
-        opacity: 0.7;
-      }
-
-      .safe-italic {
-        padding-right: 0.3em;
-        display: inline-block;
-      }
-
-      @keyframes border-glow {
-        0% { border-color: rgba(52, 211, 153, 0.1); }
-        50% { border-color: rgba(52, 211, 153, 0.4); }
-        100% { border-color: rgba(52, 211, 153, 0.1); }
-      }
-      .animate-border {
-        animation: border-glow 4s infinite ease-in-out;
-      }
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .card-glow {
+            background: linear-gradient(135deg, rgba(18, 24, 38, 0.95), rgba(13, 17, 28, 0.95));
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body class="flex flex-col min-h-screen relative">
 
-    <!-- LAYER NEURAL BACKGROUND -->
     <canvas id="neural-bg"></canvas>
 
-    <div class="flex-grow flex flex-col items-center p-6 w-full relative z-10">
-
-      <!-- TOMBOL KEMBALI -->
-      <div class="w-full max-w-xl mb-4">
-        <a href="index.html" class="inline-flex items-center gap-2 text-xs font-tech tracking-widest uppercase text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-xl backdrop-blur-md hover:bg-emerald-500/20 transition-all">
-          <i class="fas fa-arrow-left"></i> Kembali ke Menu
+    <header class="p-4 flex items-center justify-between border-b border-emerald-900/30 relative z-10">
+        <a href="index.html" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2 text-sm font-semibold">
+            <i class="fa-solid fa-arrow-left"></i> KEMBALI
         </a>
-      </div>
+        <span class="text-xs tracking-widest text-emerald-400 uppercase font-bold">SPOTIFY ROOM (MP3)</span>
+    </header>
 
-      <header class="text-center w-full max-w-xl mb-8 flex flex-col items-center">
-        <div class="w-12 h-12 rounded-xl bg-dark-900/30 backdrop-blur-md border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4 shadow-lg">
-          <i class="fab fa-spotify text-xl"></i>
-        </div>
-
-        <h1 class="text-2xl md:text-4xl font-tech font-bold text-white tracking-[0.2em] uppercase italic leading-tight">
-          AZANA <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-neon-cyan safe-italic">SPOTIFY DOWNLOADER</span>
-        </h1>
-
-        <p class="text-slate-500 text-[10px] md:text-xs max-w-xs mx-auto mt-4 opacity-70 uppercase tracking-[0.3em] font-tech font-semibold">
-          Unduh musik favorit dari Spotify secara cepat & instan.
-        </p>
-      </header>
-
-      <main class="w-full max-w-xl">
-        <!-- Kotak Input Form -->
-        <div class="bg-dark-800/60 backdrop-blur-xl p-6 rounded-3xl border border-emerald-500/20 shadow-2xl animate-border mb-6">
-          <div class="flex flex-col gap-4">
-            <label for="url-input" class="text-xs font-tech tracking-widest text-emerald-400 uppercase">Tautan Spotify (Lagu / Track)</label>
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-emerald-400">
-                <i class="fas fa-link"></i>
-              </span>
-              <input type="text" id="url-input" placeholder="https://open.spotify.com/track/..." 
-              class="w-full bg-dark-900/80 border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-emerald-500/60 font-sans">
+    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
+        <div class="card-glow rounded-3xl p-5 w-full">
+            
+            <div class="text-center mb-5">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-black/40 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl shadow-[0_0_15px_rgba(52,211,153,0.3)]">
+                    <i class="fa-brands fa-spotify"></i>
+                </div>
+                <h1 class="text-xl font-extrabold tracking-wider mb-1">SPOTIFY DOWNLOADER</h1>
+                <p class="text-[11px] text-gray-400">Download lagu MP3 dari Spotify secara instan.</p>
             </div>
-            <button onclick="prosesSpotify()" id="submit-btn" class="w-full bg-gradient-to-r from-emerald-500 to-neon-cyan text-dark-950 font-bold py-4 rounded-xl shadow-lg hover:scale-[1.01] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 font-tech tracking-[0.2em] text-xs uppercase italic">
-              <i class="fas fa-download"></i> Unduh Musik
-            </button>
-          </div>
-        </div>
 
-        <!-- Processing Area (Loading) -->
-        <div id="processing-area" class="hidden flex-col items-center justify-center p-8 bg-dark-800/40 backdrop-blur-xl rounded-3xl border border-white/5 mb-6">
-          <i class="fas fa-circle-notch fa-spin text-emerald-400 text-3xl mb-4"></i>
-          <span class="font-tech text-white tracking-[0.3em] text-[10px] uppercase italic" id="status-text">Mengambil data musik dari Spotify...</span>
-          <div class="w-full bg-white/5 rounded-full h-0.5 overflow-hidden mt-4">
-            <div id="progress-bar" class="bg-gradient-to-r from-emerald-400 to-neon-cyan h-full w-0 transition-all duration-500"></div>
-          </div>
-        </div>
-
-        <!-- Result Area -->
-        <div id="result-area" class="hidden flex-col items-center w-full bg-dark-800/60 backdrop-blur-xl p-6 rounded-3xl border border-emerald-500/30 shadow-2xl">
-          <div class="flex flex-col md:flex-row items-center gap-4 w-full mb-6">
-            <img id="result-thumb" src="" class="w-28 h-28 object-cover rounded-2xl border border-emerald-500/30 shadow-md" alt="Cover Lagu">
-            <div class="flex flex-col text-center md:text-left flex-grow">
-              <span class="text-[8px] font-tech text-emerald-400 tracking-widest uppercase mb-1">Berhasil Diproses</span>
-              <h3 id="result-title" class="text-sm md:text-base font-bold text-white uppercase tracking-wider mb-1">Judul Lagu</h3>
-              <p id="result-artist" class="text-xs text-slate-400 font-sans">Artis / Penyanyi</p>
+            <div class="space-y-3 mb-4">
+                <div class="relative">
+                    <input type="text" id="spotify-url" placeholder="Tempel link track Spotify di sini..." 
+                        class="w-full bg-black/50 border border-emerald-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-400 transition">
+                </div>
+                <button onclick="processSpotifyDownload()" id="btn-process" 
+                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-bolt"></i> Ambil Info Musik
+                </button>
             </div>
-          </div>
 
-          <div class="flex flex-col gap-3 w-full">
-            <a id="download-btn" href="#" target="_blank" class="w-full bg-gradient-to-r from-emerald-500 to-neon-cyan text-dark-950 font-bold py-4 rounded-xl shadow-lg hover:scale-[1.01] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 font-tech tracking-[0.2em] text-xs uppercase italic">
-              <i class="fas fa-file-audio"></i> SIMPAN MP3 SEKARANG
-            </a>
-            <button onclick="location.reload()" class="w-full text-slate-500 hover:text-white text-[9px] font-tech tracking-[0.25em] uppercase bg-white/[0.03] py-3.5 rounded-xl border border-white/5 transition-all">
-              Unduh Lagu Lain
-            </button>
-          </div>
+            <div id="loading-box" class="hidden text-center py-6 text-emerald-400 text-xs">
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil informasi lagu dari Spotify API...
+            </div>
+
+            <div id="preview-container" class="hidden space-y-4 pt-2">
+                
+                <div class="space-y-3 text-center">
+                    <div class="rounded-xl overflow-hidden bg-black aspect-square max-h-[160px] mx-auto flex items-center justify-center border border-emerald-500/30">
+                        <img id="track-thumbnail" src="" class="w-full h-full object-cover" alt="Thumbnail">
+                    </div>
+                    <div class="bg-black/40 border border-emerald-500/20 rounded-2xl p-3 text-left">
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase">Judul & Artis:</span>
+                        <p id="track-title" class="text-xs text-gray-200 line-clamp-1 mt-0.5 font-bold">-</p>
+                        <p id="track-artist" class="text-[11px] text-emerald-400 font-medium">-</p>
+                    </div>
+                </div>
+
+                <div id="content-mp3" class="space-y-2.5">
+                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-music mr-1"></i> Audio MP3</p>
+                            <span class="text-[10px] text-gray-400">Kualitas Tinggi (High Quality)</span>
+                        </div>
+                        <button onclick="downloadMedia(audioDownloadUrl, this)" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                            ↓ Download MP3
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-      </main>
-    </div>
+    </main>
 
-    <!-- FOOTER -->
-    <div id="footer"></div>
+    <div id="footer" class="relative z-10"></div>
 
     <script>
-      fetch('components/footer-ai.html')
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById('footer').innerHTML = data;
-      });
+        let audioDownloadUrl = "";
+        let musicTitle = "spotify_audio";
+
+        async function processSpotifyDownload() {
+            const urlInput = document.getElementById('spotify-url').value.trim();
+            const loadingBox = document.getElementById('loading-box');
+            const previewContainer = document.getElementById('preview-container');
+
+            if (!urlInput) {
+                alert('Masukkan link Spotify dulu, bro!');
+                return;
+            }
+
+            loadingBox.classList.remove('hidden');
+            previewContainer.classList.add('hidden');
+
+            try {
+                const res = await fetch(`https://api.nexray.eu.cc/downloader/spotify?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
+
+                let title = "Lagu Spotify";
+                let artist = "Artis Tidak Diketahui";
+                let thumbnail = "https://azana.my.id/asset/img/globe.png";
+
+                if (res && (res.status === true || res.data || res.result)) {
+                    const info = res.data || res.result || res;
+                    if (info.download || info.url || info.audio) {
+                        audioDownloadUrl = info.download || info.url || info.audio;
+                    }
+                    if (info.title || info.name) title = info.title || info.name;
+                    if (info.artist || info.authors) artist = info.artist || info.authors;
+                    if (info.thumbnail || info.image || info.cover) thumbnail = info.thumbnail || info.image || info.cover;
+                }
+
+                if (!audioDownloadUrl) {
+                    throw new Error("Gagal mendapatkan link unduhan audio dari API.");
+                }
+
+                musicTitle = (title + " - " + artist).replace(/[\/\\?%*:|"<>]/g, '');
+                document.getElementById('track-title').innerText = title;
+                document.getElementById('track-artist').innerText = artist;
+                document.getElementById('track-thumbnail').src = thumbnail;
+
+                loadingBox.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+
+            } catch (err) {
+                loadingBox.classList.add('hidden');
+                alert("Terjadi kesalahan: " + err.message);
+            }
+        }
+
+        async function downloadMedia(fileUrl, buttonElement) {
+            if (!fileUrl) {
+                alert("Link unduhan audio belum tersedia!");
+                return;
+            }
+
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+
+            try {
+                const a = document.createElement('a');
+                a.href = fileUrl;
+                a.download = musicTitle + '.mp3';
+                a.setAttribute('download', musicTitle + '.mp3');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch (err) {
+                window.open(fileUrl, '_blank');
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
+        }
+
+        // Load Footer Transparan
+        fetch('components/footer-ai.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        }).catch(err => console.log("Footer load error:", err));
     </script>
 
     <script>
-      // --- ANIMASI NEURAL BACKGROUND ---
       const canvas = document.getElementById('neural-bg');
       const ctx = canvas.getContext('2d');
-
       function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       }
-
-      window.addEventListener('resize', () => {
-        resizeCanvas();
-        initNodes();
-      });
-
+      window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
       resizeCanvas();
-
       const particlesArray = [];
       const colors = ['#34d399', '#00f2fe'];
-
       class Particle {
         constructor() {
           this.x = Math.random() * canvas.width;
@@ -200,28 +208,21 @@
           this.color = colors[Math.floor(Math.random() * colors.length)];
         }
         update() {
-          this.x += this.speedX;
-          this.y += this.speedY;
+          this.x += this.speedX; this.y += this.speedY;
           if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
           if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
         }
         draw() {
           ctx.fillStyle = this.color;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
         }
       }
-
       function initNodes() {
         particlesArray.length = 0;
         let numberOfParticles = (canvas.height * canvas.width) / 9500;
         if (numberOfParticles > 130) numberOfParticles = 130;
-        for (let i = 0; i < numberOfParticles; i++) {
-          particlesArray.push(new Particle());
-        }
+        for (let i = 0; i < numberOfParticles; i++) { particlesArray.push(new Particle()); }
       }
-
       function animateNodes() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < particlesArray.length; i++) {
@@ -232,86 +233,16 @@
             const dy = particlesArray[i].y - particlesArray[j].y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < 150) {
-              ctx.beginPath();
-              ctx.strokeStyle = particlesArray[i].color;
+              ctx.beginPath(); ctx.strokeStyle = particlesArray[i].color;
               ctx.globalAlpha = 1 - (distance / 150);
-              ctx.lineWidth = 0.6;
-              ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-              ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
-              ctx.stroke();
-              ctx.globalAlpha = 1;
+              ctx.lineWidth = 0.6; ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+              ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.globalAlpha = 1;
             }
           }
         }
         requestAnimationFrame(animateNodes);
       }
-
-      window.onload = function() {
-        initNodes();
-        animateNodes();
-      };
-
-      // --- LOGIKA SPOTIFY DOWNLOADER ---
-      async function prosesSpotify() {
-        const urlInput = document.getElementById('url-input').value.trim();
-        if (!urlInput) {
-          alert('Sila masukkan pautan Spotify terlebih dahulu.');
-          return;
-        }
-
-        const processingArea = document.getElementById('processing-area');
-        const resultArea = document.getElementById('result-area');
-        const progressBar = document.getElementById('progress-bar');
-        const statusText = document.getElementById('status-text');
-
-        processingArea.classList.remove('hidden');
-        processingArea.classList.add('flex');
-        
-        let progress = 0;
-        const interval = setInterval(() => {
-          if (progress < 90) {
-            progress += 5;
-            progressBar.style.width = progress + '%';
-          }
-        }, 150);
-
-        try {
-          statusText.innerText = "Menghubungkan ke peladen Spotify...";
-          const res = await fetch(`https://api.nexray.eu.cc/downloader/spotify?url=${encodeURIComponent(urlInput)}`);
-          
-          if (!res.ok) throw new Error("Gagal mengambil data dari endpoint Spotify.");
-          const data = await res.json();
-
-          clearInterval(interval);
-          progressBar.style.width = '100%';
-          statusText.innerText = "SELESAI!";
-
-           // Menyesuaikan struktur data hasil respons Nexray Spotify Downloader
-          const info = data.data || data.result || data;
-          const title = info.title || info.name || "Lagu Spotify";
-          const artist = info.artist || info.authors || "Artis Tidak Diketahui";
-          const thumb = info.thumbnail || info.image || "https://azana.my.id/asset/img/globe.png";
-          const downloadUrl = info.download || info.url || info.audio;
-          
-          if (!downloadUrl) throw new Error("Pautan unduhan fail audio tidak ditemui.");
-
-          setTimeout(() => {
-            processingArea.classList.add('hidden');
-            resultArea.classList.remove('hidden');
-            resultArea.classList.add('flex');
-
-            document.getElementById('result-title').innerText = title;
-            document.getElementById('result-artist').innerText = artist;
-            document.getElementById('result-thumb').src = thumb;
-            document.getElementById('download-btn').href = downloadUrl;
-          }, 500);
-
-        } catch (err) {
-          clearInterval(interval);
-          processingArea.classList.add('hidden');
-          alert("Ralat: " + err.message);
-        }
-      }
+      window.onload = function() { initNodes(); animateNodes(); };
     </script>
-  </body>
+</body>
 </html>
