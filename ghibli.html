@@ -309,7 +309,7 @@
       if (file) tangkapFoto(file);
     });
 
-    async function mulaiProsesGhibli() {
+        async function mulaiProsesGhibli() {
       if (!selectedFile) return;
 
       previewArea.classList.add('hidden');
@@ -323,20 +323,21 @@
         statusText.innerText = "Mengunggah foto ke peladen...";
         
         const formData = new FormData();
-        formData.append('reqtype', 'fileupload');
-        formData.append('fileToUpload', selectedFile);
+        formData.append('file', selectedFile);
 
-        const uploadRes = await fetch('https://catbox.moe/user/api.php', {
+        const uploadRes = await fetch('https://telegra.ph/upload', {
           method: 'POST',
           body: formData
         });
 
         if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar.");
-        const imageUrl = (await uploadRes.text()).trim();
+        const uploadResult = await uploadRes.json();
 
-        if (!imageUrl || !imageUrl.startsWith('http')) {
+        if (!uploadResult || !uploadResult[0] || !uploadResult[0].src) {
           throw new Error("Gagal mendapatkan link publik gambar.");
         }
+
+        const imageUrl = 'https://telegra.ph' + uploadResult[0].src;
 
         statusText.innerText = "Memproses gaya Ghibli...";
         const ghibliRes = await fetch(`https://api.nexray.eu.cc/ephoto/ghibli?url=${encodeURIComponent(imageUrl)}`);
@@ -363,7 +364,8 @@
         alert("Error: " + err.message);
         location.reload();
       }
-    }
+     }
+    
   </script>
 </body>
 </html>
