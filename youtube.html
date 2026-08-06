@@ -3,31 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Downloader</title>
+    <title>YouTube Downloader - Azana Design</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Background Neural Khas Azana */
+        body {
+            background-color: #050505;
+            background-image: radial-gradient(circle at 50% 20%, rgba(147, 51, 234, 0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 10% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 30%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    </style>
 </head>
-<body class="bg-black text-white min-h-screen flex flex-col justify-between p-4">
+<body class="p-4 relative overflow-x-hidden">
 
-    <div class="max-w-md mx-auto w-full space-y-4">
+    <!-- Efek Garis Neural / Jaringan Abstrak di Background -->
+    <div class="absolute inset-0 pointer-events-none z-0 opacity-20" style="background-image: radial-gradient(#a855f7 0.75px, transparent 0.75px); background-size: 24px 24px;"></div>
+
+    <div class="max-w-md mx-auto w-full space-y-4 relative z-10">
         <!-- Header -->
-        <div class="flex justify-between items-center bg-zinc-900/80 p-3 rounded-2xl border border-zinc-800">
-            <a href="index.html" class="text-xs bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-xl transition">← KEMBALI</a>
-            <span class="text-xs font-bold text-purple-400">YOUTUBE ROOM</span>
+        <div class="flex justify-between items-center bg-zinc-900/80 backdrop-blur-md p-3 rounded-2xl border border-zinc-800 shadow-lg">
+            <a href="index.html" class="text-xs bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-xl transition font-medium">← KEMBALI</a>
+            <span class="text-xs font-bold text-purple-400 tracking-wider">YOUTUBE ROOM</span>
         </div>
 
         <!-- Main Card -->
-        <div class="bg-zinc-950 border border-purple-500/30 p-4 rounded-3xl shadow-xl space-y-4 text-center">
-            <div class="w-12 h-12 bg-red-600/20 text-red-500 rounded-2xl mx-auto flex items-center justify-center text-xl">
+        <div class="bg-zinc-950/90 backdrop-blur-md border border-purple-500/30 p-5 rounded-3xl shadow-2xl space-y-4 text-center">
+            <div class="w-12 h-12 bg-red-600/20 text-red-500 rounded-2xl mx-auto flex items-center justify-center text-xl shadow-inner">
                 <i class="fa-brands fa-youtube"></i>
             </div>
             
-            <h1 class="text-base font-bold">YOUTUBE DOWNLOADER</h1>
-            <p class="text-xs text-zinc-400">Pilih video MP4 atau audio MP3 dengan Nexray API.</p>
+            <h1 class="text-base font-bold tracking-wide">YOUTUBE DOWNLOADER</h1>
+            <p class="text-xs text-zinc-400">Pilih video MP4 atau audio MP3 dengan Nexray API v1.</p>
 
             <!-- Input Form -->
-            <div class="space-y-2">
-                <input type="text" id="yt-url" placeholder="Tempel link YouTube di sini..." class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-purple-500 text-center">
+            <div class="space-y-2.5">
+                <input type="text" id="yt-url" placeholder="Tempel link YouTube di sini..." class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-purple-500 text-center text-zinc-200 shadow-inner">
                 <button onclick="processYouTubeDownload()" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-bold text-xs py-3 rounded-2xl transition shadow-lg flex items-center justify-center gap-2">
                     <i class="fa-solid fa-bolt"></i> Ambil Info Video
                 </button>
@@ -43,21 +59,21 @@
             <div id="preview-container" class="hidden space-y-3 pt-2 text-left">
                 <!-- Thumbnail & Judul -->
                 <div class="space-y-3 text-center">
-                    <div class="rounded-xl overflow-hidden bg-black aspect-video max-h-[180px] mx-auto flex items-center justify-center border border-zinc-800">
+                    <div class="rounded-xl overflow-hidden bg-black aspect-video max-h-[180px] mx-auto flex items-center justify-center border border-zinc-800 shadow">
                         <img id="vid-thumbnail" src="" class="w-full h-full object-cover" alt="Thumbnail">
                     </div>
-                    <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3 text-left">
-                        <span class="text-[10px] text-gray-400 font-semibold uppercase">Judul Video:</span>
+                    <div class="bg-black/50 border border-purple-500/20 rounded-2xl p-3 text-left shadow-inner">
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">Judul Video:</span>
                         <p id="vid-title" class="text-xs text-gray-200 line-clamp-2 mt-0.5 font-medium"></p>
                     </div>
                 </div>
 
                 <!-- Konten Tombol Download -->
-                <div class="space-y-2 pt-2">
+                <div class="space-y-2.5 pt-2">
                     <!-- Tombol MP4 -->
-                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
+                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between shadow">
                         <div>
-                            <p class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-film mr-1"></i>Format MP4</p>
+                            <p class="text-xs font-bold text-yellow-400"><i class="fa-solid fa-film mr-1"></i> Format MP4</p>
                             <span class="text-[10px] text-gray-400">High Quality Video</span>
                         </div>
                         <button onclick="triggerDownloadMP4(this)" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold text-xs px-4 py-2.5 rounded-xl transition shadow">
@@ -66,9 +82,9 @@
                     </div>
 
                     <!-- Tombol MP3 -->
-                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
+                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between shadow">
                         <div>
-                            <p class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-music mr-1"></i>Format MP3</p>
+                            <p class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-music mr-1"></i> Format MP3</p>
                             <span class="text-[10px] text-gray-400">High Quality Audio</span>
                         </div>
                         <button onclick="triggerDownloadMP3(this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2.5 rounded-xl transition shadow">
@@ -80,8 +96,10 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <div id="footer" class="text-center text-[10px] text-zinc-500 py-4">AZANA DESIGN</div>
+    <!-- Footer Khas Azana -->
+    <div id="footer" class="relative z-10 text-center text-[10px] text-zinc-500 py-4 font-mono tracking-widest">
+        AZANA DESIGN
+    </div>
 
     <script>
         let videoDownloadUrl = "";
@@ -102,6 +120,7 @@
             previewContainer.classList.add('hidden');
 
             try {
+                // Menggunakan endpoint v1 terbaru sesuai permintaan
                 const [resMp4, resMp3] = await Promise.all([
                     fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
                     fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
@@ -139,7 +158,7 @@
             }
         }
 
-        // Fungsi Download MP4 Murni (Anti Tab Baru)
+        // Trigger Download MP4 Murni (Anti-Play Tab Baru)
         async function triggerDownloadMP4(buttonElement) {
             if (!videoDownloadUrl) {
                 alert("Link video belum tersedia!");
@@ -180,7 +199,7 @@
             }
         }
 
-        // Fungsi Download MP3 Murni (Anti Tab Baru)
+        // Trigger Download MP3 Murni (Anti-Play Tab Baru)
         async function triggerDownloadMP3(buttonElement) {
             if (!audioDownloadUrl) {
                 alert("Link audio belum tersedia!");
