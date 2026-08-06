@@ -302,7 +302,7 @@
       if (file) tangkapFoto(file);
     });
 
-    async function prosesGhibli(file) {
+        async function prosesGhibli(file) {
       let progress = 0;
       const interval = setInterval(() => { if(progress < 90) { progress += 2; progressBar.style.width = progress + '%'; } }, 200);
       
@@ -313,7 +313,8 @@
         formData.append('reqtype', 'fileupload');
         formData.append('fileToUpload', file);
 
-        const uploadRes = await fetch('https://catbox.moe/user/api.php', {
+        // Menggunakan CORS proxy gratis agar tembus dari browser
+        const uploadRes = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://catbox.moe/user/api.php'), {
           method: 'POST',
           body: formData
         });
@@ -350,7 +351,8 @@
         alert("Error: " + err.message);
         location.reload();
       }
-    }
+        }
+    
   </script>
 </body>
 </html>
