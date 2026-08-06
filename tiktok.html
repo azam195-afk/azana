@@ -66,7 +66,7 @@
 
             <!-- Loading Box -->
             <div id="loading-box" class="hidden text-center py-6 text-cyan-400 text-xs">
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data via RapidAPI...
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data video / slide foto...
             </div>
 
             <!-- PREVIEW & HASIL DOWNLOAD CONTAINER -->
@@ -108,7 +108,7 @@
     <script>
         let currentData = null;
 
-            async function processTikTokDownload() {
+        async function processTikTokDownload() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
             const previewContainer = document.getElementById('preview-container');
@@ -122,27 +122,17 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // Membungkus endpoint RapidAPI dengan CORS proxy agar tidak diblokir browser
-                const targetUrl = 'https://download-tiktok-videos-slide-images.p.rapidapi.com/api';
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+                // Menggunakan endpoint API publik stabil yang mendukung video & slide foto carousel
+                const res = await fetch(`https://api.nexray.eu.cc/downloader/tiktok?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
 
-                const response = await fetch(proxyUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-rapidapi-host': 'download-tiktok-videos-slide-images.p.rapidapi.com',
-                        'x-rapidapi-key': '9cbf8bd8d4msh68c9733fe4041d3p14ea1fjsnd5afc4aba406'
-                    },
-                    body: JSON.stringify({ url: urlInput })
-                });
+                if (!res || !res.status) {
+                    throw new Error("Gagal mengambil data dari server. Periksa kembali tautan Anda.");
+                }
 
-                if (!response.ok) throw new Error("Gagal mengambil data dari RapidAPI.");
-                const res = await response.json();
-
-                currentData = res.result || res.data || res;
+                currentData = res.result || res.data;
                 
-                const captionText = currentData.title || currentData.caption || currentData.desc || "Tanpa caption";
-                const authorText = currentData.author?.nickname || currentData.author?.unique_id || currentData.author || "TikTok User";
+                const captionText = currentData.title || currentData.caption || "Tanpa caption";
+                const authorText = currentData.author?.nickname || currentData.author || "TikTok User";
                 
                 document.getElementById('video-caption').innerText = captionText;
                 document.getElementById('author-name').innerText = "@" + authorText;
@@ -152,14 +142,15 @@
                 const listContainer = document.getElementById('download-options-list');
                 listContainer.innerHTML = '';
 
-                let imageList = currentData.images || currentData.photo_list || currentData.slide || currentData.photos;
+                let imageList = currentData.images || currentData.photo_list || currentData.slide;
 
                 if (imageList && Array.isArray(imageList) && imageList.length > 0) {
+                    // Kasus: Slide Foto (Carousel)
                     vidElement.classList.add('hidden');
                     imgElement.classList.remove('hidden');
                     imgElement.src = imageList[0];
 
-                    const audioUrl = currentData.music || currentData.audio || currentData.sound;
+                    const audioUrl = currentData.music || currentData.audio;
                     if (audioUrl) {
                         addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "audio.mp3", "text-cyan-400");
                     }
@@ -169,12 +160,13 @@
                     });
 
                 } else {
+                    // Kasus: Video TikTok Biasa
                     imgElement.classList.add('hidden');
                     vidElement.classList.remove('hidden');
                     
-                    const videoUrl = currentData.nowm || currentData.hd || currentData.url || currentData.video || currentData.play;
-                    const wmUrl = currentData.wm || currentData.watermark;
-                    const audioUrl = currentData.music || currentData.audio || currentData.sound;
+                    const videoUrl = currentData.nowm || currentData.hd || currentData.url;
+                    const wmUrl = currentData.wm || videoUrl;
+                    const audioUrl = currentData.music || currentData.audio;
 
                     if (videoUrl) {
                         vidElement.src = videoUrl;
@@ -195,8 +187,7 @@
                 loadingBox.classList.add('hidden');
                 alert("Terjadi kesalahan: " + err.message);
             }
-         }
-    
+        }
 
         function addItemToList(container, label, iconClass, fileUrl, filename, colorClass) {
             const item = document.createElement('div');
