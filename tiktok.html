@@ -25,7 +25,7 @@
         }
         .card-glow {
             background: linear-gradient(135deg, rgba(18, 24, 38, 0.95), rgba(13, 17, 28, 0.95));
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(0, 242, 254, 0.3);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
         }
     </style>
@@ -34,88 +34,67 @@
 
     <canvas id="neural-bg"></canvas>
 
-    <header class="p-4 flex items-center justify-between border-b border-purple-900/30 relative z-10">
+    <header class="p-4 flex items-center justify-between border-b border-cyan-900/30 relative z-10">
         <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2 text-sm font-semibold">
             <i class="fa-solid fa-arrow-left"></i> KEMBALI
         </a>
-        <span class="text-xs tracking-widest text-purple-400 uppercase font-bold">TIKTOK ROOM</span>
+        <span class="text-xs tracking-widest text-cyan-400 uppercase font-bold">TIKTOK ROOM</span>
     </header>
 
     <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
         <div class="card-glow rounded-3xl p-5 w-full">
             
             <div class="text-center mb-5">
-                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-black/40 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-black/40 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl shadow-[0_0_15px_rgba(0,242,254,0.3)]">
                     <i class="fa-brands fa-tiktok"></i>
                 </div>
                 <h1 class="text-xl font-extrabold tracking-wider mb-1">TIKTOK DOWNLOADER</h1>
-                <p class="text-[11px] text-gray-400">Preview besar, pilih format, lalu download langsung.</p>
+                <p class="text-[11px] text-gray-400">Preview besar, pilih format video, audio, atau slide foto JPG.</p>
             </div>
 
+            <!-- Input Form -->
             <div class="space-y-3 mb-4">
                 <div class="relative">
                     <input type="text" id="tiktok-url" placeholder="Tempel link TikTok di sini..." 
-                        class="w-full bg-black/50 border border-purple-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition">
+                        class="w-full bg-black/50 border border-cyan-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition">
                 </div>
                 <button onclick="processTikTokDownload()" id="btn-process" 
-                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white shadow-lg shadow-purple-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
+                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 text-white shadow-lg shadow-cyan-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Preview
                 </button>
             </div>
 
+            <!-- Loading Box -->
             <div id="loading-box" class="hidden text-center py-6 text-cyan-400 text-xs">
                 <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dan membuat preview...
             </div>
 
-            <!-- PREVIEW CONTAINER ALA NEXUS -->
+            <!-- PREVIEW & HASIL DOWNLOAD CONTAINER -->
             <div id="preview-container" class="hidden space-y-4 pt-2">
                 
-                <!-- VIDEO PLAYER BESAR -->
-                <div class="relative w-full rounded-2xl overflow-hidden bg-black border border-purple-500/30 shadow-inner">
-                    <video id="preview-video" class="w-full h-auto max-h-[380px] object-contain mx-auto" controls playsinline></video>
-                </div>
-
-                <!-- INFO AKUN & CAPTION + TOMBOL COPY -->
-                <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3.5 space-y-2.5">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-full bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-xs font-bold">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div>
-                            <p id="preview-author" class="text-xs font-bold text-white">@creator</p>
-                            <span class="text-[9px] text-cyan-400 uppercase tracking-wider">VERIFIED ACCOUNT</span>
-                        </div>
+                <!-- Media Preview (Video / Cover) -->
+                <div class="space-y-3 text-center">
+                    <div id="video-preview-wrapper" class="rounded-xl overflow-hidden bg-black aspect-[9/16] max-h-[320px] mx-auto flex items-center justify-center border border-cyan-500/30 relative">
+                        <video id="vid-preview" controls class="w-full h-full object-contain hidden"></video>
+                        <img id="img-preview" src="" class="w-full h-full object-contain hidden" alt="Preview Image">
                     </div>
                     
-                    <div>
+                    <!-- Caption & Author info -->
+                    <div class="bg-black/40 border border-cyan-500/20 rounded-2xl p-3 text-left">
                         <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] text-gray-400 font-semibold uppercase">Caption:</span>
-                            <button onclick="copyCaption()" class="text-[10px] bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 text-purple-200 px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer">
-                                <i class="fa-solid fa-copy"></i> <span id="copy-text">Copy Caption</span>
-                            </button>
+                            <span id="author-name" class="text-xs font-bold text-cyan-400">@Author</span>
+                            <button onclick="copyCaption()" class="text-[10px] bg-cyan-950 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-lg">Copy Caption</button>
                         </div>
-                        <p id="preview-title" class="text-xs text-gray-200 leading-relaxed bg-black/30 p-2.5 rounded-xl border border-white/5 max-h-24 overflow-y-auto">Caption video...</p>
+                        <p id="video-caption" class="text-[11px] text-gray-300 line-clamp-3">-</p>
                     </div>
                 </div>
 
-                <!-- PILIHAN FORMAT DOWNLOAD DENGAN INDIKATOR LOADING DI TOMBOL -->
-                <div class="space-y-2 pt-1">
-                    <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest text-center">Pilih Format Unduhan</p>
-                    
-                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_hd.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 rounded-xl text-xs font-semibold text-purple-200 transition cursor-pointer">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-download text-cyan-400"></i> MP4 HD (Tanpa Watermark)</span>
-                        <span class="text-[10px] bg-purple-500/20 px-2 py-0.5 rounded text-purple-300">HD</span>
-                    </button>
-
-                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_standard.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-black/40 hover:bg-black/60 border border-purple-500/20 rounded-xl text-xs font-semibold text-gray-300 transition cursor-pointer">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-download text-gray-400"></i> MP4 Standar / Watermark</span>
-                        <span class="text-[10px] bg-gray-800 px-2 py-0.5 rounded text-gray-400">SD</span>
-                    </button>
-
-                    <button onclick="downloadMedia(currentAudioUrl, 'tiktok_audio.mp3', this)" class="w-full flex items-center justify-between py-3 px-4 bg-cyan-600/30 hover:bg-cyan-600/50 border border-cyan-500/40 rounded-xl text-xs font-semibold text-cyan-200 transition cursor-pointer">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-music text-cyan-400"></i> Audio MP3 (Original Sound)</span>
-                        <span class="text-[10px] bg-cyan-500/20 px-2 py-0.5 rounded text-cyan-300">MP3</span>
-                    </button>
+                <!-- PILIHAN FORMAT UNDUHAN -->
+                <div class="space-y-2">
+                    <p class="text-[10px] font-bold tracking-widest text-gray-400 uppercase px-1">Pilih Format Unduhan:</p>
+                    <div id="download-options-list" class="space-y-2 max-h-[220px] overflow-y-auto pr-1">
+                        <!-- Dynamically injected links/buttons (MP4, MP3, or Slide JPGs) -->
+                    </div>
                 </div>
 
             </div>
@@ -123,12 +102,11 @@
         </div>
     </main>
 
+    <!-- Footer Transparan -->
     <div id="footer" class="relative z-10"></div>
 
-    <script src="asset/js/all-tools-api.js"></script>
     <script>
-        let currentVideoUrl = "";
-        let currentAudioUrl = "";
+        let currentData = null;
 
         async function processTikTokDownload() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
@@ -136,7 +114,7 @@
             const previewContainer = document.getElementById('preview-container');
 
             if (!urlInput) {
-                alert('Masukkan link TikTok terlebih dahulu, bro!');
+                alert('Masukkan link TikTok dulu, bro!');
                 return;
             }
 
@@ -144,55 +122,87 @@
             previewContainer.classList.add('hidden');
 
             try {
-                const result = await downloadTikTok(urlInput);
-                
-                if (result && result.status === "success") {
-                    document.getElementById('preview-title').innerText = result.title;
-                    document.getElementById('preview-author').innerText = "@" + result.author;
-                    
-                    currentVideoUrl = result.video_hd;
-                    currentAudioUrl = result.audio_mp3;
+                // Menggunakan endpoint multi-downloader tikwm / nexray
+                const res = await fetch(`https://api.nexray.eu.cc/downloader/tiktok?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
 
-                    const videoElement = document.getElementById('preview-video');
-                    videoElement.src = currentVideoUrl;
-                    
-                    loadingBox.classList.add('hidden');
-                    previewContainer.classList.remove('hidden');
-                } else {
-                    throw new Error(result?.message || "Gagal mengambil data.");
+                if (!res || !res.status) {
+                    throw new Error("Gagal mengambil data dari server. Periksa kembali link Anda.");
                 }
+
+                currentData = res.result || res.data;
+                
+                // Set Caption & Author
+                document.getElementById('video-caption').innerText = currentData.title || currentData.caption || "Tanpa caption";
+                document.getElementById('author-name.innerText') = "@" + (currentData.author?.nickname || currentData.author || "TikTok User");
+
+                const vidElement = document.getElementById('vid-preview');
+                const imgElement = document.getElementById('img-preview');
+                const listContainer = document.getElementById('download-options-list');
+                listContainer.innerHTML = '';
+
+                // Cek apakah ini video biasa atau slide foto (image carousel)
+                if (currentData.images && currentData.images.length > 0) {
+                    // Kasus: Slide Foto (Carousel)
+                    vidElement.classList.add('hidden');
+                    imgElement.classList.remove('hidden');
+                    imgElement.src = currentData.images[0];
+
+                    // Tombol untuk Audio MP3 (jika ada)
+                    if (currentData.music || currentData.audio) {
+                        const audioUrl = currentData.music || currentData.audio;
+                        addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "audio.mp3", "text-cyan-400");
+                    }
+
+                    // Looping semua foto slide JPG satu persatu
+                    currentData.images.forEach((imgUrl, index) => {
+                        addItemToList(listContainer, `JPG Foto #${index + 1} (Slide TikTok)`, "fa-image", imgUrl, `tiktok_photo_${index + 1}.jpg`, "text-emerald-400");
+                    });
+
+                } else {
+                    // Kasus: Video TikTok Biasa
+                    imgElement.classList.add('hidden');
+                    vidElement.classList.remove('hidden');
+                    vidElement.src = currentData.nowm || currentData.hd || currentData.url;
+
+                    const videoUrl = currentData.nowm || currentData.hd || currentData.url;
+                    const wmUrl = currentData.wm || videoUrl;
+                    const audioUrl = currentData.music || currentData.audio;
+
+                    if (videoUrl) addItemToList(listContainer, "MP4 HD (Tanpa Watermark)", "fa-video", videoUrl, "tiktok_hd.mp4", "text-cyan-400");
+                    if (wmUrl) addItemToList(listContainer, "MP4 Standar (Dengan Watermark)", "fa-video", wmUrl, "tiktok_wm.mp4", "text-yellow-400");
+                    if (audioUrl) addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "tiktok_audio.mp3", "text-purple-400");
+                }
+
+                loadingBox.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+
             } catch (err) {
                 loadingBox.classList.add('hidden');
                 alert("Terjadi kesalahan: " + err.message);
             }
         }
 
-        // Fungsi unduh murni Blob dengan animasi loading di tombol (Tanpa Pop-up Alert)
-        async function downloadMedia(fileUrl, filename, buttonElement) {
-            if (!fileUrl) {
-                alert("Link unduhan tidak tersedia!");
-                return;
-            }
+        function addItemToList(container, label, iconClass, fileUrl, filename, colorClass) {
+            const item = document.createElement('div');
+            item.className = "bg-zinc-900/80 border border-zinc-700/50 rounded-xl p-2.5 flex items-center justify-between";
+            item.innerHTML = `
+                <div class="flex items-center gap-2 overflow-hidden pr-2">
+                    <i class="fa-solid ${iconClass} ${colorClass} text-sm"></i>
+                    <span class="text-xs font-bold text-gray-200 truncate">${label}</span>
+                </div>
+                <button onclick="downloadSingleFile('${fileUrl}', '${filename}', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-[10px] px-3 py-1.5 rounded-lg transition shrink-0">
+                    ↓ Download
+                </button>
+            `;
+            container.appendChild(item);
+        }
 
-            const originalContent = buttonElement.innerHTML;
+        async function downloadSingleFile(fileUrl, filename, buttonElement) {
+            const originalText = buttonElement.innerText;
             buttonElement.disabled = true;
-            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengunduh...`;
+            buttonElement.innerText = "Downloading...";
 
             try {
-                const response = await fetch(fileUrl);
-                const blob = await response.blob();
-                const blobUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                
-                window.URL.revokeObjectURL(blobUrl);
-                document.body.removeChild(a);
-            } catch (err) {
                 const a = document.createElement('a');
                 a.href = fileUrl;
                 a.download = filename;
@@ -200,28 +210,23 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+            } catch (e) {
+                window.open(fileUrl, '_blank');
             } finally {
                 setTimeout(() => {
                     buttonElement.disabled = false;
-                    buttonElement.innerHTML = originalContent;
-                }, 2500);
+                    buttonElement.innerText = originalText;
+                }, 1500);
             }
         }
 
-        // Fungsi Copy Caption
         function copyCaption() {
-            const captionText = document.getElementById('preview-title').innerText;
-            navigator.clipboard.writeText(captionText).then(() => {
-                const copyTextSpan = document.getElementById('copy-text');
-                copyTextSpan.innerText = "Copied!";
-                setTimeout(() => {
-                    copyTextSpan.innerText = "Copy Caption";
-                }, 2000);
-            }).catch(err => {
-                alert("Gagal menyalin caption!");
-            });
+            const captionText = document.getElementById('video-caption').innerText;
+            navigator.clipboard.writeText(captionText);
+            alert('Caption berhasil disalin!');
         }
 
+        // Load Footer Transparan
         fetch('components/footer-ai.html')
         .then(response => response.text())
         .then(data => {
