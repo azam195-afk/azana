@@ -144,52 +144,32 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // Tembak endpoint nexray ytmp4 dan ytmp3 secara bersamaan
+                // Gunakan endpoint v1 terbaru untuk MP4 dan MP3 Nexray API
                 const [resMp4, resMp3] = await Promise.all([
-                    fetch(`https://api.nexray.eu.cc/downloader/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
-                    fetch(`https://api.nexray.eu.cc/downloader/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
+                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
+                    fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
                 ]);
 
                 let title = "YouTube Video";
                 let thumbnail = "https://i.ytimg.com/vi/3cjbQF5y3BE/hqdefault.jpg";
 
-                // Ambil link MP4
                 if (resMp4 && resMp4.status === true && resMp4.result && resMp4.result.url) {
                     videoDownloadUrl = resMp4.result.url;
                     if (resMp4.result.title) title = resMp4.result.title;
                     if (resMp4.result.thumbnail) thumbnail = resMp4.result.thumbnail;
                 }
 
-                // Ambil link MP3
                 if (resMp3 && resMp3.status === true && resMp3.result && resMp3.result.url) {
                     audioDownloadUrl = resMp3.result.url;
                     if (resMp3.result.title) title = resMp3.result.title;
                     if (resMp3.result.thumbnail) thumbnail = resMp3.result.thumbnail;
                 }
 
-                // Fallback ke endpoint v1 jika endpoint utama kosong
-                if (!videoDownloadUrl || !audioDownloadUrl) {
-                    const [v1Mp4, v1Mp3] = await Promise.all([
-                        fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp4?url=${encodeURIComponent(urlInput)}&resolusi=1080`).then(r => r.json()).catch(() => null),
-                        fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null)
-                    ]);
-
-                    if (v1Mp4 && v1Mp4.status && v1Mp4.result) {
-                        videoDownloadUrl = v1Mp4.result.url;
-                        if (v1Mp4.result.title) title = v1Mp4.result.title;
-                        if (v1Mp4.result.thumbnail) thumbnail = v1Mp4.result.thumbnail;
-                    }
-                    if (v1Mp3 && v1Mp3.status && v1Mp3.result) {
-                        audioDownloadUrl = v1Mp3.result.url;
-                        if (v1Mp3.result.title) title = v1Mp3.result.title;
-                        if (v1Mp3.result.thumbnail) thumbnail = v1Mp3.result.thumbnail;
-                    }
-                }
-
                 if (!videoDownloadUrl && !audioDownloadUrl) {
                     throw new Error("Gagal mendapatkan link dari Nexray API.");
                 }
 
+                videoTitle = title.replace(/[\/\\?%*:|"<>]/g, '');
                 document.getElementById('vid-title').innerText = title;
                 document.getElementById('vid-thumbnail').src = thumbnail;
 
@@ -201,7 +181,6 @@
                 alert("Terjadi kesalahan: " + err.message);
             }
         }
-
         function switchTab(type) {
             const btnMp4 = document.getElementById('tab-btn-mp4');
             const btnMp3 = document.getElementById('tab-btn-mp3');
