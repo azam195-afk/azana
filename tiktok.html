@@ -55,7 +55,7 @@
             <!-- Input Form -->
             <div class="space-y-3 mb-4">
                 <div class="relative">
-                    <input type="text" id="tiktok-url" placeholder="Tempel link TikTok di sini..." 
+                    <input type="text" id="tiktok-url" placeholder="Tempel link TikTok / Slide Foto di sini..." 
                         class="w-full bg-black/50 border border-cyan-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition">
                 </div>
                 <button onclick="processTikTokDownload()" id="btn-process" 
@@ -66,7 +66,7 @@
 
             <!-- Loading Box -->
             <div id="loading-box" class="hidden text-center py-6 text-cyan-400 text-xs">
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dan membuat preview...
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data video / slide foto...
             </div>
 
             <!-- PREVIEW & HASIL DOWNLOAD CONTAINER -->
@@ -108,7 +108,7 @@
     <script>
         let currentData = null;
 
-                async function processTikTokDownload() {
+        async function processTikTokDownload() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
             const previewContainer = document.getElementById('preview-container');
@@ -122,18 +122,15 @@
             previewContainer.classList.add('hidden');
 
             try {
+                // Menggunakan endpoint API downloader stabil yang mendukung slide foto & video
                 const res = await fetch(`https://api.nexray.eu.cc/downloader/tiktok?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
 
                 if (!res) {
                     throw new Error("Gagal terhubung ke server API.");
                 }
 
-                // DEBUG: Menampilkan struktur data mentah dari API untuk dicek
-                console.log("API Response:", res);
-
                 currentData = res.result || res.data || res;
                 
-                // Ambil Caption & Author
                 const captionText = currentData.title || currentData.caption || "Tanpa caption";
                 const authorText = currentData.author?.nickname || currentData.author?.unique_id || currentData.author || "TikTok User";
                 
@@ -145,13 +142,8 @@
                 const listContainer = document.getElementById('download-options-list');
                 listContainer.innerHTML = '';
 
-                // Menangkap berbagai kemungkinan nama properti gambar slide dari API
-                let imageList = currentData.images || currentData.photo_list || currentData.slide || currentData.photos || currentData.img;
-
-                // Jika berupa string tunggal atau objek tersembunyi, kita normalisasikan
-                if (currentData.type === 'image' && currentData.url) {
-                    imageList = [currentData.url];
-                }
+                // Deteksi slide foto / images carousel (mendukung berbagai variasi key dari API)
+                let imageList = currentData.images || currentData.photo_list || currentData.slide || currentData.photos;
 
                 if (imageList && Array.isArray(imageList) && imageList.length > 0) {
                     // Kasus: Slide Foto (Carousel)
@@ -159,8 +151,8 @@
                     imgElement.classList.remove('hidden');
                     imgElement.src = imageList[0];
 
-                    if (currentData.music || currentData.audio || currentData.sound) {
-                        const audioUrl = currentData.music || currentData.audio || currentData.sound;
+                    const audioUrl = currentData.music || currentData.audio || currentData.sound;
+                    if (audioUrl) {
                         addItemToList(listContainer, "Audio MP3 (Original Sound)", "fa-music", audioUrl, "audio.mp3", "text-cyan-400");
                     }
 
@@ -196,8 +188,7 @@
                 loadingBox.classList.add('hidden');
                 alert("Terjadi kesalahan: " + err.message);
             }
-         }
-    
+        }
 
         function addItemToList(container, label, iconClass, fileUrl, filename, colorClass) {
             const item = document.createElement('div');
