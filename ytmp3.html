@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube MP3 Downloader - Azana Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .card-glow {
+            background: linear-gradient(135deg, rgba(18, 24, 38, 0.95), rgba(13, 17, 28, 0.95));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen relative">
+
+    <canvas id="neural-bg"></canvas>
+
+    <header class="p-4 flex items-center justify-between border-b border-purple-900/30 relative z-10">
+        <a href="index.html" class="text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2 text-sm font-semibold">
+            <i class="fa-solid fa-arrow-left"></i> KEMBALI
+        </a>
+        <span class="text-xs tracking-widest text-cyan-400 uppercase font-bold">YOUTUBE ROOM (MP3)</span>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
+        <div class="card-glow rounded-3xl p-5 w-full">
+            
+            <div class="text-center mb-5">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-black/40 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                    <i class="fa-solid fa-music"></i>
+                </div>
+                <h1 class="text-xl font-extrabold tracking-wider mb-1">YOUTUBE MP3 DOWNLOADER</h1>
+                <p class="text-[11px] text-gray-400">Download audio MP3 kualitas tinggi dengan Nexray API.</p>
+            </div>
+
+            <!-- Input Form -->
+            <div class="space-y-3 mb-4">
+                <div class="relative">
+                    <input type="text" id="yt-url" placeholder="Tempel link YouTube di sini..." 
+                        class="w-full bg-black/50 border border-purple-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 transition">
+                </div>
+                <button onclick="processYouTubeDownload()" id="btn-process" 
+                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-lg shadow-cyan-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fa-solid fa-bolt"></i> Ambil Info Audio
+                </button>
+            </div>
+
+            <!-- Loading Box -->
+            <div id="loading-box" class="hidden text-center py-6 text-cyan-400 text-xs">
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil informasi audio dari Nexray API...
+            </div>
+
+            <!-- PREVIEW & HASIL DOWNLOAD CONTAINER -->
+            <div id="preview-container" class="hidden space-y-4 pt-2">
+                
+                <!-- Thumbnail & Judul -->
+                <div class="space-y-3 text-center">
+                    <div class="rounded-xl overflow-hidden bg-black aspect-video max-h-[180px] mx-auto flex items-center justify-center border border-purple-500/30">
+                        <img id="vid-thumbnail" src="" class="w-full h-full object-cover" alt="Thumbnail">
+                    </div>
+                    <div class="bg-black/40 border border-purple-500/20 rounded-2xl p-3 text-left">
+                        <span class="text-[10px] text-gray-400 font-semibold uppercase">Judul Audio:</span>
+                        <p id="vid-title" class="text-xs text-gray-200 line-clamp-2 mt-0.5 font-medium">-</p>
+                    </div>
+                </div>
+
+                <!-- Konten Khusus MP3 -->
+                <div id="content-mp3" class="space-y-2.5">
+                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-cyan-400"><i class="fa-solid fa-music mr-1"></i> Audio MP3</p>
+                            <span class="text-[10px] text-gray-400">Kualitas Tinggi (High Quality)</span>
+                        </div>
+                        <button onclick="triggerDownload(audioDownloadUrl, 'youtube_audio.mp3', this)" class="bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                            ↓ Download MP3
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer" class="relative z-10"></div>
+
+    <script>
+        let audioDownloadUrl = "";
+        let audioTitleClean = "youtube_audio";
+
+        async function processYouTubeDownload() {
+            const urlInput = document.getElementById('yt-url').value.trim();
+            const loadingBox = document.getElementById('loading-box');
+            const previewContainer = document.getElementById('preview-container');
+
+            if (!urlInput) {
+                alert('Masukkan link YouTube dulu, bro!');
+                return;
+            }
+
+            loadingBox.classList.remove('hidden');
+            previewContainer.classList.add('hidden');
+
+            try {
+                // Tembak endpoint nexray ytmp3 versi utama dan v1
+                let res = await fetch(`https://api.nexray.eu.cc/downloader/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
+                
+                if (!res || !res.status || !res.result || !res.result.url) {
+                    res = await fetch(`https://api.nexray.eu.cc/downloader/v1/ytmp3?url=${encodeURIComponent(urlInput)}`).then(r => r.json()).catch(() => null);
+                }
+
+                if (!res || !res.status || !res.result || !res.result.url) {
+                    throw new Error("Gagal mendapatkan link MP3 dari Nexray API.");
+                }
+
+                audioDownloadUrl = res.result.url;
+                let title = res.result.title || "YouTube Audio";
+                let thumbnail = res.result.thumbnail || "https://i.ytimg.com/vi/3cjbQF5y3BE/hqdefault.jpg";
+
+                audioTitleClean = title.replace(/[\/\\?%*:|"<>]/g, '').trim();
+
+                document.getElementById('vid-title').innerText = title;
+                document.getElementById('vid-thumbnail').src = thumbnail;
+
+                loadingBox.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+
+            } catch (err) {
+                loadingBox.classList.add('hidden');
+                alert("Terjadi kesalahan: " + err.message);
+            }
+        }
+
+        // Trik mutlak agar HP mendownload file biner MP3 secara langsung tanpa nge-play
+        async function triggerDownload(fileUrl, filename, buttonElement) {
+            if (!fileUrl) {
+                alert("Link unduhan belum tersedia!");
+                return;
+            }
+
+            const finalFilename = 'YTSave_' + (audioTitleClean ? audioTitleClean + '.mp3' : filename);
+            const originalContent = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            buttonElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Downloading...`;
+
+            try {
+                const response = await fetch(fileUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = finalFilename;
+                document.body.appendChild(a);
+                a.click();
+
+                window.URL.revokeObjectURL(blobUrl);
+                document.body.removeChild(a);
+            } catch (err) {
+                const a = document.createElement('a');
+                a.href = fileUrl;
+                a.download = finalFilename;
+                a.setAttribute('download', finalFilename);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } finally {
+                setTimeout(() => {
+                    buttonElement.disabled = false;
+                    buttonElement.innerHTML = originalContent;
+                }, 2000);
+            }
+        }
+
+        // Load Footer
+        fetch('components/footer-ai.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        }).catch(err => console.log("Footer load error:", err));
+    </script>
+
+    <script>
+      const canvas = document.getElementById('neural-bg');
+      const ctx = canvas.getContext('2d');
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
+      resizeCanvas();
+      const particlesArray = [];
+      const colors = ['#00f2fe', '#bc13fe'];
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 1.5 + 0.5;
+          this.speedX = (Math.random() * 0.5) - 0.25;
+          this.speedY = (Math.random() * 0.5) - 0.25;
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+        update() {
+          this.x += this.speedX; this.y += this.speedY;
+          if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+        draw() {
+          ctx.fillStyle = this.color;
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+      function initNodes() {
+        particlesArray.length = 0;
+        let numberOfParticles = (canvas.height * canvas.width) / 9500;
+        if (numberOfParticles > 130) numberOfParticles = 130;
+        for (let i = 0; i < numberOfParticles; i++) { particlesArray.push(new Particle()); }
+      }
+      function animateNodes() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+          particlesArray[i].update();
+          particlesArray[i].draw();
+          for (let j = i; j < particlesArray.length; j++) {
+            const dx = particlesArray[i].x - particlesArray[j].x;
+            const dy = particlesArray[i].y - particlesArray[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 150) {
+              ctx.beginPath(); ctx.strokeStyle = particlesArray[i].color;
+              ctx.globalAlpha = 1 - (distance / 150);
+              ctx.lineWidth = 0.6; ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+              ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.globalAlpha = 1;
+            }
+          }
+        }
+        requestAnimationFrame(animateNodes);
+      }
+      window.onload = function() { initNodes(); animateNodes(); };
+    </script>
+</body>
+</html>
