@@ -108,7 +108,7 @@
     <script>
         let currentData = null;
 
-        async function processTikTokDownload() {
+            async function processTikTokDownload() {
             const urlInput = document.getElementById('tiktok-url').value.trim();
             const loadingBox = document.getElementById('loading-box');
             const previewContainer = document.getElementById('preview-container');
@@ -122,10 +122,11 @@
             previewContainer.classList.add('hidden');
 
             try {
-                const settings = {
-                    async: true,
-                    crossDomain: true,
-                    url: 'https://download-tiktok-videos-slide-images.p.rapidapi.com/api',
+                // Membungkus endpoint RapidAPI dengan CORS proxy agar tidak diblokir browser
+                const targetUrl = 'https://download-tiktok-videos-slide-images.p.rapidapi.com/api';
+                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+
+                const response = await fetch(proxyUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -133,12 +134,6 @@
                         'x-rapidapi-key': '9cbf8bd8d4msh68c9733fe4041d3p14ea1fjsnd5afc4aba406'
                     },
                     body: JSON.stringify({ url: urlInput })
-                };
-
-                const response = await fetch(settings.url, {
-                    method: settings.method,
-                    headers: settings.headers,
-                    body: settings.body
                 });
 
                 if (!response.ok) throw new Error("Gagal mengambil data dari RapidAPI.");
@@ -157,11 +152,9 @@
                 const listContainer = document.getElementById('download-options-list');
                 listContainer.innerHTML = '';
 
-                // Deteksi slide foto / images carousel dari RapidAPI
                 let imageList = currentData.images || currentData.photo_list || currentData.slide || currentData.photos;
 
                 if (imageList && Array.isArray(imageList) && imageList.length > 0) {
-                    // Kasus: Slide Foto (Carousel)
                     vidElement.classList.add('hidden');
                     imgElement.classList.remove('hidden');
                     imgElement.src = imageList[0];
@@ -176,7 +169,6 @@
                     });
 
                 } else {
-                    // Kasus: Video TikTok Biasa
                     imgElement.classList.add('hidden');
                     vidElement.classList.remove('hidden');
                     
@@ -203,7 +195,8 @@
                 loadingBox.classList.add('hidden');
                 alert("Terjadi kesalahan: " + err.message);
             }
-        }
+         }
+    
 
         function addItemToList(container, label, iconClass, fileUrl, filename, colorClass) {
             const item = document.createElement('div');
