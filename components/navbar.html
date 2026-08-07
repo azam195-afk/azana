@@ -10,113 +10,46 @@
       }
     }
 
-    .wa-loading-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      background:
-      radial-gradient(circle at 30% 20%, rgba(58, 175, 169, 0.22), transparent 30%),
-      radial-gradient(circle at 70% 80%, rgba(43, 122, 120, 0.24), transparent 35%),
-      rgba(254, 255, 255, 0.86);
-      backdrop-filter: blur(18px);
+    /* Animasi Sidebar Slide dari Kanan */
+    #mobile-sidebar {
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #mobile-sidebar.is-open {
+      transform: translateX(0);
+    }
+
+    /* Backdrop Gelap */
+    #sidebar-backdrop {
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.28s ease;
+      transition: opacity 0.35s ease;
     }
-    .wa-loading-overlay.is-visible {
+    #sidebar-backdrop.is-open {
       opacity: 1;
       pointer-events: auto;
     }
-    .wa-loading-card {
-      width: min(92vw, 360px);
-      border: 1px solid rgba(58, 175, 169, 0.2);
-      border-radius: 1.5rem;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      color: #17252A;
-      background: linear-gradient(145deg, #DEF2F1, #FEFFFF);
-      box-shadow: 0 10px 40px rgba(58, 175, 169, 0.18);
-      transform: translateY(12px) scale(0.98);
-      transition: transform 0.28s ease;
-    }
-    .wa-loading-overlay.is-visible .wa-loading-card {
-      transform: translateY(0) scale(1);
-    }
-    .wa-loading-ring {
-      width: 76px;
-      height: 76px;
-      margin: 0 auto 1rem;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      color: #25D366;
-      font-size: 2.2rem;
-      background: rgba(37, 211, 102, 0.1);
-      border: 1px solid rgba(37, 211, 102, 0.28);
-      box-shadow: 0 0 26px rgba(37, 211, 102, 0.25);
-      position: relative;
-    }
-    .wa-loading-ring::before {
-      content: '';
-      position: absolute;
-      inset: -7px;
-      border-radius: inherit;
-      border: 2px solid transparent;
-      border-top-color: #3AAFA9;
-      border-right-color: #2B7A78;
-      animation: wa-spin 1s linear infinite;
-    }
-    .wa-loading-title {
-      font-size: 0.95rem;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-    }
-    .wa-loading-subtitle {
-      margin-top: 0.5rem;
-      font-size: 0.72rem;
-      color: #64748b;
-      line-height: 1.55;
-    }
-    .wa-loading-bar {
-      width: 100%;
-      height: 4px;
-      margin-top: 1.25rem;
+
+    /* Animasi Accordion Submenu */
+    .submenu-content {
+      max-height: 0;
       overflow: hidden;
-      border-radius: 999px;
-      background: rgba(58, 175, 169, 0.15);
+      transition: max-height 0.3s ease-out, padding 0.3s ease;
     }
-    .wa-loading-bar span {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #3AAFA9, #25D366, #2B7A78);
-      transform-origin: left;
-      animation: wa-progress 2s ease forwards;
-    }
-    body.wa-loading-active {
-      overflow: hidden;
-    }
-    @keyframes wa-spin {
-      to { transform: rotate(360deg); }
-    }
-    @keyframes wa-progress {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
+    .submenu-content.open {
+      max-height: 500px;
     }
   </style>
 
   <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
 
+      <!-- Logo di Kiri -->
       <a href="index.html" class="flex items-center justify-center p-1 flex-shrink-0">
         <img src="asset/img/41955.png" class="w-16 h-16 md:w-20 md:h-20 object-contain" alt="AZANA Logo">
       </a>
 
+      <!-- Menu Desktop -->
       <div class="hidden md:flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] font-tech text-slate-600 font-semibold">
         <a href="index.html" class="hover:text-azana-tealDark transition relative group">Beranda</a>
         <a href="index.html#layanan" class="hover:text-azana-tealDark transition relative group">Layanan</a>
@@ -132,6 +65,7 @@
         </a>
       </div>
 
+      <!-- Tombol Garis Tiga di Kanan (Mobile) -->
       <div class="flex items-center md:hidden flex-shrink-0">
         <button id="menu-btn" class="w-10 h-10 rounded-xl bg-azana-light border-2 border-azana-tealDark/40 text-azana-tealDark flex items-center justify-center active:scale-90 shadow-sm transition-all">
           <i class="fas fa-bars text-lg"></i>
@@ -141,27 +75,150 @@
     </div>
   </div>
 
-  <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-[#FEFFFF]/95 backdrop-blur-2xl shadow-lg">
-    <div class="flex flex-col p-6 gap-5 text-xs uppercase tracking-[0.25em] font-tech text-slate-700 font-bold">
-      <a href="index.html" class="hover:text-azana-tealDark transition py-1 border-b border-slate-100 flex items-center justify-between">
-        <span>Beranda</span> <i class="fas fa-chevron-right text-[10px] text-azana-teal"></i>
-      </a>
-      <a href="index.html#layanan" class="hover:text-azana-tealDark transition py-1 border-b border-slate-100 flex items-center justify-between">
-        <span>Layanan</span> <i class="fas fa-chevron-right text-[10px] text-azana-teal"></i>
-      </a>
-      <a href="blogs.html" class="hover:text-azana-tealDark transition py-1 border-b border-slate-100 flex items-center justify-between">
-        <span>Blog</span> <i class="fas fa-chevron-right text-[10px] text-azana-teal"></i>
-      </a>
-      <a href="privacy-policy.html" class="hover:text-azana-tealDark transition py-1 border-b border-slate-100 flex items-center justify-between">
-        <span>Privasi</span> <i class="fas fa-chevron-right text-[10px] text-azana-teal"></i>
-      </a>
-      <a href="about.html" class="hover:text-azana-tealDark transition py-1 border-b border-slate-100 flex items-center justify-between">
-        <span>Tentang</span> <i class="fas fa-chevron-right text-[10px] text-azana-teal"></i>
-      </a>
-      <a href="https://wa.me/6282243995410" data-wa-transition class="mt-2 bg-gradient-to-r from-azana-teal to-azana-tealDark text-white py-3.5 rounded-xl text-center font-bold text-[11px] uppercase tracking-widest shadow-md hover:brightness-110 transition">
-        Pesan Sekarang
+  <!-- BACKDROP GELAP DI LUAR SIDEBAR -->
+  <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 md:hidden"></div>
+
+  <!-- SIDEBAR DRAWER DARI KANAN (MOBILE MENU) -->
+  <div id="mobile-sidebar" class="fixed top-0 right-0 w-[80%] max-w-[320px] h-full bg-[#FEFFFF] shadow-2xl z-50 md:hidden flex flex-col justify-between border-l border-slate-200 overflow-y-auto">
+    
+    <div>
+      <!-- Header Sidebar -->
+      <div class="flex items-center justify-between p-5 border-b border-slate-100">
+        <div class="flex items-center gap-2">
+          <span class="font-tech font-bold text-sm tracking-widest uppercase text-azana-dark">Menu Navigasi</span>
+        </div>
+        <button id="close-btn" class="w-8 h-8 rounded-full bg-azana-light text-azana-tealDark flex items-center justify-center active:scale-90">
+          <i class="fas fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+      <!-- Tombol Kapsul Download APK di Atas Sidebar -->
+      <div class="p-4" id="apk-download-mobile">
+        <a href="https://github.com/azam195-afk/azana/raw/main/apks/Azana_v1.0.apk"
+        download="Azana_v1.0.apk"
+        class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-full bg-gradient-to-r from-azana-teal to-azana-tealDark text-white font-bold text-[10px] uppercase tracking-widest shadow-md hover:brightness-110 active:scale-95 transition-all">
+          <i class="fas fa-download"></i> Get APK App
+        </a>
+      </div>
+
+      <!-- List Menu Utama -->
+      <div class="flex flex-col px-4 py-2 text-xs font-tech text-slate-700 font-semibold tracking-wider">
+        
+        <!-- 1. HOME -->
+        <a href="index.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+          <span class="flex items-center gap-3"><i class="fas fa-home text-azana-teal"></i> HOME</span>
+        </a>
+
+        <!-- 2. STUDIO VISUAL (Dengan Submenu) -->
+        <div>
+          <button id="studio-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+            <span class="flex items-center gap-3"><i class="fas fa-wand-magic text-azana-teal"></i> STUDIO VISUAL</span>
+            <i id="studio-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div id="studio-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
+            <a href="penjernih.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Penjernih Foto</a>
+            <a href="removebg.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Hapus Background</a>
+            <a href="eraser.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Magic Eraser</a>
+          </div>
+        </div>
+
+        <!-- 3. DOWNLOADER (Dengan Submenu) -->
+        <div>
+          <button id="downloader-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+            <span class="flex items-center gap-3"><i class="fas fa-download text-azana-teal"></i> DOWNLOADER</span>
+            <i id="downloader-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div id="downloader-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
+            <a href="tiktok.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> TikTok MP3/MP4</a>
+            <a href="ig.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Instagram Downloader</a>
+            <a href="ytmp4.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> YouTube MP4</a>
+            <a href="ytmp3.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> YouTube MP3</a>
+            <a href="spotify.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Spotify Downloader</a>
+          </div>
+        </div>
+
+        <!-- 4. TOOLS AI MAKER (Dengan Submenu) -->
+        <div>
+          <button id="aimaker-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+            <span class="flex items-center gap-3"><i class="fas fa-robot text-azana-teal"></i> TOOLS AI MAKER</span>
+            <i id="aimaker-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
+          </button>
+          <div id="aimaker-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
+            <a href="sertifikat.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Sertifikat Lucu</a>
+            <a href="brat.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> BRAT Generator</a>
+            <a href="iqc.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> IQC Generator</a>
+          </div>
+        </div>
+
+        <!-- 5. BLOG -->
+        <a href="blogs.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+          <span class="flex items-center gap-3"><i class="fas fa-blog text-azana-teal"></i> BLOG</span>
+        </a>
+
+        <!-- 6. PRIVASI -->
+        <a href="privacy-policy.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+          <span class="flex items-center gap-3"><i class="fas fa-shield-alt text-azana-teal"></i> PRIVASI</span>
+        </a>
+
+        <!-- 7. TENTANG KAMI -->
+        <a href="about.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+          <span class="flex items-center gap-3"><i class="fas fa-info-circle text-azana-teal"></i> TENTANG KAMI</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Footer Sidebar: Tombol WhatsApp -->
+    <div class="p-4 border-t border-slate-100 bg-azana-light/40">
+      <a href="https://wa.me/6282243995410" data-wa-transition class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366] text-white font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-all">
+        <i class="fab fa-whatsapp text-sm"></i> Hubungi Admin
       </a>
     </div>
+
   </div>
 
 </nav>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-btn');
+    const sidebar = document.getElementById('mobile-sidebar');
+    const backdrop = document.getElementById('sidebar-backdrop');
+
+    function openSidebar() {
+      sidebar.classList.add('is-open');
+      backdrop.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('is-open');
+      backdrop.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    if(menuBtn) menuBtn.addEventListener('click', openSidebar);
+    if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    if(backdrop) backdrop.addEventListener('click', closeSidebar);
+
+    function setupAccordion(toggleId, submenuId, arrowId) {
+      const toggle = document.getElementById(toggleId);
+      const submenu = document.getElementById(submenuId);
+      const arrow = document.getElementById(arrowId);
+
+      if(toggle && submenu) {
+        toggle.addEventListener('click', () => {
+          submenu.classList.toggle('open');
+          if(arrow) {
+            arrow.style.transform = submenu.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+          }
+        });
+      }
+    }
+
+    setupAccordion('studio-toggle', 'studio-submenu', 'studio-arrow');
+    setupAccordion('downloader-toggle', 'downloader-submenu', 'downloader-arrow');
+    setupAccordion('aimaker-toggle', 'aimaker-submenu', 'aimaker-arrow');
+  });
+</script>
