@@ -25,9 +25,8 @@
 
     <style>
       .logo-neon-outline {
-        animation: cyberOutline 2.5s infinite alternate ease-in-out;
         transition: transform 0.3s ease;
-        will-change: filter, transform;
+        will-change: transform;
         -webkit-transform: translateZ(0);
         transform: translateZ(0);
         backface-visibility: hidden;
@@ -41,15 +40,6 @@
       .logo-neon-outline:hover {
         transform: scale(1.05) translateZ(0);
       }
-
-      @keyframes cyberOutline {
-        0% {
-          filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 6px #00f2fe);
-        }
-        100% {
-          filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.4)) drop-shadow(0 0 8px #a855f7);
-        }
-      }
     </style>
 
     <script>
@@ -61,17 +51,12 @@
               tech: ['Rajdhani', 'sans-serif'],
             },
             colors: {
-              neon: {
-                cyan: '#00f2fe',
-                purple: '#a855f7',
-                magenta: '#d946ef',
-              },
-              dark: {
-                950: '#050508',
-                900: '#0a0a0f',
-                800: '#13131a',
-                700: '#1c1c26',
-                600: '#252532',
+              azana: {
+                dark: '#17252A',
+                tealDark: '#2B7A78',
+                teal: '#3AAFA9',
+                light: '#DEF2F1',
+                white: '#FEFFFF',
               }
             }
           }
@@ -80,207 +65,208 @@
     </script>
     <style>
       body {
-        background-color: #0a0a0f;
+        background-color: #FEFFFF;
+        color: #17252A;
         background-image:
-        radial-gradient(circle at 15% 50%, rgba(0, 242, 254, 0.05), transparent 25%),
-        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.05), transparent 25%);
+        radial-gradient(circle at 15% 50%, rgba(58, 175, 169, 0.05), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(43, 122, 120, 0.05), transparent 25%);
       }
       .gradient-text {
-        background: linear-gradient(to right, #00f2fe, #a855f7);
+        background: linear-gradient(to right, #3AAFA9, #2B7A78);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
 
       .glow-button {
-        box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+        box-shadow: 0 0 15px rgba(58, 175, 169, 0.3);
       }
       .glow-button:hover {
-        box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+        box-shadow: 0 0 25px rgba(58, 175, 169, 0.6);
       }
       .circuit-bg {
-        background-image: linear-gradient(rgba(10, 10, 15, 0.9), rgba(10, 10, 15, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+        background-image: linear-gradient(rgba(254, 255, 255, 0.9), rgba(254, 255, 255, 0.95)), url('https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
         background-size: cover;
         background-position: center;
       }
     </style>
   </head>
-  <body class="text-slate-300 font-sans antialiased selection:bg-neon-cyan selection:text-dark-900">
+  <body class="text-slate-700 font-sans antialiased selection:bg-azana-teal selection:text-azana-white">
 
     <div id="navbar"></div>
 
     <section id="beranda" class="circuit-bg min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-cyan/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-neon-purple/10 rounded-full mix-blend-screen filter blur-[100px] animate-pulse delay-1000"></div>
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-azana-teal/10 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-azana-tealDark/10 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse delay-1000"></div>
 
       <div class="max-w-5xl mx-auto text-center relative z-10 mt-10">
-        <span class="inline-block py-1 px-4 rounded-full bg-dark-800 border border-neon-cyan/30 text-neon-cyan text-sm font-semibold tracking-widest mb-6 backdrop-blur-sm shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+        <span class="inline-block py-1 px-4 rounded-full bg-azana-light border border-azana-teal/30 text-azana-tealDark text-sm font-semibold tracking-widest mb-6 backdrop-blur-sm shadow-[0_0_10px_rgba(58,175,169,0.15)]">
           <i class="fas fa-bolt mr-2"></i> CREATIVE DIGITAL STUDIO
         </span>
-        <h1 class="text-5xl md:text-7xl font-tech font-bold text-white mb-6 leading-tight">
+        <h1 class="text-5xl md:text-7xl font-tech font-bold text-azana-dark mb-6 leading-tight">
           Tingkatkan Visual Anda Bersama <br />
           <span class="gradient-text">AZANA DESIGN</span>
         </h1>
-        <p class="text-lg md:text-xl text-slate-400 mb-10 max-w-3xl mx-auto font-light leading-relaxed">
+        <p class="text-lg md:text-xl text-slate-600 mb-10 max-w-3xl mx-auto font-light leading-relaxed">
           Kami hadir dengan teknologi dan kreativitas untuk memenuhi segala kebutuhan visual Anda. Dari perbaikan foto, desain grafis profesional, hingga editing video sinematik.
         </p>
         <div class="max-w-6xl mx-auto text-center relative z-10 px-2">
         
         <div class="max-w-4xl mx-auto my-4 flex items-center gap-3" aria-label="Pembatas Studio Visual">
-          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-neon-cyan/60 to-neon-purple/30"></div>
-          <div class="relative px-4 py-1.5 rounded-full bg-dark-800/90 border border-neon-cyan/25 shadow-[0_0_12px_rgba(0,242,254,0.12)] flex items-center justify-center">
-            <span class="font-tech text-[9px] md:text-[11px] text-white tracking-[0.25em] uppercase leading-none">Studio Visual</span>
+          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-azana-teal/60 to-azana-tealDark/30"></div>
+          <div class="relative px-4 py-1.5 rounded-full bg-azana-light border border-azana-teal/25 shadow-[0_0_12px_rgba(58,175,169,0.12)] flex items-center justify-center">
+            <span class="font-tech text-[9px] md:text-[11px] text-azana-dark tracking-[0.25em] uppercase leading-none font-semibold">Studio Visual</span>
           </div>
-          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-neon-purple/30 via-neon-cyan/60 to-transparent"></div>
+          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-azana-tealDark/30 via-azana-teal/60 to-transparent"></div>
         </div>
           
           <div class="grid grid-cols-3 gap-2 md:gap-4">
-            <a href="penjernih.html" target="_blank" rel="noopener noreferrer" class="group bg-dark-800 rounded-xl overflow-hidden border border-neon-cyan/50 shadow-[0_0_15px_rgba(0,242,254,0.25)] hover:shadow-[0_0_25px_rgba(0,242,254,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-              <div class="h-20 md:h-28 bg-dark-900 overflow-hidden relative">
+            <a href="penjernih.html" target="_blank" rel="noopener noreferrer" class="group bg-azana-light rounded-xl overflow-hidden border border-azana-teal/30 shadow-[0_0_15px_rgba(58,175,169,0.15)] hover:shadow-[0_0_25px_rgba(58,175,169,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+              <div class="h-20 md:h-28 bg-azana-white overflow-hidden relative">
                 <img src="asset/img/penjernih.png" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-500" alt="Preview layanan penjernih foto AI">
               </div>
-              <div class="p-2 md:p-3 text-left border-t border-neon-cyan/30 bg-dark-800">
-                <p class="text-[8px] md:text-[9px] font-tech text-neon-cyan tracking-widest uppercase mb-0.5">AI Studio</p>
-                <h4 class="text-[10px] md:text-xs font-bold text-white uppercase leading-tight truncate">Penjernih Foto</h4>
-                <span class="inline-flex items-center gap-1 mt-1.5 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-neon-cyan">Buka <i class="fas fa-arrow-right"></i></span>
+              <div class="p-2 md:p-3 text-left border-t border-azana-teal/20 bg-azana-light">
+                <p class="text-[8px] md:text-[9px] font-tech text-azana-tealDark tracking-widest uppercase mb-0.5 font-bold">AI Studio</p>
+                <h4 class="text-[10px] md:text-xs font-bold text-azana-dark uppercase leading-tight truncate">Penjernih Foto</h4>
+                <span class="inline-flex items-center gap-1 mt-1.5 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
               </div>
             </a>
 
-            <a href="removebg.html" target="_blank" rel="noopener noreferrer" class="group bg-dark-800 rounded-xl overflow-hidden border border-neon-purple/50 shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-              <div class="h-20 md:h-28 bg-dark-900 overflow-hidden relative">
+            <a href="removebg.html" target="_blank" rel="noopener noreferrer" class="group bg-azana-light rounded-xl overflow-hidden border border-azana-tealDark/30 shadow-[0_0_15px_rgba(43,122,120,0.15)] hover:shadow-[0_0_25px_rgba(43,122,120,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+              <div class="h-20 md:h-28 bg-azana-white overflow-hidden relative">
                 <img src="asset/img/removebg.png" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-500" alt="Preview layanan hapus background">
               </div>
-              <div class="p-2 md:p-3 text-left border-t border-neon-purple/30 bg-dark-800">
-                <p class="text-[8px] md:text-[9px] font-tech text-neon-purple tracking-widest uppercase mb-0.5">AI Studio</p>
-                <h4 class="text-[10px] md:text-xs font-bold text-white uppercase leading-tight truncate">Hapus BG</h4>
-                <span class="inline-flex items-center gap-1 mt-1.5 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-neon-purple">Buka <i class="fas fa-arrow-right"></i></span>
+              <div class="p-2 md:p-3 text-left border-t border-azana-tealDark/20 bg-azana-light">
+                <p class="text-[8px] md:text-[9px] font-tech text-azana-tealDark tracking-widest uppercase mb-0.5 font-bold">AI Studio</p>
+                <h4 class="text-[10px] md:text-xs font-bold text-azana-dark uppercase leading-tight truncate">Hapus BG</h4>
+                <span class="inline-flex items-center gap-1 mt-1.5 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
               </div>
             </a>
 
-            <a href="eraser.html" target="_blank" rel="noopener noreferrer" class="group bg-dark-800 rounded-xl overflow-hidden border border-neon-magenta/50 shadow-[0_0_15px_rgba(217,70,239,0.25)] hover:shadow-[0_0_25px_rgba(217,70,239,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-              <div class="h-20 md:h-28 bg-dark-900 overflow-hidden relative">
+            <a href="eraser.html" target="_blank" rel="noopener noreferrer" class="group bg-azana-light rounded-xl overflow-hidden border border-azana-teal/30 shadow-[0_0_15px_rgba(58,175,169,0.15)] hover:shadow-[0_0_25px_rgba(58,175,169,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+              <div class="h-20 md:h-28 bg-azana-white overflow-hidden relative">
                 <img src="asset/img/eraser.jpg" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-500" alt="Preview layanan magic eraser">
               </div>
-              <div class="p-2 md:p-3 text-left border-t border-neon-magenta/30 bg-dark-800">
-                <p class="text-[8px] md:text-[9px] font-tech text-neon-magenta tracking-widest uppercase mb-0.5">AI Studio</p>
-                <h4 class="text-[10px] md:text-xs font-bold text-white uppercase leading-tight truncate">Magic Eraser</h4>
-                <span class="inline-flex items-center gap-1 mt-1.5 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-neon-magenta">Buka <i class="fas fa-arrow-right"></i></span>
+              <div class="p-2 md:p-3 text-left border-t border-azana-teal/20 bg-azana-light">
+                <p class="text-[8px] md:text-[9px] font-tech text-azana-tealDark tracking-widest uppercase mb-0.5 font-bold">AI Studio</p>
+                <h4 class="text-[10px] md:text-xs font-bold text-azana-dark uppercase leading-tight truncate">Magic Eraser</h4>
+                <span class="inline-flex items-center gap-1 mt-1.5 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
               </div>
             </a>
           </div>
         </div>
 
         <div class="max-w-4xl mx-auto my-4 flex items-center gap-3" aria-label="Pembatas Tools Downloader">
-          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-neon-cyan/60 to-neon-purple/30"></div>
-          <div class="relative px-4 py-1.5 rounded-full bg-dark-800/90 border border-neon-cyan/25 shadow-[0_0_12px_rgba(0,242,254,0.12)] flex items-center justify-center">
-            <span class="font-tech text-[9px] md:text-[11px] text-white tracking-[0.25em] uppercase leading-none">Tools Downloader</span>
+          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-azana-teal/60 to-azana-tealDark/30"></div>
+          <div class="relative px-4 py-1.5 rounded-full bg-azana-light border border-azana-teal/25 shadow-[0_0_12px_rgba(58,175,169,0.12)] flex items-center justify-center">
+            <span class="font-tech text-[9px] md:text-[11px] text-azana-dark tracking-[0.25em] uppercase leading-none font-semibold">Tools Downloader</span>
           </div>
-          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-neon-purple/30 via-neon-cyan/60 to-transparent"></div>
+          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-azana-tealDark/30 via-azana-teal/60 to-transparent"></div>
         </div>
 
         <div class="grid grid-cols-3 gap-2 md:gap-4">
-          <a href="tiktok.html" class="group relative overflow-hidden rounded-xl border border-neon-cyan/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(0,242,254,0.25)] hover:shadow-[0_0_25px_rgba(0,242,254,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="absolute inset-0 bg-gradient-to-br from-neon-cyan/15 via-transparent to-neon-purple/10 opacity-80"></div>
+          <a href="tiktok.html" class="group relative overflow-hidden rounded-xl border border-azana-teal/30 bg-azana-light p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(58,175,169,0.15)] hover:shadow-[0_0_25px_rgba(58,175,169,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-gradient-to-br from-azana-teal/10 via-transparent to-azana-tealDark/5 opacity-80"></div>
             <div class="relative">
-              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-neon-cyan/40 bg-dark-900 text-base md:text-xl text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.3)]"><i class="fab fa-tiktok"></i></div>
-              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-neon-cyan text-center">Downloader</p>
-              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-white leading-tight text-center">TikTok Mp3/Mp4</h4>
+              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-azana-teal/40 bg-azana-white text-base md:text-xl text-azana-tealDark shadow-[0_0_10px_rgba(58,175,169,0.2)]"><i class="fab fa-tiktok"></i></div>
+              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-azana-tealDark text-center font-bold">Downloader</p>
+              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-azana-dark leading-tight text-center">TikTok Mp3/Mp4</h4>
             </div>
             <div class="relative mt-3 text-center">
-              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-neon-cyan">Buka <i class="fas fa-arrow-right"></i></span>
+              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
             </div>
           </a>
 
-          <a href="ig.html" class="group relative overflow-hidden rounded-xl border border-neon-purple/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="absolute inset-0 bg-gradient-to-br from-neon-purple/15 via-transparent to-neon-magenta/10 opacity-80"></div>
+          <a href="ig.html" class="group relative overflow-hidden rounded-xl border border-azana-tealDark/30 bg-azana-light p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(43,122,120,0.15)] hover:shadow-[0_0_25px_rgba(43,122,120,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-gradient-to-br from-azana-tealDark/10 via-transparent to-azana-teal/5 opacity-80"></div>
             <div class="relative">
-              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-neon-purple/40 bg-dark-900 text-base md:text-xl text-neon-purple shadow-[0_0_10px_rgba(168,85,247,0.3)]"><i class="fab fa-instagram"></i></div>
-              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-neon-purple text-center">Downloader</p>
-              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-white leading-tight text-center">Instagram</h4>
+              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-azana-tealDark/40 bg-azana-white text-base md:text-xl text-azana-tealDark shadow-[0_0_10px_rgba(43,122,120,0.2)]"><i class="fab fa-instagram"></i></div>
+              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-azana-tealDark text-center font-bold">Downloader</p>
+              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-azana-dark leading-tight text-center">Instagram</h4>
             </div>
             <div class="relative mt-3 text-center">
-              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-neon-purple">Buka <i class="fas fa-arrow-right"></i></span>
+              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
             </div>
           </a>
 
-          <a href="ytmp4.html" class="group relative overflow-hidden rounded-xl border border-yellow-400/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(250,204,21,0.25)] hover:shadow-[0_0_25px_rgba(250,204,21,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/15 via-transparent to-red-500/10 opacity-80"></div>
+          <a href="ytmp4.html" class="group relative overflow-hidden rounded-xl border border-azana-teal/30 bg-azana-light p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(58,175,169,0.15)] hover:shadow-[0_0_25px_rgba(58,175,169,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-gradient-to-br from-azana-teal/10 via-transparent to-azana-tealDark/5 opacity-80"></div>
             <div class="relative">
-              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-yellow-400/40 bg-dark-900 text-base md:text-xl text-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]"><i class="fab fa-youtube"></i></div>
-              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-yellow-400 text-center">Downloader</p>
-              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-white leading-tight text-center">YouTube MP4</h4>
+              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-azana-teal/40 bg-azana-white text-base md:text-xl text-azana-tealDark shadow-[0_0_10px_rgba(58,175,169,0.2)]"><i class="fab fa-youtube"></i></div>
+              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-azana-tealDark text-center font-bold">Downloader</p>
+              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-azana-dark leading-tight text-center">YouTube MP4</h4>
             </div>
             <div class="relative mt-3 text-center">
-              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-yellow-400">Buka <i class="fas fa-arrow-right"></i></span>
+              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
             </div>
           </a>
 
-          <a href="ytmp3.html" class="group relative overflow-hidden rounded-xl border border-cyan-400/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(34,211,238,0.25)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="absolute inset-0 bg-gradient-to-br from-cyan-400/15 via-transparent to-blue-500/10 opacity-80"></div>
+          <a href="ytmp3.html" class="group relative overflow-hidden rounded-xl border border-azana-tealDark/30 bg-azana-light p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(43,122,120,0.15)] hover:shadow-[0_0_25px_rgba(43,122,120,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-gradient-to-br from-azana-tealDark/10 via-transparent to-azana-teal/5 opacity-80"></div>
             <div class="relative">
-              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-cyan-400/40 bg-dark-900 text-base md:text-xl text-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.3)]"><i class="fab fa-youtube"></i></div>
-              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-cyan-400 text-center">Downloader</p>
-              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-white leading-tight text-center">YouTube MP3</h4>
+              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-azana-tealDark/40 bg-azana-white text-base md:text-xl text-azana-tealDark shadow-[0_0_10px_rgba(43,122,120,0.2)]"><i class="fab fa-youtube"></i></div>
+              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-azana-tealDark text-center font-bold">Downloader</p>
+              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-azana-dark leading-tight text-center">YouTube MP3</h4>
             </div>
             <div class="relative mt-3 text-center">
-              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-cyan-400">Buka <i class="fas fa-arrow-right"></i></span>
+              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
             </div>
           </a>
 
-          <a href="spotify.html" class="group relative overflow-hidden rounded-xl border border-emerald-400/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(52,211,153,0.25)] hover:shadow-[0_0_25px_rgba(52,211,153,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="absolute inset-0 bg-gradient-to-br from-emerald-400/15 via-transparent to-neon-cyan/10 opacity-80"></div>
+          <a href="spotify.html" class="group relative overflow-hidden rounded-xl border border-azana-teal/30 bg-azana-light p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(58,175,169,0.15)] hover:shadow-[0_0_25px_rgba(58,175,169,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-gradient-to-br from-azana-teal/10 via-transparent to-azana-tealDark/5 opacity-80"></div>
             <div class="relative">
-              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-emerald-400/40 bg-dark-900 text-base md:text-xl text-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.3)]"><i class="fab fa-spotify"></i></div>
-              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-emerald-400 text-center">Downloader</p>
-              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-white leading-tight text-center">Spotify</h4>
+              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-azana-teal/40 bg-azana-white text-base md:text-xl text-azana-tealDark shadow-[0_0_10px_rgba(58,175,169,0.2)]"><i class="fab fa-spotify"></i></div>
+              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-azana-tealDark text-center font-bold">Downloader</p>
+              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-azana-dark leading-tight text-center">Spotify</h4>
             </div>
             <div class="relative mt-3 text-center">
-              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-emerald-400">Buka <i class="fas fa-arrow-right"></i></span>
+              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
             </div>
           </a>
         </div>
 
         <div class="max-w-4xl mx-auto my-4 flex items-center gap-3" aria-label="Pembatas Tools AI Maker">
-          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-neon-purple/60 to-neon-cyan/30"></div>
-          <div class="relative px-4 py-1.5 rounded-full bg-dark-800/90 border border-neon-purple/25 shadow-[0_0_12px_rgba(188,19,254,0.12)] flex items-center justify-center">
-            <span class="font-tech text-[9px] md:text-[11px] text-white tracking-[0.25em] uppercase leading-none">Tools AI Maker</span>
+          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-azana-tealDark/60 to-azana-teal/30"></div>
+          <div class="relative px-4 py-1.5 rounded-full bg-azana-light border border-azana-tealDark/25 shadow-[0_0_12px_rgba(43,122,120,0.12)] flex items-center justify-center">
+            <span class="font-tech text-[9px] md:text-[11px] text-azana-dark tracking-[0.25em] uppercase leading-none font-semibold">Tools AI Maker</span>
           </div>
-          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-neon-cyan/30 via-neon-purple/60 to-transparent"></div>
+          <div class="h-[0.5px] flex-1 bg-gradient-to-r from-azana-teal/30 via-azana-tealDark/60 to-transparent"></div>
         </div>
 
         <div class="grid grid-cols-3 gap-2 md:gap-4">
-          <a href="sertifikat.html" class="group relative overflow-hidden rounded-xl border border-yellow-400/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(250,204,21,0.25)] hover:shadow-[0_0_25px_rgba(250,204,21,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="absolute inset-0 bg-gradient-to-br from-yellow-400/15 via-transparent to-neon-purple/10 opacity-80"></div>
+          <a href="sertifikat.html" class="group relative overflow-hidden rounded-xl border border-azana-teal/30 bg-azana-light p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(58,175,169,0.15)] hover:shadow-[0_0_25px_rgba(58,175,169,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-gradient-to-br from-azana-teal/10 via-transparent to-azana-tealDark/5 opacity-80"></div>
             <div class="relative">
-              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-yellow-400/40 bg-dark-900 text-base md:text-xl text-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.3)]"><i class="fas fa-certificate"></i></div>
-              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-yellow-400 text-center">Generator</p>
-              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-white leading-tight text-center">Sertifikat Lucu</h4>
+              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-azana-teal/40 bg-azana-white text-base md:text-xl text-azana-tealDark shadow-[0_0_10px_rgba(58,175,169,0.2)]"><i class="fas fa-certificate"></i></div>
+              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-azana-tealDark text-center font-bold">Generator</p>
+              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-azana-dark leading-tight text-center">Sertifikat Lucu</h4>
             </div>
             <div class="relative mt-3 text-center">
-              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-yellow-400">Buka <i class="fas fa-arrow-right"></i></span>
+              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
             </div>
           </a>
 
-          <a href="brat.html" class="group relative overflow-hidden rounded-xl border border-neon-cyan/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(0,242,254,0.25)] hover:shadow-[0_0_25px_rgba(0,242,254,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="absolute inset-0 bg-gradient-to-br from-neon-cyan/15 via-transparent to-lime-400/10 opacity-80"></div>
+         <a href="brat.html" class="group relative overflow-hidden rounded-xl border border-azana-tealDark/30 bg-azana-light p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(43,122,120,0.15)] hover:shadow-[0_0_25px_rgba(43,122,120,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-gradient-to-br from-azana-tealDark/10 via-transparent to-azana-teal/5 opacity-80"></div>
             <div class="relative">
-              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-neon-cyan/40 bg-dark-900 text-base md:text-xl text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.3)]"><i class="fas fa-font"></i></div>
-              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-neon-cyan text-center">Generator</p>
-              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-white leading-tight text-center">BRAT Generator</h4>
+              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-azana-tealDark/40 bg-azana-white text-base md:text-xl text-azana-tealDark shadow-[0_0_10px_rgba(43,122,120,0.2)]"><i class="fas fa-font"></i></div>
+              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-azana-tealDark text-center font-bold">Generator</p>
+              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-azana-dark leading-tight text-center">BRAT Generator</h4>
             </div>
             <div class="relative mt-3 text-center">
-              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-neon-cyan">Buka <i class="fas fa-arrow-right"></i></span>
+              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
             </div>
           </a>
 
-          <a href="iqc.html" class="group relative overflow-hidden rounded-xl border border-neon-purple/50 bg-dark-800 p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(168,85,247,0.25)] hover:shadow-[0_0_25px_rgba(168,85,247,0.5)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
-            <div class="absolute inset-0 bg-gradient-to-br from-neon-purple/15 via-transparent to-neon-cyan/10 opacity-80"></div>
+          <a href="iqc.html" class="group relative overflow-hidden rounded-xl border border-azana-teal/30 bg-azana-light p-2.5 md:p-4 text-left shadow-[0_0_15px_rgba(58,175,169,0.15)] hover:shadow-[0_0_25px_rgba(58,175,169,0.3)] transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between">
+            <div class="absolute inset-0 bg-gradient-to-br from-azana-teal/10 via-transparent to-azana-tealDark/5 opacity-80"></div>
             <div class="relative">
-              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-neon-purple/40 bg-dark-900 text-base md:text-xl text-neon-purple shadow-[0_0_10px_rgba(168,85,247,0.3)]"><i class="fas fa-wand-magic-sparkles"></i></div>
-              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-neon-purple text-center">Generator</p>
-              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-white leading-tight text-center">IQC Generator</h4>
+              <div class="mb-3 md:mb-4 mx-auto flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-xl border border-azana-teal/40 bg-azana-white text-base md:text-xl text-azana-tealDark shadow-[0_0_10px_rgba(58,175,169,0.2)]"><i class="fas fa-wand-magic-sparkles"></i></div>
+              <p class="text-[8px] md:text-[9px] font-tech uppercase tracking-widest text-azana-tealDark text-center font-bold">Generator</p>
+              <h4 class="mt-1 text-[10px] md:text-sm font-bold uppercase text-azana-dark leading-tight text-center">IQC Generator</h4>
             </div>
             <div class="relative mt-3 text-center">
-              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-neon-purple">Buka <i class="fas fa-arrow-right"></i></span>
+              <span class="inline-flex items-center gap-1 text-[7px] md:text-[8px] font-tech uppercase tracking-widest text-azana-tealDark font-semibold">Buka <i class="fas fa-arrow-right"></i></span>
             </div>
           </a>
         </div>
@@ -288,15 +274,15 @@
           <div class="w-full mt-10 mb-16 relative z-20">
             <div class="w-full mt-10 mb-20 relative z-20">
               <div class="flex flex-col gap-4 px-4 max-w-md mx-auto">
-                <a href="#layanan" class="flex items-center justify-center gap-3 bg-gradient-to-r from-neon-cyan to-neon-purple text-white py-4 px-6 rounded-full font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(0,242,254,0.3)] active:scale-95 transition-all">
+                <a href="#layanan" class="flex items-center justify-center gap-3 bg-gradient-to-r from-azana-teal to-azana-tealDark text-azana-white py-4 px-6 rounded-full font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(58,175,169,0.3)] active:scale-95 transition-all">
                   <i class="fas fa-th-large text-lg"></i>
                   <span class="text-sm">Layanan Editing</span>
                 </a>
-                <a href="#kontak" class="flex items-center justify-center gap-3 bg-transparent border-2 border-neon-cyan text-neon-cyan py-4 px-6 rounded-full font-bold uppercase tracking-widest active:scale-95 transition-all">
+                <a href="#kontak" class="flex items-center justify-center gap-3 bg-transparent border-2 border-azana-teal text-azana-tealDark py-4 px-6 rounded-full font-bold uppercase tracking-widest active:scale-95 transition-all hover:bg-azana-teal/10">
                   <i class="fas fa-edit text-lg"></i>
                   <span class="text-sm">Jasa Editing</span>
                 </a>
-                <a href="blogs.html" class="flex items-center justify-center gap-3 bg-dark-800 border border-yellow-400/30 text-yellow-400 py-4 px-6 rounded-full font-bold uppercase tracking-widest active:scale-95 transition-all hover:bg-yellow-400 hover:text-dark-900 shadow-[0_0_15px_rgba(250,204,21,0.15)]">
+                <a href="blogs.html" class="flex items-center justify-center gap-3 bg-azana-light border border-azana-teal/30 text-azana-tealDark py-4 px-6 rounded-full font-bold uppercase tracking-widest active:scale-95 transition-all hover:bg-azana-teal hover:text-azana-white shadow-[0_0_15px_rgba(58,175,169,0.15)]">
                   <i class="fas fa-lightbulb text-lg"></i>
                   <span class="text-sm">Tutorial Edit Pakai AI</span>
                 </a>
@@ -305,71 +291,71 @@
           </div>
         </section>
 
-        <section id="layanan" class="py-12 relative bg-dark-900 border-t border-dark-700">
+        <section id="layanan" class="py-12 relative bg-azana-light border-t border-slate-200">
           <div class="max-w-7xl mx-auto px-4 relative z-10">
             <div class="text-center mb-10">
-              <h2 class="text-[10px] font-bold text-neon-cyan tracking-[0.3em] uppercase mb-1 font-tech">Services</h2>
-              <h3 class="text-xl font-bold text-white uppercase italic">Solusi Editing</h3>
-              <div class="h-[2px] w-12 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto mt-2"></div>
+              <h2 class="text-[10px] font-bold text-azana-tealDark tracking-[0.3em] uppercase mb-1 font-tech">Services</h2>
+              <h3 class="text-xl font-bold text-azana-dark uppercase italic">Solusi Editing</h3>
+              <div class="h-[2px] w-12 bg-gradient-to-r from-azana-teal to-azana-tealDark mx-auto mt-2"></div>
             </div>
 
             <div class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-6">
-              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-cyan/40 to-neon-purple/40 shadow-[0_0_15px_rgba(0,242,254,0.05)] group hover:scale-[1.02] transition-all">
-                <div class="bg-dark-800 p-4 rounded-2xl h-full">
-                  <div class="w-10 h-10 bg-dark-900 border border-neon-cyan/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-azana-teal/40 to-azana-tealDark/40 shadow-[0_0_15px_rgba(58,175,169,0.05)] group hover:scale-[1.02] transition-all">
+                <div class="bg-azana-white p-4 rounded-2xl h-full shadow-sm">
+                  <div class="w-10 h-10 bg-azana-light border border-azana-teal/30 rounded-lg flex items-center justify-center text-xl mb-3 text-azana-tealDark shadow-[0_0_10px_rgba(58,175,169,0.1)]">
                     <i class="fas fa-image"></i>
                   </div>
-                  <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Edit Foto</h4>
+                  <h4 class="text-[11px] font-bold text-azana-dark mb-1 font-tech tracking-wide uppercase">Edit Foto</h4>
                   <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">AI Enhance, restorasi, hapus BG, & koreksi warna.</p>
                 </div>
               </div>
 
-              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-purple/40 to-neon-cyan/40 shadow-[0_0_15px_rgba(168,85,247,0.05)] group hover:scale-[1.02] transition-all">
-                <div class="bg-dark-800 p-4 rounded-2xl h-full">
-                  <div class="w-10 h-10 bg-dark-900 border border-neon-purple/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-purple shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-azana-tealDark/40 to-azana-teal/40 shadow-[0_0_15px_rgba(43,122,120,0.05)] group hover:scale-[1.02] transition-all">
+                <div class="bg-azana-white p-4 rounded-2xl h-full shadow-sm">
+                  <div class="w-10 h-10 bg-azana-light border border-azana-tealDark/30 rounded-lg flex items-center justify-center text-xl mb-3 text-azana-tealDark shadow-[0_0_10px_rgba(43,122,120,0.1)]">
                     <i class="fas fa-bezier-curve"></i>
                   </div>
-                  <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Desain Logo</h4>
+                  <h4 class="text-[11px] font-bold text-azana-dark mb-1 font-tech tracking-wide uppercase">Desain Logo</h4>
                   <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Identitas unik untuk bisnis, esports, & brand.</p>
                 </div>
               </div>
 
-              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-cyan/40 to-neon-purple/40 shadow-[0_0_15px_rgba(0,242,254,0.05)] group hover:scale-[1.02] transition-all">
-                <div class="bg-dark-800 p-4 rounded-2xl h-full">
-                  <div class="w-10 h-10 bg-dark-900 border border-neon-cyan/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-azana-teal/40 to-azana-tealDark/40 shadow-[0_0_15px_rgba(58,175,169,0.05)] group hover:scale-[1.02] transition-all">
+                <div class="bg-azana-white p-4 rounded-2xl h-full shadow-sm">
+                  <div class="w-10 h-10 bg-azana-light border border-azana-teal/30 rounded-lg flex items-center justify-center text-xl mb-3 text-azana-tealDark shadow-[0_0_10px_rgba(58,175,169,0.1)]">
                     <i class="fas fa-scroll"></i>
                   </div>
-                  <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Banner</h4>
+                  <h4 class="text-[11px] font-bold text-azana-dark mb-1 font-tech tracking-wide uppercase">Banner</h4>
                   <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Desain spanduk, poster event, & brosur bisnis.</p>
                 </div>
               </div>
 
-              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-purple/40 to-neon-cyan/40 shadow-[0_0_15px_rgba(168,85,247,0.05)] group hover:scale-[1.02] transition-all">
-                <div class="bg-dark-800 p-4 rounded-2xl h-full">
-                  <div class="w-10 h-10 bg-dark-900 border border-neon-purple/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-purple shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-azana-tealDark/40 to-azana-teal/40 shadow-[0_0_15px_rgba(43,122,120,0.05)] group hover:scale-[1.02] transition-all">
+                <div class="bg-azana-white p-4 rounded-2xl h-full shadow-sm">
+                  <div class="w-10 h-10 bg-azana-light border border-azana-tealDark/30 rounded-lg flex items-center justify-center text-xl mb-3 text-azana-tealDark shadow-[0_0_10px_rgba(43,122,120,0.1)]">
                     <i class="fas fa-envelope-open-text"></i>
                   </div>
-                  <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Undangan</h4>
+                  <h4 class="text-[11px] font-bold text-azana-dark mb-1 font-tech tracking-wide uppercase">Undangan</h4>
                   <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Desain digital interaktif & siap cetak.</p>
                 </div>
               </div>
 
-              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-cyan/40 to-neon-purple/40 shadow-[0_0_15px_rgba(0,242,254,0.05)] group hover:scale-[1.02] transition-all">
-                <div class="bg-dark-800 p-4 rounded-2xl h-full">
-                  <div class="w-10 h-10 bg-dark-900 border border-neon-cyan/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-cyan shadow-[0_0_10px_rgba(0,242,254,0.2)]">
+              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-azana-teal/40 to-azana-tealDark/40 shadow-[0_0_15px_rgba(58,175,169,0.05)] group hover:scale-[1.02] transition-all">
+                <div class="bg-azana-white p-4 rounded-2xl h-full shadow-sm">
+                  <div class="w-10 h-10 bg-azana-light border border-azana-teal/30 rounded-lg flex items-center justify-center text-xl mb-3 text-azana-tealDark shadow-[0_0_10px_rgba(58,175,169,0.1)]">
                     <i class="fas fa-film"></i>
                   </div>
-                  <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Video Edit</h4>
+                  <h4 class="text-[11px] font-bold text-azana-dark mb-1 font-tech tracking-wide uppercase">Video Edit</h4>
                   <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Color grading, transisi, & TikTok/Reels.</p>
                 </div>
               </div>
 
-              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-neon-purple/40 to-neon-cyan/40 shadow-[0_0_15px_rgba(168,85,247,0.05)] group hover:scale-[1.02] transition-all">
-                <div class="bg-dark-800 p-4 rounded-2xl h-full">
-                  <div class="w-10 h-10 bg-dark-900 border border-neon-purple/30 rounded-lg flex items-center justify-center text-xl mb-3 text-neon-purple shadow-[0_0_10px_rgba(168,85,247,0.2)]">
+              <div class="relative p-[1px] rounded-2xl bg-gradient-to-br from-azana-tealDark/40 to-azana-teal/40 shadow-[0_0_15px_rgba(43,122,120,0.05)] group hover:scale-[1.02] transition-all">
+                <div class="bg-azana-white p-4 rounded-2xl h-full shadow-sm">
+                  <div class="w-10 h-10 bg-azana-light border border-azana-tealDark/30 rounded-lg flex items-center justify-center text-xl mb-3 text-azana-tealDark shadow-[0_0_10px_rgba(43,122,120,0.1)]">
                     <i class="fas fa-laptop-code"></i>
                   </div>
-                  <h4 class="text-[11px] font-bold text-white mb-1 font-tech tracking-wide uppercase">Custom</h4>
+                  <h4 class="text-[11px] font-bold text-azana-dark mb-1 font-tech tracking-wide uppercase">Custom</h4>
                   <p class="text-[9px] text-slate-500 leading-tight line-clamp-2">Kebutuhan editing khusus sesuai instruksi.</p>
                 </div>
               </div>
@@ -377,25 +363,25 @@
           </div>
         </section>
 
-        <section id="portofolio-section" class="py-12 bg-dark-900 border-t border-dark-700">
+        <section id="portofolio-section" class="py-12 bg-azana-white border-t border-slate-200">
           <div class="container mx-auto px-6">
             <div class="mb-12 max-w-2xl mx-auto">
-              <h2 class="text-xs font-bold text-neon-purple tracking-widest uppercase mb-3 font-tech text-center">Tentang Kualitas Kami</h2>
-              <h3 class="text-2xl md:text-4xl font-bold text-white mb-6 text-center leading-tight uppercase italic">Estetika Futuristik dengan Hasil Presisi</h3>
-              <p class="text-slate-400 leading-relaxed text-sm text-center font-light">
-                Desain yang baik bukan hanya tentang warna yang indah, tapi tentang pesan yang tersampaikan. Di <span class="text-neon-cyan font-semibold">AZANA DESIGN</span>, kami menggabungkan <span class="italic text-slate-300">*software*</span> editing terbaik dengan sentuhan kreativitas manusia untuk menghasilkan karya yang <span class="italic text-slate-300">*stand out*</span>.
+              <h2 class="text-xs font-bold text-azana-tealDark tracking-widest uppercase mb-3 font-tech text-center">Tentang Kualitas Kami</h2>
+              <h3 class="text-2xl md:text-4xl font-bold text-azana-dark mb-6 text-center leading-tight uppercase italic">Estetika Profesional dengan Hasil Presisi</h3>
+              <p class="text-slate-600 leading-relaxed text-sm text-center font-light">
+                Desain yang baik bukan hanya tentang warna yang indah, tapi tentang pesan yang tersampaikan. Di <span class="text-azana-teal font-semibold">AZANA DESIGN</span>, kami menggabungkan <span class="italic text-slate-700">*software*</span> editing terbaik dengan sentuhan kreativitas manusia untuk menghasilkan karya yang <span class="italic text-slate-700">*stand out*</span>.
               </p>
             </div>
 
             <div class="relative w-full max-w-[320px] mx-auto mb-12">
               <div class="text-center mb-4">
-                <h4 class="text-[10px] font-tech text-neon-cyan tracking-[0.3em] uppercase">Showcase</h4>
-                <h3 class="text-lg font-bold text-white uppercase italic">Hasil Editing</h3>
-                <div class="h-[2px] w-12 bg-gradient-to-r from-neon-cyan to-neon-purple mx-auto mt-1"></div>
+                <h4 class="text-[10px] font-tech text-azana-tealDark tracking-[0.3em] uppercase">Showcase</h4>
+                <h3 class="text-lg font-bold text-azana-dark uppercase italic">Hasil Editing</h3>
+                <div class="h-[2px] w-12 bg-gradient-to-r from-azana-teal to-azana-tealDark mx-auto mt-1"></div>
               </div>
 
-              <div class="relative p-[1.5px] rounded-2xl bg-gradient-to-b from-neon-cyan/20 to-transparent shadow-[0_0_20px_rgba(0,242,254,0.1)]">
-                <div class="swiper mySwiper rounded-2xl overflow-hidden bg-dark-800 aspect-square">
+              <div class="relative p-[1.5px] rounded-2xl bg-gradient-to-b from-azana-teal/20 to-transparent shadow-md">
+                <div class="swiper mySwiper rounded-2xl overflow-hidden bg-azana-light aspect-square">
                   <div id="otomatis-portfolio" class="swiper-wrapper">
                     <div class="swiper-slide">
                       <img src="asset/img/penjernih.png" class="w-full h-full object-contain" alt="Hasil edit foto jernih">
@@ -412,99 +398,97 @@
               </p>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 max-w-[350px] mx-auto border-t border-white/5 pt-8">
-              <div class="bg-dark-800/50 p-4 rounded-xl border border-white/5 text-center">
-                <div class="text-neon-cyan text-xl mb-2"><i class="fas fa-sync-alt"></i></div>
-                <h5 class="text-[11px] font-bold text-white uppercase">Revisi Fleksibel</h5>
-                <p class="text-[9px] text-slate-400 mt-1">Sampai Anda Puas</p>
+            <div class="grid grid-cols-2 gap-4 max-w-[350px] mx-auto border-t border-slate-200 pt-8">
+              <div class="bg-azana-light p-4 rounded-xl border border-azana-teal/20 text-center shadow-sm">
+                <div class="text-azana-tealDark text-xl mb-2"><i class="fas fa-sync-alt"></i></div>
+                <h5 class="text-[11px] font-bold text-azana-dark uppercase">Revisi Fleksibel</h5>
+                <p class="text-[9px] text-slate-500 mt-1">Sampai Anda Puas</p>
               </div>
-              <div class="bg-dark-800/50 p-4 rounded-xl border border-white/5 text-center">
-                <div class="text-neon-purple text-xl mb-2"><i class="fas fa-bolt"></i></div>
-                <h5 class="text-[11px] font-bold text-white uppercase">Proses Cepat</h5>
-                <p class="text-[9px] text-slate-400 mt-1">Selesai Tepat Waktu</p>
+              <div class="bg-azana-light p-4 rounded-xl border border-azana-teal/20 text-center shadow-sm">
+                <div class="text-azana-tealDark text-xl mb-2"><i class="fas fa-bolt"></i></div>
+                <h5 class="text-[11px] font-bold text-azana-dark uppercase">Proses Cepat</h5>
+                <p class="text-[9px] text-slate-500 mt-1">Selesai Tepat Waktu</p>
               </div>
-              <div class="bg-dark-800/50 p-4 rounded-xl border border-white/5 text-center">
-                <div class="text-neon-cyan text-xl mb-2"><i class="fas fa-shield-alt"></i></div>
-                <h5 class="text-[11px] font-bold text-white uppercase">Kualitas HD</h5>
-                <p class="text-[9px] text-slate-400 mt-1">Hasil Tajam & Jernih</p>
+              <div class="bg-azana-light p-4 rounded-xl border border-azana-teal/20 text-center shadow-sm">
+                <div class="text-azana-tealDark text-xl mb-2"><i class="fas fa-shield-alt"></i></div>
+                <h5 class="text-[11px] font-bold text-azana-dark uppercase">Kualitas HD</h5>
+                <p class="text-[9px] text-slate-500 mt-1">Hasil Tajam & Jernih</p>
               </div>
-              <div class="bg-dark-800/50 p-4 rounded-xl border border-white/5 text-center">
-                <div class="text-neon-purple text-xl mb-2"><i class="fas fa-headset"></i></div>
-                <h5 class="text-[11px] font-bold text-white uppercase">Support 24/7</h5>
-                <p class="text-[9px] text-slate-400 mt-1">Konsultasi Gratis</p>
+              <div class="bg-azana-light p-4 rounded-xl border border-azana-teal/20 text-center shadow-sm">
+                <div class="text-azana-tealDark text-xl mb-2"><i class="fas fa-headset"></i></div>
+                <h5 class="text-[11px] font-bold text-azana-dark uppercase">Support 24/7</h5>
+                <p class="text-[9px] text-slate-500 mt-1">Konsultasi Gratis</p>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="py-16 bg-dark-900 border-t border-dark-700">
+        <section class="py-16 bg-azana-light border-t border-slate-200">
           <div class="max-w-4xl mx-auto px-6 text-center">
-            <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 font-tech uppercase italic">
+            <h2 class="text-2xl md:text-3xl font-bold text-azana-dark mb-6 font-tech uppercase italic">
               Teknologi AI untuk Editing Foto Profesional
             </h2>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">
               AZANA DESIGN menghadirkan solusi editing modern berbasis kecerdasan buatan (AI) yang mampu meningkatkan kualitas visual secara instan dan profesional. Dengan teknologi terbaru, pengguna dapat menghapus background, menghilangkan objek yang mengganggu, serta meningkatkan kejernihan foto hanya dalam hitungan detik tanpa perlu keahlian khusus.
             </p>
-            <p class="text-slate-400 text-sm leading-relaxed mb-4">
+            <p class="text-slate-600 text-sm leading-relaxed mb-4">
               Selain menyediakan fitur otomatis, kami juga menawarkan jasa editing manual dengan sentuhan kreatif untuk menghasilkan desain yang lebih unik dan sesuai kebutuhan. Kombinasi antara teknologi AI dan kreativitas manusia menjadikan AZANA DESIGN sebagai solusi terbaik untuk kebutuhan visual digital masa kini.
             </p>
-            <p class="text-slate-400 text-sm leading-relaxed">
+            <p class="text-slate-600 text-sm leading-relaxed">
               Platform ini dirancang untuk memberikan pengalaman cepat, mudah, dan berkualitas tinggi baik untuk keperluan pribadi, bisnis, maupun konten media sosial.
             </p>
           </div>
         </section>
-    
-        <section id="faq" class="py-16 bg-dark-950 border-t border-dark-700">
+
+        <section id="faq" class="py-16 bg-azana-white border-t border-slate-200">
           <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-10">
-              <span class="text-[10px] font-bold text-neon-cyan tracking-[0.3em] uppercase font-tech">FAQ Cepat</span>
-              <h2 class="text-2xl md:text-3xl font-bold text-white mt-3 font-tech uppercase italic">Yang Sering Ditanyakan</h2>
+              <span class="text-[10px] font-bold text-azana-tealDark tracking-[0.3em] uppercase font-tech">FAQ Cepat</span>
+              <h2 class="text-2xl md:text-3xl font-bold text-azana-dark mt-3 font-tech uppercase italic">Yang Sering Ditanyakan</h2>
               <p class="text-slate-500 text-xs mt-3 max-w-xl mx-auto">Agar calon pelanggan lebih yakin sebelum pesan, bagian ini menjawab proses order, revisi, dan file akhir.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-4">
-              <div class="bg-dark-800/70 border border-white/5 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
-                <div class="text-neon-cyan text-xl mb-4"><i class="fas fa-clock"></i></div>
-                <h3 class="text-white font-tech font-bold uppercase tracking-wide text-sm mb-2">Berapa Lama?</h3>
-                <p class="text-slate-400 text-[11px] leading-relaxed">Estimasi mengikuti tingkat kesulitan. Untuk edit ringan bisa lebih cepat setelah brief dan bahan lengkap.</p>
+              <div class="bg-azana-light border border-azana-teal/20 rounded-2xl p-5 shadow-sm">
+                <div class="text-azana-tealDark text-xl mb-4"><i class="fas fa-clock"></i></div>
+                <h3 class="text-azana-dark font-tech font-bold uppercase tracking-wide text-sm mb-2">Berapa Lama?</h3>
+                <p class="text-slate-600 text-[11px] leading-relaxed">Estimasi mengikuti tingkat kesulitan. Untuk edit ringan bisa lebih cepat setelah brief dan bahan lengkap.</p>
               </div>
 
-              <div class="bg-dark-800/70 border border-white/5 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
-                <div class="text-neon-purple text-xl mb-4"><i class="fas fa-pen-nib"></i></div>
-                <h3 class="text-white font-tech font-bold uppercase tracking-wide text-sm mb-2">Bisa Revisi?</h3>
-                <p class="text-slate-400 text-[11px] leading-relaxed">Bisa. Revisi disesuaikan dengan brief awal supaya hasil tetap rapi, jelas, dan sesuai kebutuhan.</p>
+              <div class="bg-azana-light border border-azana-teal/20 rounded-2xl p-5 shadow-sm">
+                <div class="text-azana-tealDark text-xl mb-4"><i class="fas fa-pen-nib"></i></div>
+                <h3 class="text-azana-dark font-tech font-bold uppercase tracking-wide text-sm mb-2">Bisa Revisi?</h3>
+                <p class="text-slate-600 text-[11px] leading-relaxed">Bisa. Revisi disesuaikan dengan brief awal supaya hasil tetap rapi, jelas, dan sesuai kebutuhan.</p>
               </div>
 
-              <div class="bg-dark-800/70 border border-white/5 rounded-2xl p-5 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
-                <div class="text-neon-cyan text-xl mb-4"><i class="fas fa-file-export"></i></div>
-                <h3 class="text-white font-tech font-bold uppercase tracking-wide text-sm mb-2">File Apa Saja?</h3>
-                <p class="text-slate-400 text-[11px] leading-relaxed">Hasil bisa dikirim dalam format siap pakai seperti PNG, JPG, atau format lain sesuai kebutuhan proyek.</p>
+              <div class="bg-azana-light border border-azana-teal/20 rounded-2xl p-5 shadow-sm">
+                <div class="text-azana-tealDark text-xl mb-4"><i class="fas fa-file-export"></i></div>
+                <h3 class="text-azana-dark font-tech font-bold uppercase tracking-wide text-sm mb-2">File Apa Saja?</h3>
+                <p class="text-slate-600 text-[11px] leading-relaxed">Hasil bisa dikirim dalam format siap pakai seperti PNG, JPG, atau format lain sesuai kebutuhan proyek.</p>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="kontak" class="py-16 relative bg-dark-900 overflow-hidden">
-          <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#00f2fe 1px, transparent 1px), linear-gradient(90deg, #00f2fe 1px, transparent 1px); background-size: 30px 30px;"></div>
-
+        <section id="kontak" class="py-16 relative bg-azana-light border-t border-slate-200 overflow-hidden">
           <div class="max-w-md mx-auto px-6 relative z-10">
-            <div class="relative p-[1px] rounded-3xl bg-gradient-to-br from-neon-cyan/40 via-transparent to-neon-purple/40 shadow-[0_0_40px_rgba(0,0,0,0.7)]">
-              <div class="bg-dark-800/90 backdrop-blur-2xl rounded-3xl p-8 text-center">
-                <div class="w-14 h-14 bg-dark-900 border border-neon-cyan/30 rounded-2xl flex items-center justify-center mx-auto mb-5 transform rotate-3 shadow-[0_0_15px_rgba(0,242,254,0.1)]">
-                  <span class="text-neon-cyan text-xl"><i class="fas fa-comment-dots"></i></span>
+            <div class="relative p-[1px] rounded-3xl bg-gradient-to-br from-azana-teal/40 via-transparent to-azana-tealDark/40 shadow-lg">
+              <div class="bg-azana-white backdrop-blur-2xl rounded-3xl p-8 text-center border border-azana-teal/20">
+                <div class="w-14 h-14 bg-azana-light border border-azana-teal/30 rounded-2xl flex items-center justify-center mx-auto mb-5 transform rotate-3 shadow-sm">
+                  <span class="text-azana-tealDark text-xl"><i class="fas fa-comment-dots"></i></span>
                 </div>
 
-                <h2 class="text-xl md:text-2xl font-bold text-white mb-3 font-tech tracking-wide uppercase italic">Mulai Konsultasi</h2>
-                <p class="text-[11px] text-slate-400 mb-8 leading-relaxed max-w-[250px] mx-auto">
-                  Klik tombol di bawah untuk terhubung langsung dengan Admin <span class="text-neon-cyan">AZANA DESIGN</span>.
+                <h2 class="text-xl md:text-2xl font-bold text-azana-dark mb-3 font-tech tracking-wide uppercase italic">Mulai Konsultasi</h2>
+                <p class="text-[11px] text-slate-600 mb-8 leading-relaxed max-w-[250px] mx-auto">
+                  Klik tombol di bawah untuk terhubung langsung dengan Admin <span class="text-azana-tealDark font-bold">AZANA DESIGN</span>.
                 </p>
 
                 <div class="flex flex-row gap-3 justify-center">
-                  <a href="https://wa.me/6282243995410" target="_blank" rel="noopener noreferrer" data-wa-transition class="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:brightness-110 text-white py-3 rounded-xl font-bold text-[10px] uppercase tracking-tighter transition-all active:scale-95 shadow-[0_0_15px_rgba(37,211,102,0.2)]">
+                  <a href="https://wa.me/6282243995410" target="_blank" rel="noopener noreferrer" data-wa-transition class="flex-1 flex items-center justify-center gap-2 bg-[#25D366] hover:brightness-110 text-white py-3 rounded-xl font-bold text-[10px] uppercase tracking-tighter transition-all active:scale-95 shadow-md">
                     <i class="fab fa-whatsapp text-sm"></i> WhatsApp
                   </a>
 
-                  <a href="mailto:maulanaazam195@gmail.com" class="flex-1 flex items-center justify-center gap-2 bg-dark-700 hover:bg-dark-600 border border-white/10 text-slate-300 py-3 rounded-xl font-bold text-[10px] uppercase tracking-tighter transition-all active:scale-95">
+                  <a href="mailto:maulanaazam195@gmail.com" class="flex-1 flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 py-3 rounded-xl font-bold text-[10px] uppercase tracking-tighter transition-all active:scale-95">
                     <i class="far fa-envelope text-sm"></i> Email
                   </a>
                 </div>
@@ -513,68 +497,67 @@
           </div>
         </section>
 
-        <footer class="bg-dark-950 pt-16 pb-8 border-t border-dark-700">
+        <footer class="bg-azana-dark pt-16 pb-8 border-t border-slate-800 text-slate-400">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
               <div class="col-span-2 md:col-span-1">
-                <h3 class="text-xl font-bold text-white mb-4 neon-text">AZANA<span class="text-neon-purple"> DESIGN</span></h3>
-                <p class="text-[11px] text-slate-500 leading-relaxed mb-6">AZANA DESIGN adalah platform digital yang menyediakan layanan editing foto dan video berbasis AI serta jasa desain profesional. Kami berkomitmen memberikan hasil berkualitas tinggi dengan proses cepat dan harga terjangkau.</p>
+                <h3 class="text-xl font-bold text-white mb-4">AZANA<span class="text-azana-teal"> DESIGN</span></h3>
+                <p class="text-[11px] text-slate-400 leading-relaxed mb-6">AZANA DESIGN adalah platform digital yang menyediakan layanan editing foto dan video berbasis AI serta jasa desain profesional. Kami berkomitmen memberikan hasil berkualitas tinggi dengan proses cepat dan harga terjangkau.</p>
 
-                <div class="inline-flex items-center gap-2 bg-dark-800 border border-dark-700 px-3 py-2 rounded-lg text-[10px] text-slate-300">
-                  <i class="fas fa-globe text-neon-cyan"></i>
-                  <select id="languageSelect" class="bg-transparent focus:outline-none cursor-pointer">
-                    <option value="id">Bahasa Indonesia</option>
-                    <option value="en">English</option>
+                <div class="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-2 rounded-lg text-[10px] text-slate-300">
+                  <i class="fas fa-globe text-azana-teal"></i>
+                  <select id="languageSelect" class="bg-transparent focus:outline-none cursor-pointer text-slate-300">
+                    <option value="id" class="bg-slate-900">Bahasa Indonesia</option>
+                    <option value="en" class="bg-slate-900">English</option>
                   </select>
                 </div>
               </div>
 
               <div>
                 <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Fitur AI</h4>
-                <ul class="text-[11px] space-y-2 text-slate-500">
-                  <li><a href="penjernih.html" target="_blank" rel="noopener noreferrer" class="hover:text-neon-cyan transition">AI Enhancer</a></li>
-                  <li><a href="removebg.html" target="_blank" rel="noopener noreferrer" class="hover:text-neon-cyan transition">Remove BG</a></li>
-                  <li><a href="eraser.html" target="_blank" rel="noopener noreferrer" class="hover:text-neon-cyan transition">Magic Eraser</a></li>
+                <ul class="text-[11px] space-y-2 text-slate-400">
+                  <li><a href="penjernih.html" target="_blank" rel="noopener noreferrer" class="hover:text-azana-teal transition">AI Enhancer</a></li>
+                  <li><a href="removebg.html" target="_blank" rel="noopener noreferrer" class="hover:text-azana-teal transition">Remove BG</a></li>
+                  <li><a href="eraser.html" target="_blank" rel="noopener noreferrer" class="hover:text-azana-teal transition">Magic Eraser</a></li>
                 </ul>
               </div>
 
               <div>
                 <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Support</h4>
-                <ul class="text-[11px] space-y-2 text-slate-500">
-                  <li><a href="privacy-policy.html" class="hover:text-neon-cyan transition">Privacy Policy</a></li>
-                  <li><a href="terms.html" class="hover:text-neon-cyan transition">Terms of Service</a></li>
-                  <li><a href="about.html" class="hover:text-neon-cyan transition">About Azana</a></li>
-                  <li><a href="mailto:maulanaazam195@gmail.com" class="hover:text-neon-cyan transition">Email Admin</a></li>
+                <ul class="text-[11px] space-y-2 text-slate-400">
+                  <li><a href="privacy-policy.html" class="hover:text-azana-teal transition">Privacy Policy</a></li>
+                  <li><a href="terms.html" class="hover:text-azana-teal transition">Terms of Service</a></li>
+                  <li><a href="about.html" class="hover:text-azana-teal transition">About Azana</a></li>
+                  <li><a href="mailto:maulanaazam195@gmail.com" class="hover:text-azana-teal transition">Email Admin</a></li>
                 </ul>
               </div>
 
               <div>
                 <h4 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Follow Us</h4>
                 <div class="flex gap-4">
-                  <a href="https://www.instagram.com/zamm_azana?igsh=aXlobmJzZDl6aHJ2" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr hover:from-yellow-500 hover:to-purple-500 hover:text-white transition-all shadow-lg">
+                  <a href="https://www.instagram.com/zamm_azana?igsh=aXlobmJzZDl6aHJ2" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center text-slate-300 hover:bg-gradient-to-tr hover:from-yellow-500 hover:to-purple-500 hover:text-white transition-all shadow-lg">
                     <i class="fab fa-instagram text-sm"></i>
                   </a>
-                  <a href="https://www.facebook.com/maulana.azam.165" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-lg">
+                  <a href="https://www.facebook.com/maulana.azam.165" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center text-slate-300 hover:bg-blue-600 hover:text-white transition-all shadow-lg">
                     <i class="fab fa-facebook-f text-xs"></i>
                   </a>
-                  <a href="https://youtube.com/@azanaastory?si=DMQHZ0Cl9HGGhEk2" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-lg">
+                  <a href="https://youtube.com/@azanaastory?si=DMQHZ0Cl9HGGhEk2" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center text-slate-300 hover:bg-red-600 hover:text-white transition-all shadow-lg">
                     <i class="fab fa-youtube text-xs"></i>
                   </a>
-                  <a href="https://www.tiktok.com/@azam.195?_r=1&_t=ZS-965J24jNOL7" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-dark-800 rounded-full flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-lg">
+                  <a href="https://www.tiktok.com/@azam.195?_r=1&_t=ZS-965J24jNOL7" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center text-slate-300 hover:bg-black hover:text-white transition-all shadow-lg">
                     <i class="fab fa-tiktok text-xs"></i>
                   </a>
                 </div>
               </div>
             </div>
 
-            <div class="pt-8 border-t border-dark-800 text-center">
-              <p class="text-[10px] text-slate-600">© 2026 AZANA DESIGN. Crafted with Passion.</p>
+            <div class="pt-8 border-t border-slate-800 text-center">
+              <p class="text-[10px] text-slate-500">© 2026 AZANA DESIGN. Crafted with Passion.</p>
             </div>
           </div>
         </footer>
 
         <script>
-          // --- PROSES MANGGIL NAVBAR VIA JS (TETAP) ---
           fetch('components/navbar.html')
           .then(response => response.text())
           .then(data => {
@@ -584,7 +567,6 @@
           })
           .catch(err => console.error('Gagal load navbar:', err));
 
-          // --- LOGIKA GANTI BAHASA ---
           const langSelect = document.getElementById('languageSelect');
           if (langSelect) {
             langSelect.addEventListener('change', function() {
@@ -596,19 +578,18 @@
             });
           }
 
-          // --- FUNGSI SCROLL NAVBAR ---
           function initScrollNavbar() {
             window.addEventListener('scroll', () => {
               const nav = document.querySelector('nav');
               if (!nav) return;
               if (window.scrollY > 50) {
-                nav.classList.add('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
-                nav.classList.remove('border-dark-700');
-                nav.classList.add('border-neon-cyan/20');
+                nav.classList.add('shadow-md');
+                nav.classList.remove('border-slate-200');
+                nav.classList.add('border-azana-teal/20');
               } else {
-                nav.classList.remove('shadow-[0_4px_30px_rgba(0,0,0,0.5)]');
-                nav.classList.add('border-dark-700');
-                nav.classList.remove('border-neon-cyan/20');
+                nav.classList.remove('shadow-md');
+                nav.classList.add('border-slate-200');
+                nav.classList.remove('border-azana-teal/20');
               }
             });
           }
@@ -631,7 +612,6 @@
             }
           }
 
-          // --- LOGIKA OFFLINE & SERVICE WORKER ---
           if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
               navigator.serviceWorker.register('sw.js')
@@ -640,7 +620,6 @@
             });
           }
 
-          // --- LOGIKA PORTFOLIO (GITHUB API) ---
           document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('otomatis-portfolio');
             if (!container) return;
@@ -665,7 +644,7 @@
               .filter(file => /\.(jpg|jpeg|png|webp)$/i.test(file.name) && file.download_url)
               .forEach(file => {
                 const slide = document.createElement('div');
-                slide.className = 'swiper-slide h-full w-full flex items-center justify-center p-2 bg-dark-900/50';
+                slide.className = 'swiper-slide h-full w-full flex items-center justify-center p-2 bg-azana-light/50';
 
                 const image = document.createElement('img');
                 image.src = file.download_url;
@@ -684,9 +663,9 @@
             .catch(err => {
               console.log("Portfolio Error:", err);
               container.innerHTML = `
-                <div class="swiper-slide h-full w-full flex flex-col items-center justify-center p-8 bg-dark-900/50 text-center">
-                    <i class="fas fa-image text-3xl text-neon-cyan/70 mb-4"></i>
-                    <p class="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-tech">Portfolio belum bisa dimuat</p>
+                <div class="swiper-slide h-full w-full flex flex-col items-center justify-center p-8 bg-azana-light/50 text-center">
+                    <i class="fas fa-image text-3xl text-azana-teal mb-4"></i>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-tech">Portfolio belum bisa dimuat</p>
                 </div>`;
               initPortfolioSwiper();
             });
