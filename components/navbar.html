@@ -10,7 +10,7 @@
       }
     }
 
-    /* Animasi Sidebar Slide dari Kanan */
+    /* Animasi Sidebar Slide dari Kanan Full Layar */
     #mobile-sidebar {
       transform: translateX(100%);
       transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -19,7 +19,7 @@
       transform: translateX(0);
     }
 
-    /* Backdrop Gelap */
+    /* Backdrop Gelap Full Layar */
     #sidebar-backdrop {
       opacity: 0;
       pointer-events: none;
@@ -75,150 +75,104 @@
     </div>
   </div>
 
-  <!-- BACKDROP GELAP DI LUAR SIDEBAR -->
-  <div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-40 md:hidden"></div>
+</nav>
 
-  <!-- SIDEBAR DRAWER DARI KANAN (MOBILE MENU) -->
-  <div id="mobile-sidebar" class="fixed top-0 right-0 w-[80%] max-w-[320px] h-full bg-[#FEFFFF] shadow-2xl z-50 md:hidden flex flex-col justify-between border-l border-slate-200 overflow-y-auto">
-    
-    <div>
-      <!-- Header Sidebar -->
-      <div class="flex items-center justify-between p-5 border-b border-slate-100">
-        <div class="flex items-center gap-2">
-          <span class="font-tech font-bold text-sm tracking-widest uppercase text-azana-dark">Menu Navigasi</span>
-        </div>
-        <button id="close-btn" class="w-8 h-8 rounded-full bg-azana-light text-azana-tealDark flex items-center justify-center active:scale-90">
-          <i class="fas fa-arrow-right text-xs"></i>
-        </button>
-      </div>
+<!-- BACKDROP GELAP DI LUAR NAVBAR (FULL LAYAR) -->
+<div id="sidebar-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-[99] md:hidden"></div>
 
-      <!-- Tombol Kapsul Download APK di Atas Sidebar -->
-      <div class="p-4" id="apk-download-mobile">
-        <a href="https://github.com/azam195-afk/azana/raw/main/apks/Azana_v1.0.apk"
-        download="Azana_v1.0.apk"
-        class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-full bg-gradient-to-r from-azana-teal to-azana-tealDark text-white font-bold text-[10px] uppercase tracking-widest shadow-md hover:brightness-110 active:scale-95 transition-all">
-          <i class="fas fa-download"></i> Get APK App
-        </a>
-      </div>
-
-      <!-- List Menu Utama -->
-      <div class="flex flex-col px-4 py-2 text-xs font-tech text-slate-700 font-semibold tracking-wider">
-        
-        <!-- 1. HOME -->
-        <a href="index.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
-          <span class="flex items-center gap-3"><i class="fas fa-home text-azana-teal"></i> HOME</span>
-        </a>
-
-        <!-- 2. STUDIO VISUAL (Dengan Submenu) -->
-        <div>
-          <button id="studio-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
-            <span class="flex items-center gap-3"><i class="fas fa-wand-magic text-azana-teal"></i> STUDIO VISUAL</span>
-            <i id="studio-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
-          </button>
-          <div id="studio-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
-            <a href="penjernih.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Penjernih Foto</a>
-            <a href="removebg.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Hapus Background</a>
-            <a href="eraser.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Magic Eraser</a>
-          </div>
-        </div>
-
-        <!-- 3. DOWNLOADER (Dengan Submenu) -->
-        <div>
-          <button id="downloader-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
-            <span class="flex items-center gap-3"><i class="fas fa-download text-azana-teal"></i> DOWNLOADER</span>
-            <i id="downloader-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
-          </button>
-          <div id="downloader-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
-            <a href="tiktok.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> TikTok MP3/MP4</a>
-            <a href="ig.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Instagram Downloader</a>
-            <a href="ytmp4.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> YouTube MP4</a>
-            <a href="ytmp3.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> YouTube MP3</a>
-            <a href="spotify.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Spotify Downloader</a>
-          </div>
-        </div>
-
-        <!-- 4. TOOLS AI MAKER (Dengan Submenu) -->
-        <div>
-          <button id="aimaker-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
-            <span class="flex items-center gap-3"><i class="fas fa-robot text-azana-teal"></i> TOOLS AI MAKER</span>
-            <i id="aimaker-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
-          </button>
-          <div id="aimaker-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
-            <a href="sertifikat.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Sertifikat Lucu</a>
-            <a href="brat.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> BRAT Generator</a>
-            <a href="iqc.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> IQC Generator</a>
-          </div>
-        </div>
-
-        <!-- 5. BLOG -->
-        <a href="blogs.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
-          <span class="flex items-center gap-3"><i class="fas fa-blog text-azana-teal"></i> BLOG</span>
-        </a>
-
-        <!-- 6. PRIVASI -->
-        <a href="privacy-policy.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
-          <span class="flex items-center gap-3"><i class="fas fa-shield-alt text-azana-teal"></i> PRIVASI</span>
-        </a>
-
-        <!-- 7. TENTANG KAMI -->
-        <a href="about.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
-          <span class="flex items-center gap-3"><i class="fas fa-info-circle text-azana-teal"></i> TENTANG KAMI</span>
-        </a>
-
-      </div>
+<!-- SIDEBAR DRAWER DARI KANAN (FULL LAYAR KE BAWAH) -->
+<div id="mobile-sidebar" class="fixed top-0 right-0 w-[85%] max-w-[320px] h-full bg-[#FEFFFF] shadow-2xl z-[100] md:hidden flex flex-col justify-between border-l border-slate-200 overflow-y-auto">
+  
+  <div>
+    <!-- Header Sidebar -->
+    <div class="flex items-center justify-between p-5 border-b border-slate-100">
+      <span class="font-tech font-bold text-sm tracking-widest uppercase text-azana-dark">Menu Navigasi</span>
+      <button id="close-btn" class="w-8 h-8 rounded-full bg-azana-light text-azana-tealDark flex items-center justify-center active:scale-90">
+        <i class="fas fa-arrow-right text-xs"></i>
+      </button>
     </div>
 
-    <!-- Footer Sidebar: Tombol WhatsApp -->
-    <div class="p-4 border-t border-slate-100 bg-azana-light/40">
-      <a href="https://wa.me/6282243995410" data-wa-transition class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366] text-white font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-all">
-        <i class="fab fa-whatsapp text-sm"></i> Hubungi Admin
+    <!-- Tombol Kapsul Download APK di Atas Sidebar -->
+    <div class="p-4" id="apk-download-mobile">
+      <a href="https://github.com/azam195-afk/azana/raw/main/apks/Azana_v1.0.apk"
+      download="Azana_v1.0.apk"
+      class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-full bg-gradient-to-r from-azana-teal to-azana-tealDark text-white font-bold text-[10px] uppercase tracking-widest shadow-md hover:brightness-110 active:scale-95 transition-all">
+        <i class="fas fa-download"></i> Get APK App
       </a>
     </div>
 
+    <!-- List Menu Utama -->
+    <div class="flex flex-col px-4 py-2 text-xs font-tech text-slate-700 font-semibold tracking-wider">
+      
+      <!-- 1. HOME -->
+      <a href="index.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+        <span class="flex items-center gap-3"><i class="fas fa-home text-azana-teal"></i> HOME</span>
+      </a>
+
+      <!-- 2. STUDIO VISUAL -->
+      <div>
+        <button id="studio-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+          <span class="flex items-center gap-3"><i class="fas fa-wand-magic text-azana-teal"></i> STUDIO VISUAL</span>
+          <i id="studio-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
+        </button>
+        <div id="studio-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
+          <a href="penjernih.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Penjernih Foto</a>
+          <a href="removebg.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Hapus Background</a>
+          <a href="eraser.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Magic Eraser</a>
+        </div>
+      </div>
+
+      <!-- 3. DOWNLOADER -->
+      <div>
+        <button id="downloader-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+          <span class="flex items-center gap-3"><i class="fas fa-download text-azana-teal"></i> DOWNLOADER</span>
+          <i id="downloader-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
+        </button>
+        <div id="downloader-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
+          <a href="tiktok.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> TikTok MP3/MP4</a>
+          <a href="ig.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Instagram Downloader</a>
+          <a href="ytmp4.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> YouTube MP4</a>
+          <a href="ytmp3.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> YouTube MP3</a>
+          <a href="spotify.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Spotify Downloader</a>
+        </div>
+      </div>
+
+      <!-- 4. TOOLS AI MAKER -->
+      <div>
+        <button id="aimaker-toggle" class="w-full flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+          <span class="flex items-center gap-3"><i class="fas fa-robot text-azana-teal"></i> TOOLS AI MAKER</span>
+          <i id="aimaker-arrow" class="fas fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
+        </button>
+        <div id="aimaker-submenu" class="submenu-content pl-9 pr-2 bg-azana-light/30 rounded-xl my-1 space-y-1 py-1 text-[11px] text-slate-600 font-normal">
+          <a href="sertifikat.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> Sertifikat Lucu</a>
+          <a href="brat.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> BRAT Generator</a>
+          <a href="iqc.html" class="block py-1.5 hover:text-azana-tealDark"><i class="fas fa-angle-right mr-2 text-azana-teal"></i> IQC Generator</a>
+        </div>
+      </div>
+
+      <!-- 5. BLOG -->
+      <a href="blogs.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+        <span class="flex items-center gap-3"><i class="fas fa-blog text-azana-teal"></i> BLOG</span>
+      </a>
+
+      <!-- 6. PRIVASI -->
+      <a href="privacy-policy.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+        <span class="flex items-center gap-3"><i class="fas fa-shield-alt text-azana-teal"></i> PRIVASI</span>
+      </a>
+
+      <!-- 7. TENTANG KAMI -->
+      <a href="about.html" class="flex items-center justify-between py-3 px-3 rounded-xl hover:bg-azana-light/60 transition border-b border-slate-100">
+        <span class="flex items-center gap-3"><i class="fas fa-info-circle text-azana-teal"></i> TENTANG KAMI</span>
+      </a>
+
+    </div>
   </div>
 
-</nav>
+  <!-- Footer Sidebar: Tombol WhatsApp -->
+  <div class="p-4 border-t border-slate-100 bg-azana-light/40">
+    <a href="https://wa.me/6282243995410" data-wa-transition class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#25D366] text-white font-bold text-[10px] uppercase tracking-widest shadow-md active:scale-95 transition-all">
+      <i class="fab fa-whatsapp text-sm"></i> Hubungi Admin
+    </a>
+  </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const menuBtn = document.getElementById('menu-btn');
-    const closeBtn = document.getElementById('close-btn');
-    const sidebar = document.getElementById('mobile-sidebar');
-    const backdrop = document.getElementById('sidebar-backdrop');
-
-    function openSidebar() {
-      sidebar.classList.add('is-open');
-      backdrop.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeSidebar() {
-      sidebar.classList.remove('is-open');
-      backdrop.classList.remove('is-open');
-      document.body.style.overflow = '';
-    }
-
-    if(menuBtn) menuBtn.addEventListener('click', openSidebar);
-    if(closeBtn) closeBtn.addEventListener('click', closeSidebar);
-    if(backdrop) backdrop.addEventListener('click', closeSidebar);
-
-    function setupAccordion(toggleId, submenuId, arrowId) {
-      const toggle = document.getElementById(toggleId);
-      const submenu = document.getElementById(submenuId);
-      const arrow = document.getElementById(arrowId);
-
-      if(toggle && submenu) {
-        toggle.addEventListener('click', () => {
-          submenu.classList.toggle('open');
-          if(arrow) {
-            arrow.style.transform = submenu.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-          }
-        });
-      }
-    }
-
-    setupAccordion('studio-toggle', 'studio-submenu', 'studio-arrow');
-    setupAccordion('downloader-toggle', 'downloader-submenu', 'downloader-arrow');
-    setupAccordion('aimaker-toggle', 'aimaker-submenu', 'aimaker-arrow');
-  });
-</script>
+</div>
