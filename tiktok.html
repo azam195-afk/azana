@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #FEFFFF;
-            color: #17252A;
+            background-color: #FEFFFF !important;
+            color: #17252A !important;
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
@@ -24,9 +24,9 @@
             pointer-events: none;
         }
         .card-glow {
-            background: linear-gradient(145deg, rgba(222, 242, 241, 0.95), rgba(254, 255, 255, 0.98));
-            border: 1px solid rgba(58, 175, 169, 0.25);
-            box-shadow: 0 10px 35px 0 rgba(58, 175, 169, 0.12);
+            background: linear-gradient(145deg, rgba(222, 242, 241, 0.95), rgba(254, 255, 255, 0.98)) !important;
+            border: 1px solid rgba(58, 175, 169, 0.3) !important;
+            box-shadow: 0 10px 35px 0 rgba(58, 175, 169, 0.15) !important;
         }
     </style>
 </head>
@@ -34,7 +34,7 @@
 
     <canvas id="neural-bg"></canvas>
 
-    <header class="p-4 flex items-center justify-between border-b border-slate-200 relative z-10 bg-[#FEFFFF]/80 backdrop-blur-md">
+    <header class="p-4 flex items-center justify-between border-b border-slate-200 relative z-10 bg-[#FEFFFF]/90 backdrop-blur-md">
         <a href="index.html" class="text-azana-tealDark hover:text-azana-teal transition flex items-center gap-2 text-sm font-semibold">
             <i class="fa-solid fa-arrow-left"></i> KEMBALI
         </a>
@@ -45,76 +45,76 @@
         <div class="card-glow rounded-3xl p-5 w-full">
             
             <div class="text-center mb-5">
-                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-azana-light border border-azana-teal/30 flex items-center justify-center text-azana-tealDark text-2xl shadow-[0_0_15px_rgba(58,175,169,0.2)]">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-[#DEF2F1] border border-[#3AAFA9]/40 flex items-center justify-center text-[#2B7A78] text-2xl shadow-[0_0_15px_rgba(58,175,169,0.25)]">
                     <i class="fa-brands fa-tiktok"></i>
                 </div>
-                <h1 class="text-xl font-extrabold tracking-wider mb-1 text-slate-800">TIKTOK DOWNLOADER</h1>
-                <p class="text-[11px] text-slate-500">Preview besar, pilih format, lalu download langsung.</p>
+                <h1 class="text-xl font-extrabold tracking-wider mb-1 text-[#17252A]">TIKTOK DOWNLOADER</h1>
+                <p class="text-[11px] text-slate-600">Preview besar, pilih format, lalu download langsung.</p>
             </div>
 
             <div class="space-y-3 mb-4">
                 <div class="relative">
                     <input type="text" id="tiktok-url" placeholder="Tempel link TikTok di sini..." 
-                        class="w-full bg-white/80 border border-slate-200 rounded-2xl py-3 px-4 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-azana-teal transition shadow-sm">
+                        class="w-full bg-white border border-slate-300 rounded-2xl py-3 px-4 text-xs text-[#17252A] placeholder-slate-400 focus:outline-none focus:border-[#3AAFA9] transition shadow-sm">
                 </div>
                 <button onclick="processTikTokDownload()" id="btn-process" 
-                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-azana-teal to-azana-tealDark hover:opacity-90 text-white shadow-md shadow-azana-teal/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] hover:opacity-90 text-white shadow-md shadow-[#3AAFA9]/30 transition flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Preview
                 </button>
             </div>
 
-            <div id="loading-box" class="hidden text-center py-6 text-azana-tealDark text-xs font-semibold">
+            <div id="loading-box" class="hidden text-center py-6 text-[#2B7A78] text-xs font-semibold">
                 <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil data dan membuat preview...
             </div>
 
-            <!-- PREVIEW CONTAINER ALA NEXUS -->
+            <!-- PREVIEW CONTAINER -->
             <div id="preview-container" class="hidden space-y-4 pt-2">
                 
                 <!-- VIDEO PLAYER BESAR -->
-                <div class="relative w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 shadow-inner">
+                <div class="relative w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-300 shadow-inner">
                     <video id="preview-video" class="w-full h-auto max-h-[380px] object-contain mx-auto" controls playsinline></video>
                 </div>
 
-                <!-- INFO AKUN & CAPTION + TOMBOL COPY -->
-                <div class="bg-white/70 border border-slate-200 rounded-2xl p-3.5 space-y-2.5 shadow-sm">
+                <!-- INFO AKUN & CAPTION -->
+                <div class="bg-white/90 border border-slate-200 rounded-2xl p-3.5 space-y-2.5 shadow-sm">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-full bg-azana-light border border-azana-teal/40 flex items-center justify-center text-azana-tealDark text-xs font-bold">
+                        <div class="w-8 h-8 rounded-full bg-[#DEF2F1] border border-[#3AAFA9]/40 flex items-center justify-center text-[#2B7A78] text-xs font-bold">
                             <i class="fa-solid fa-user"></i>
                         </div>
                         <div>
-                            <p id="preview-author" class="text-xs font-bold text-slate-800">@creator</p>
-                            <span class="text-[9px] text-azana-tealDark uppercase tracking-wider font-semibold">VERIFIED ACCOUNT</span>
+                            <p id="preview-author" class="text-xs font-bold text-[#17252A]">@creator</p>
+                            <span class="text-[9px] text-[#2B7A78] uppercase tracking-wider font-bold">VERIFIED ACCOUNT</span>
                         </div>
                     </div>
                     
                     <div>
                         <div class="flex items-center justify-between mb-1">
                             <span class="text-[10px] text-slate-500 font-semibold uppercase">Caption:</span>
-                            <button onclick="copyCaption()" class="text-[10px] bg-azana-light hover:bg-azana-teal/20 border border-azana-teal/30 text-azana-tealDark px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer font-semibold">
+                            <button onclick="copyCaption()" class="text-[10px] bg-[#DEF2F1] hover:bg-[#3AAFA9]/20 border border-[#3AAFA9]/40 text-[#2B7A78] px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer font-bold">
                                 <i class="fa-solid fa-copy"></i> <span id="copy-text">Copy Caption</span>
                             </button>
                         </div>
-                        <p id="preview-title" class="text-xs text-slate-700 leading-relaxed bg-white/50 p-2.5 rounded-xl border border-slate-100 max-h-24 overflow-y-auto">Caption video...</p>
+                        <p id="preview-title" class="text-xs text-slate-700 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-200 max-h-24 overflow-y-auto">Caption video...</p>
                     </div>
                 </div>
 
-                <!-- PILIHAN FORMAT DOWNLOAD DENGAN INDIKATOR LOADING DI TOMBOL -->
+                <!-- PILIHAN FORMAT DOWNLOAD -->
                 <div class="space-y-2 pt-1">
-                    <p class="text-[10px] font-bold text-azana-tealDark uppercase tracking-widest text-center">Pilih Format Unduhan</p>
+                    <p class="text-[10px] font-bold text-[#2B7A78] uppercase tracking-widest text-center">Pilih Format Unduhan</p>
                     
-                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_hd.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-azana-teal/15 hover:bg-azana-teal/25 border border-azana-teal/30 rounded-xl text-xs font-semibold text-azana-tealDark transition cursor-pointer shadow-xs">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-download text-azana-teal"></i> MP4 HD (Tanpa Watermark)</span>
-                        <span class="text-[10px] bg-azana-teal/20 px-2 py-0.5 rounded text-azana-tealDark font-bold">HD</span>
+                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_hd.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-[#3AAFA9]/15 hover:bg-[#3AAFA9]/25 border border-[#3AAFA9]/40 rounded-xl text-xs font-semibold text-[#17252A] transition cursor-pointer shadow-xs">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-download text-[#2B7A78]"></i> MP4 HD (Tanpa Watermark)</span>
+                        <span class="text-[10px] bg-[#3AAFA9]/25 px-2 py-0.5 rounded text-[#17252A] font-bold">HD</span>
                     </button>
 
-                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_standard.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-white/80 hover:bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 transition cursor-pointer shadow-xs">
+                    <button onclick="downloadMedia(currentVideoUrl, 'tiktok_standard.mp4', this)" class="w-full flex items-center justify-between py-3 px-4 bg-white hover:bg-slate-50 border border-slate-300 rounded-xl text-xs font-semibold text-slate-700 transition cursor-pointer shadow-xs">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-download text-slate-400"></i> MP4 Standar / Watermark</span>
-                        <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-500">SD</span>
+                        <span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-600">SD</span>
                     </button>
 
-                    <button onclick="downloadMedia(currentAudioUrl, 'tiktok_audio.mp3', this)" class="w-full flex items-center justify-between py-3 px-4 bg-azana-tealDark/15 hover:bg-azana-tealDark/25 border border-azana-tealDark/30 rounded-xl text-xs font-semibold text-azana-tealDark transition cursor-pointer shadow-xs">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-music text-azana-teal"></i> Audio MP3 (Original Sound)</span>
-                        <span class="text-[10px] bg-azana-tealDark/20 px-2 py-0.5 rounded text-azana-tealDark font-bold">MP3</span>
+                    <button onclick="downloadMedia(currentAudioUrl, 'tiktok_audio.mp3', this)" class="w-full flex items-center justify-between py-3 px-4 bg-[#2B7A78]/15 hover:bg-[#2B7A78]/25 border border-[#2B7A78]/40 rounded-xl text-xs font-semibold text-[#17252A] transition cursor-pointer shadow-xs">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-music text-[#2B7A78]"></i> Audio MP3 (Original Sound)</span>
+                        <span class="text-[10px] bg-[#2B7A78]/25 px-2 py-0.5 rounded text-[#17252A] font-bold">MP3</span>
                     </button>
                 </div>
 
@@ -237,7 +237,7 @@
       window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
       resizeCanvas();
       const particlesArray = [];
-      // Neural background diganti warna hijau tosca khas Azana
+      // Neural background murni hijau tosca & gelap tosca khas Azana
       const colors = ['#3AAFA9', '#2B7A78', '#17252A'];
       class Particle {
         constructor() {
@@ -275,7 +275,7 @@
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < 150) {
               ctx.beginPath(); ctx.strokeStyle = particlesArray[i].color;
-              ctx.globalAlpha = 0.35 - (distance / 450);
+              ctx.globalAlpha = 0.4 - (distance / 400);
               ctx.lineWidth = 0.6; ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
               ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.globalAlpha = 1;
             }
