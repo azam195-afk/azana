@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #0b0f19;
-            color: #ffffff;
+            background-color: #FEFFFF !important;
+            color: #17252A !important;
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
@@ -24,9 +24,9 @@
             pointer-events: none;
         }
         .card-glow {
-            background: linear-gradient(135deg, rgba(18, 24, 38, 0.95), rgba(13, 17, 28, 0.95));
-            border: 1px solid rgba(52, 211, 153, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+            background: linear-gradient(145deg, rgba(222, 242, 241, 0.95), rgba(254, 255, 255, 0.98)) !important;
+            border: 1px solid rgba(58, 175, 169, 0.3) !important;
+            box-shadow: 0 10px 35px 0 rgba(58, 175, 169, 0.15) !important;
         }
     </style>
 </head>
@@ -34,59 +34,59 @@
 
     <canvas id="neural-bg"></canvas>
 
-    <header class="p-4 flex items-center justify-between border-b border-emerald-900/30 relative z-10">
-        <a href="index.html" class="text-emerald-400 hover:text-emerald-300 transition flex items-center gap-2 text-sm font-semibold">
+    <header class="p-4 flex items-center justify-between border-b border-slate-200 relative z-10 bg-[#FEFFFF]/90 backdrop-blur-md">
+        <a href="index.html" class="text-azana-tealDark hover:text-azana-teal transition flex items-center gap-2 text-sm font-semibold">
             <i class="fa-solid fa-arrow-left"></i> KEMBALI
         </a>
-        <span class="text-xs tracking-widest text-emerald-400 uppercase font-bold">SPOTIFY ROOM (MP3)</span>
+        <span class="text-xs tracking-widest text-azana-tealDark uppercase font-bold">SPOTIFY ROOM (MP3)</span>
     </header>
 
     <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
         <div class="card-glow rounded-3xl p-5 w-full">
             
             <div class="text-center mb-5">
-                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-black/40 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl shadow-[0_0_15px_rgba(52,211,153,0.3)]">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-[#DEF2F1] border border-[#3AAFA9]/40 flex items-center justify-center text-[#2B7A78] text-2xl shadow-[0_0_15px_rgba(58,175,169,0.25)]">
                     <i class="fa-brands fa-spotify"></i>
                 </div>
-                <h1 class="text-xl font-extrabold tracking-wider mb-1">SPOTIFY DOWNLOADER</h1>
-                <p class="text-[11px] text-gray-400">Download lagu MP3 dari Spotify secara instan.</p>
+                <h1 class="text-xl font-extrabold tracking-wider mb-1 text-[#17252A]">SPOTIFY DOWNLOADER</h1>
+                <p class="text-[11px] text-slate-600">Download lagu MP3 dari Spotify secara instan.</p>
             </div>
 
             <div class="space-y-3 mb-4">
                 <div class="relative">
                     <input type="text" id="spotify-url" placeholder="Tempel link track Spotify di sini..." 
-                        class="w-full bg-black/50 border border-emerald-500/30 rounded-2xl py-3 px-4 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-emerald-400 transition">
+                        class="w-full bg-white border border-slate-300 rounded-2xl py-3 px-4 text-xs text-[#17252A] placeholder-slate-400 focus:outline-none focus:border-[#3AAFA9] transition shadow-sm">
                 </div>
                 <button onclick="processSpotifyDownload()" id="btn-process" 
-                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-900/40 transition flex items-center justify-center gap-2 cursor-pointer">
+                    class="w-full py-3 rounded-2xl font-bold text-xs bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] hover:opacity-90 text-white shadow-md shadow-[#3AAFA9]/30 transition flex items-center justify-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-bolt"></i> Ambil Info Musik
                 </button>
             </div>
 
-            <div id="loading-box" class="hidden text-center py-6 text-emerald-400 text-xs">
+            <div id="loading-box" class="hidden text-center py-6 text-[#2B7A78] text-xs font-semibold">
                 <i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengambil informasi lagu dari Spotify API...
             </div>
 
             <div id="preview-container" class="hidden space-y-4 pt-2">
                 
                 <div class="space-y-3 text-center">
-                    <div class="rounded-xl overflow-hidden bg-black aspect-square max-h-[160px] mx-auto flex items-center justify-center border border-emerald-500/30">
+                    <div class="rounded-xl overflow-hidden bg-black aspect-square max-h-[160px] mx-auto flex items-center justify-center border border-slate-300 shadow-inner">
                         <img id="track-thumbnail" src="" class="w-full h-full object-cover" alt="Thumbnail">
                     </div>
-                    <div class="bg-black/40 border border-emerald-500/20 rounded-2xl p-3 text-left">
-                        <span class="text-[10px] text-gray-400 font-semibold uppercase">Judul & Artis:</span>
-                        <p id="track-title" class="text-xs text-gray-200 line-clamp-1 mt-0.5 font-bold">-</p>
-                        <p id="track-artist" class="text-[11px] text-emerald-400 font-medium">-</p>
+                    <div class="bg-white/90 border border-slate-200 rounded-2xl p-3 text-left shadow-sm">
+                        <span class="text-[10px] text-slate-500 font-semibold uppercase">Judul & Artis:</span>
+                        <p id="track-title" class="text-xs text-slate-800 line-clamp-1 mt-0.5 font-bold">-</p>
+                        <p id="track-artist" class="text-[11px] text-[#2B7A78] font-medium">-</p>
                     </div>
                 </div>
 
                 <div id="content-mp3" class="space-y-2.5">
-                    <div class="bg-zinc-900/80 border border-zinc-700/50 rounded-2xl p-3 flex items-center justify-between">
+                    <div class="bg-white/90 border border-slate-200 rounded-2xl p-3 flex items-center justify-between shadow-sm">
                         <div>
-                            <p class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-music mr-1"></i> Audio MP3</p>
-                            <span class="text-[10px] text-gray-400">Kualitas Tinggi (High Quality)</span>
+                            <p class="text-xs font-bold text-[#2B7A78]"><i class="fa-solid fa-music mr-1"></i> Audio MP3</p>
+                            <span class="text-[10px] text-slate-500">Kualitas Tinggi (High Quality)</span>
                         </div>
-                        <button onclick="downloadMedia(audioDownloadUrl, this)" class="bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs px-4 py-2 rounded-xl transition shadow">
+                        <button onclick="downloadMedia(audioDownloadUrl, this)" class="bg-[#3AAFA9] hover:bg-[#2B7A78] text-white font-bold text-xs px-4 py-2 rounded-xl transition shadow cursor-pointer">
                             ↓ Download MP3
                         </button>
                     </div>
@@ -179,7 +179,6 @@
             }
         }
 
-        // Load Footer Transparan
         fetch('components/footer-ai.html')
         .then(response => response.text())
         .then(data => {
@@ -197,7 +196,8 @@
       window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
       resizeCanvas();
       const particlesArray = [];
-      const colors = ['#34d399', '#00f2fe'];
+      // Neural background disesuaikan warna hijau tosca khas Azana
+      const colors = ['#3AAFA9', '#2B7A78', '#17252A'];
       class Particle {
         constructor() {
           this.x = Math.random() * canvas.width;
@@ -234,7 +234,7 @@
             const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < 150) {
               ctx.beginPath(); ctx.strokeStyle = particlesArray[i].color;
-              ctx.globalAlpha = 1 - (distance / 150);
+              ctx.globalAlpha = 0.4 - (distance / 400);
               ctx.lineWidth = 0.6; ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
               ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.globalAlpha = 1;
             }
