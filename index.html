@@ -590,15 +590,52 @@
             });
           }
 
-          function initNavbarInteractions() {
+                    function initNavbarInteractions() {
             const menuBtn = document.getElementById('menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (menuBtn && mobileMenu) {
+            const closeBtn = document.getElementById('close-btn');
+            const sidebar = document.getElementById('mobile-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+
+            function openSidebar() {
+              if(sidebar) sidebar.classList.add('is-open');
+              if(backdrop) backdrop.classList.add('is-open');
+              document.body.style.overflow = 'hidden';
+            }
+
+            function closeSidebar() {
+              if(sidebar) sidebar.classList.remove('is-open');
+              if(backdrop) backdrop.classList.remove('is-open');
+              document.body.style.overflow = '';
+            }
+
+            if (menuBtn && sidebar) {
               menuBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                mobileMenu.classList.toggle('hidden');
+                openSidebar();
               });
             }
+            if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+            if (backdrop) backdrop.addEventListener('click', closeSidebar);
+
+            // Accordion Submenu dalam Sidebar
+            const setupAccordion = (toggleId, submenuId, arrowId) => {
+              const toggle = document.getElementById(toggleId);
+              const submenu = document.getElementById(submenuId);
+              const arrow = document.getElementById(arrowId);
+
+              if(toggle && submenu) {
+                toggle.addEventListener('click', () => {
+                  submenu.classList.toggle('open');
+                  if(arrow) {
+                    arrow.style.transform = submenu.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+                  }
+                });
+              }
+            };
+
+            setupAccordion('studio-toggle', 'studio-submenu', 'studio-arrow');
+            setupAccordion('downloader-toggle', 'downloader-submenu', 'downloader-arrow');
+            setupAccordion('aimaker-toggle', 'aimaker-submenu', 'aimaker-arrow');
 
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
             const isPWAUrl = new URLSearchParams(window.location.search).get('utm_source') === 'pwa';
@@ -606,8 +643,8 @@
               document.getElementById('apk-download-desktop')?.style.setProperty('display', 'none', 'important');
               document.getElementById('apk-download-mobile')?.style.setProperty('display', 'none', 'important');
             }
-          }
-
+         }
+          
           if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
               navigator.serviceWorker.register('sw.js')
