@@ -49,7 +49,7 @@
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
                 <h1 class="text-xl font-extrabold tracking-wider mb-1 text-[#17252A]">AI UNBLUR FOTO</h1>
-                <p class="text-[11px] text-slate-600">Perjelas foto buram atau pecah secara otomatis.</p>
+                <p class="text-[11px] text-slate-600">Perjelas foto buram langsung dari galeri HP.</p>
             </div>
 
             <div class="space-y-3 mb-4">
@@ -59,14 +59,14 @@
                         class="w-full bg-white border border-slate-300 rounded-2xl py-2.5 px-3 text-xs text-[#17252A] file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#3AAFA9]/20 file:text-[#2B7A78] hover:file:bg-[#3AAFA9]/30 transition shadow-sm cursor-pointer">
                 </div>
 
-                <button onclick="processUnblur()" class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] hover:opacity-90 rounded-xl text-xs font-semibold text-white transition shadow-md shadow-[#3AAFA9]/30 cursor-pointer mt-2">
+                <button onclick="processUnblurBase64()" class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] hover:opacity-90 rounded-xl text-xs font-semibold text-white transition shadow-md shadow-[#3AAFA9]/30 cursor-pointer mt-2">
                     <i class="fa-solid fa-cloud-arrow-up"></i> Proses & Jernihkan Foto
                 </button>
             </div>
 
             <div id="loading-box" class="hidden text-center py-6 text-[#2B7A78] text-xs font-semibold space-y-2">
                 <i class="fa-solid fa-spinner fa-spin text-lg"></i>
-                <p id="loading-text">Mengunggah foto...</p>
+                <p id="loading-text">Memproses foto...</p>
             </div>
 
             <div id="preview-container" class="hidden mt-4 space-y-3">
@@ -88,7 +88,15 @@
     <script>
         let currentImgUrl = "";
 
-        async function processUnblur() {
+        // Fungsi helper untuk mengubah file lokal menjadi Base64
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+
+        async function processUnblurBase64() {
             const fileInput = document.getElementById('image-file');
             const loadingBox = document.getElementById('loading-box');
             const loadingText = document.getElementById('loading-text');
@@ -105,37 +113,18 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // 1. Upload ke tmpfiles.org yang mendukung CORS browser
-                loadingText.textContent = "Mengunggah foto ke peladen...";
-                const formData = new FormData();
-                formData.append('file', file);
+                loadingText.textContent = "Mengubah format foto...";
+                const base64String = await toBase64(file);
 
-                const uploadRes = await fetch('https://tmpfiles.org/api/v1/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (!uploadRes.ok) throw new Error("Gagal mengunggah foto ke peladen.");
-                
-                const uploadData = await uploadRes.json();
-                if (!uploadData || !uploadData.data || !uploadData.data.url) {
-                    throw new Error("Respon pengunggah tidak valid.");
-                }
-
-                // Ubah link tmpfiles ke format Direct Download URL (/dl/)
-                const pageUrl = uploadData.data.url; 
-                const directUrl = pageUrl.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-
-                // 2. Tembak Nexray Unblur pakai Direct Link tersebut
                 loadingText.textContent = "Sedang menjernihkan foto dengan AI...";
-                const unblurEndpoint = `https://api.nexray.eu.cc/tools/unblur?url=${encodeURIComponent(directUrl)}`;
+                const unblurEndpoint = `https://api.nexray.eu.cc/tools/unblur?url=${encodeURIComponent(base64String)}`;
 
                 const response = await fetch(unblurEndpoint);
                 if (!response.ok) throw new Error("Gagal memproses unblur dari server API.");
 
                 const blob = await response.blob();
                 if (blob.size < 1000) {
-                    throw new Error("Hasil gambar rusak atau tidak valid.");
+                    throw new Error("Hasil gambar rusak atau format Base64 tidak didukung API.");
                 }
 
                 currentImgUrl = window.URL.createObjectURL(blob);
