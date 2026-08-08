@@ -105,29 +105,31 @@
             previewContainer.classList.add('hidden');
 
             try {
-                // Menggunakan Pomf.lain.la / Catbox alternatif yang mendukung CORS browser
-                loadingText.textContent = "Mengunggah foto ke server...";
+                // 1. Upload ke tmpfiles.org yang mendukung CORS browser
+                loadingText.textContent = "Mengunggah foto ke peladen...";
                 const formData = new FormData();
-                formData.append('files[]', file);
+                formData.append('file', file);
 
-                const uploadRes = await fetch('https://pomf.lain.la/upload.php', {
+                const uploadRes = await fetch('https://tmpfiles.org/api/v1/upload', {
                     method: 'POST',
                     body: formData
                 });
 
-                if (!uploadRes.ok) throw new Error("Gagal mengunggah gambar.");
+                if (!uploadRes.ok) throw new Error("Gagal mengunggah foto ke peladen.");
+                
                 const uploadData = await uploadRes.json();
-
-                if (!uploadData.success || !uploadData.files || !uploadData.files[0].url) {
-                    throw new Error("Gagal mendapatkan URL file dari server.");
+                if (!uploadData || !uploadData.data || !uploadData.data.url) {
+                    throw new Error("Respon pengunggah tidak valid.");
                 }
 
-                const imageUrl = uploadData.files[0].url;
+                // Ubah link tmpfiles ke format Direct Download URL (/dl/)
+                const pageUrl = uploadData.data.url; 
+                const directUrl = pageUrl.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
 
-                // Tembak endpoint unblur Nexray sesuai contoh cURL/Node.js kamu
-                loadingText.textContent = "Memproses penjernihan AI...";
-                const unblurEndpoint = `https://api.nexray.eu.cc/tools/unblur?url=${encodeURIComponent(imageUrl)}`;
-                
+                // 2. Tembak Nexray Unblur pakai Direct Link tersebut
+                loadingText.textContent = "Sedang menjernihkan foto dengan AI...";
+                const unblurEndpoint = `https://api.nexray.eu.cc/tools/unblur?url=${encodeURIComponent(directUrl)}`;
+
                 const response = await fetch(unblurEndpoint);
                 if (!response.ok) throw new Error("Gagal memproses unblur dari server API.");
 
