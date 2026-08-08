@@ -91,7 +91,7 @@
 
     <main>
       <!-- HERO SECTION DENGAN BACKGROUND ANIMASI NEURAL -->
-      <section id="beranda" class="bg-azana-light min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
+      <section id="beranda" style="background-color: #F3FBFB;" class="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
         
         <!-- Canvas Efek Neural / Jaringan Bergerak -->
         <canvas id="neural-bg" class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
@@ -585,10 +585,10 @@
           });
         }
 
-        function animateNeural() {
+          function animateNeural() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = '#3AAFA9';
-          ctx.strokeStyle = '#3AAFA9';
+          ctx.fillStyle = '#2B7A78';    // Warna titik dibuat lebih gelap/tegas
+          ctx.strokeStyle = '#2B7A78';  // Warna garis penghubung lebih jelas
 
           particles.forEach((p, index) => {
             p.x += p.vx;
@@ -598,15 +598,15 @@
             if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
             ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, p.radius + 0.5, 0, Math.PI * 2); // Titik sedikit diperbesar
             ctx.fill();
 
             for (let j = index + 1; j < particles.length; j++) {
               let p2 = particles[j];
               let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-              if (dist < 120) {
-                ctx.lineWidth = 0.4;
-                ctx.globalAlpha = 1 - (dist / 120);
+              if (dist < 130) {
+                ctx.lineWidth = 0.8; // Ketebalan garis ditingkatkan biar jelas
+                ctx.globalAlpha = 1.2 - (dist / 130);
                 ctx.beginPath();
                 ctx.moveTo(p.x, p.y);
                 ctx.lineTo(p2.x, p2.y);
