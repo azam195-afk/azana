@@ -1,22 +1,230 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-  <head>
+<html lang="id">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IQC Generator - AZANA DESIGN</title>
+    <title>IQC V1 Generator - Azana Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #FEFFFF !important;
+            color: #17252A !important;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        #neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .card-glow {
+            background: linear-gradient(145deg, rgba(222, 242, 241, 0.95), rgba(254, 255, 255, 0.98)) !important;
+            border: 1px solid rgba(58, 175, 169, 0.3) !important;
+            box-shadow: 0 10px 35px 0 rgba(58, 175, 169, 0.15) !important;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen relative">
+
+    <canvas id="neural-bg"></canvas>
+
+    <header class="p-4 flex items-center justify-between border-b border-slate-200 relative z-10 bg-[#FEFFFF]/90 backdrop-blur-md">
+        <a href="index.html" class="text-[#2B7A78] hover:text-[#3AAFA9] transition flex items-center gap-2 text-sm font-semibold">
+            <i class="fa-solid fa-arrow-left"></i> KEMBALI
+        </a>
+        <span class="text-xs tracking-widest text-[#2B7A78] uppercase font-bold">IQC V1 ROOM</span>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4 max-w-md mx-auto w-full relative z-10">
+        <div class="card-glow rounded-3xl p-5 w-full">
+            
+            <div class="text-center mb-5">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-[#DEF2F1] border border-[#3AAFA9]/40 flex items-center justify-center text-[#2B7A78] text-2xl shadow-[0_0_15px_rgba(58,175,169,0.25)]">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h1 class="text-xl font-extrabold tracking-wider mb-1 text-[#17252A]">IQC V1 GENERATOR</h1>
+                <p class="text-[11px] text-slate-600">Buat gambar iPhone Quoted Chat kustom dengan mudah.</p>
+            </div>
+
+            <div class="space-y-3 mb-4">
+                <div>
+                    <label class="block text-[11px] font-semibold text-[#17252A] mb-1">Pesan / Text</label>
+                    <input type="text" id="iqc-text" placeholder="Contoh: halo azana" 
+                        class="w-full bg-white border border-slate-300 rounded-2xl py-3 px-4 text-xs text-[#17252A] placeholder-slate-400 focus:outline-none focus:border-[#3AAFA9] transition shadow-sm">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-[#17252A] mb-1">Provider / Operator</label>
+                        <input type="text" id="iqc-provider" value="im3" placeholder="im3, telkomsel..." 
+                            class="w-full bg-white border border-slate-300 rounded-2xl py-3 px-4 text-xs text-[#17252A] placeholder-slate-400 focus:outline-none focus:border-[#3AAFA9] transition shadow-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-[#17252A] mb-1">Jam</label>
+                        <input type="text" id="iqc-jam" value="23:43" placeholder="23:43" 
+                            class="w-full bg-white border border-slate-300 rounded-2xl py-3 px-4 text-xs text-[#17252A] placeholder-slate-400 focus:outline-none focus:border-[#3AAFA9] transition shadow-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-semibold text-[#17252A] mb-1">Baterai (%)</label>
+                    <input type="number" id="iqc-baterai" value="67" min="1" max="100" placeholder="67" 
+                        class="w-full bg-white border border-slate-300 rounded-2xl py-3 px-4 text-xs text-[#17252A] placeholder-slate-400 focus:outline-none focus:border-[#3AAFA9] transition shadow-sm">
+                </div>
+
+                <button onclick="processIqcGenerate()" class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] hover:opacity-90 rounded-xl text-xs font-semibold text-white transition shadow-md shadow-[#3AAFA9]/30 cursor-pointer mt-2">
+                    <i class="fa-solid fa-gears"></i> Generate Screenshot
+                </button>
+            </div>
+
+            <div id="loading-box" class="hidden text-center py-6 text-[#2B7A78] text-xs font-semibold">
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> Sedang merender gambar IQC...
+            </div>
+
+            <div id="preview-container" class="hidden mt-4 space-y-3">
+                <div id="media-view-area" class="w-full overflow-hidden rounded-2xl bg-white/80 border border-slate-300 flex justify-center shadow-inner p-3">
+                    <img id="result-image" src="" alt="IQC Result" class="max-h-[350px] object-contain rounded-xl">
+                </div>
+
+                <button onclick="downloadImage()" class="w-full flex items-center justify-between py-3 px-4 bg-[#3AAFA9]/15 hover:bg-[#3AAFA9]/25 border border-[#3AAFA9]/40 rounded-xl text-xs font-semibold text-[#17252A] transition cursor-pointer shadow-xs">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-download text-[#2B7A78]"></i> Download Hasil IQC</span>
+                    <span class="text-[10px] bg-[#3AAFA9]/25 px-2 py-0.5 rounded text-[#17252A] font-bold">PNG</span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer" class="relative z-10"></div>
+
     <script>
-      tailwind.config = { theme: { extend: { fontFamily: { sans: ['Poppins', 'sans-serif'], tech: ['Rajdhani', 'sans-serif'] }, colors: { neon: { cyan: '#00f2fe', purple: '#a855f7', magenta: '#d946ef' }, dark: { 950: '#050508', 900: '#0a0a0f', 800: '#13131a', 700: '#1c1c26' } } } } }
+        let currentImgUrl = "";
+
+        async function processIqcGenerate() {
+            const text = document.getElementById('iqc-text').value.trim();
+            const provider = document.getElementById('iqc-provider').value.trim();
+            const jam = document.getElementById('iqc-jam').value.trim();
+            const baterai = document.getElementById('iqc-baterai').value.trim();
+            
+            const loadingBox = document.getElementById('loading-box');
+            const previewContainer = document.getElementById('preview-container');
+            const resultImage = document.getElementById('result-image');
+
+            if (!text) {
+                alert('Masukkan teks pesan terlebih dahulu, bro!');
+                return;
+            }
+
+            loadingBox.classList.remove('hidden');
+            previewContainer.classList.add('hidden');
+
+            try {
+                const endpoint = `https://api.nexray.eu.cc/maker/v1/iqc?text=${encodeURIComponent(text)}&provider=${encodeURIComponent(provider)}&jam=${encodeURIComponent(jam)}&baterai=${encodeURIComponent(baterai)}`;
+                
+                const response = await fetch(endpoint);
+                
+                if (!response.ok) throw new Error("Gagal mengambil data dari server API.");
+
+                const blob = await response.blob();
+                
+                if (blob.size < 1000) {
+                    throw new Error("File yang dihasilkan tidak valid.");
+                }
+
+                currentImgUrl = window.URL.createObjectURL(blob);
+                resultImage.src = currentImgUrl;
+
+                loadingBox.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+            } catch (err) {
+                loadingBox.classList.add('hidden');
+                alert("Terjadi kesalahan: " + err.message);
+            }
+        }
+
+        async function downloadImage() {
+            if (!currentImgUrl) {
+                alert("Gambar belum tersedia!");
+                return;
+            }
+
+            const a = document.createElement('a');
+            a.href = currentImgUrl;
+            a.download = 'iqc_result.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+        
+        fetch('components/footer-ai.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        }).catch(err => console.log("Footer load error:", err));
     </script>
-  </head>
-  <body class="min-h-screen bg-dark-900 text-slate-300 font-sans" style="background-image: radial-gradient(circle at 15% 30%, rgba(0,242,254,.08), transparent 28%), radial-gradient(circle at 85% 70%, rgba(168,85,247,.08), transparent 28%);">
-    <main class="min-h-screen flex items-center justify-center px-4 py-12">
-      <section class="w-full max-w-2xl rounded-3xl border border-dark-700 bg-dark-800/90 p-8 text-center shadow-[0_0_40px_rgba(0,242,254,0.08)] backdrop-blur">
-        <a href="index.html" class="inline-flex items-center gap-2 text-[10px] font-tech uppercase tracking-[0.3em] text-neon-cyan hover:text-white"><i class="fas fa-arrow-left"></i> Kembali</a>
-        <div class="mx-auto my-8 flex h-20 w-20 items-center justify-center rounded-2xl border border-neon-cyan/30 bg-dark-900 text-4xl text-neon-cyan shadow-[0_0_24px_rgba(0,242,254,0.18)]"><i class="fas fa-wand-magic-sparkles"></i></div>
-        <p class="font-tech text-xs uppercase tracking-[0.35em] text-neon-purple">Generator</p>
-        <h1 class="mt-3 text-4xl font-tech font-bold uppercase text-white">IQC Generator</h1>
-  </body>
+
+    <script>
+      const canvas = document.getElementById('neural-bg');
+      const ctx = canvas.getContext('2d');
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
+      resizeCanvas();
+      const particlesArray = [];
+      const colors = ['#3AAFA9', '#2B7A78', '#17252A'];
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 1.5 + 0.5;
+          this.speedX = (Math.random() * 0.5) - 0.25;
+          this.speedY = (Math.random() * 0.5) - 0.25;
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+        }
+        update() {
+          this.x += this.speedX; this.y += this.speedY;
+          if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+        draw() {
+          ctx.fillStyle = this.color;
+          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+      function initNodes() {
+        particlesArray.length = 0;
+        let numberOfParticles = (canvas.height * canvas.width) / 9500;
+        if (numberOfParticles > 130) numberOfParticles = 130;
+        for (let i = 0; i < numberOfParticles; i++) { particlesArray.push(new Particle()); }
+      }
+      function animateNodes() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+          particlesArray[i].update();
+          particlesArray[i].draw();
+          for (let j = i; j < particlesArray.length; j++) {
+            const dx = particlesArray[i].x - particlesArray[j].x;
+            const dy = particlesArray[i].y - particlesArray[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 150) {
+              ctx.beginPath(); ctx.strokeStyle = particlesArray[i].color;
+              ctx.globalAlpha = 0.4 - (distance / 400);
+              ctx.lineWidth = 0.6; ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+              ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.globalAlpha = 1;
+            }
+          }
+        }
+        requestAnimationFrame(animateNodes);
+      }
+      window.onload = function() { initNodes(); animateNodes(); };
+    </script>
+</body>
 </html>
