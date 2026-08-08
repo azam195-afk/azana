@@ -139,7 +139,74 @@ async function downloadYouTube(url) {
 window.downloadYouTube = downloadYouTube;
 
 
-async function downloadSpotify(url) { return { url, status: "pending" }; }
+async function processFacebookDownload() {
+    const urlInput = document.getElementById('fb-url').value.trim();
+    const loadingBox = document.getElementById('loading-box');
+    const previewContainer = document.getElementById('preview-container');
+    const viewArea = document.getElementById('media-view-area');
+
+    if (!urlInput) {
+        alert('Masukkan link Facebook terlebih dahulu, bro!');
+        return;
+    }
+
+    loadingBox.classList.remove('hidden');
+    previewContainer.classList.add('hidden');
+
+    // 1. Coba cara langsung (Scraping/Parsing simpel)
+    try {
+        console.log("Mencoba mengambil data langsung...");
+        // Catatan: Ini butuh backend/proxy kalau kena CORS policy, 
+        // tapi kita coba fetch dulu ke endpoint scraper internal
+        const response = await fetch(`https://api.scraper.com/fb?url=${encodeURIComponent(urlInput)}`);
+        const result = await response.json();
+        
+        if (result.status === "success") {
+            tampilkanMedia(result);
+            return;
+        }
+    } catch (err) {
+        console.warn("Gagal ambil langsung, beralih ke Nexray API...");
+    }
+
+    // 2. Fallback ke Nexray API jika cara 1 gagal
+    try {
+        const response = await fetch(`https://api.nexray.eu.cc/downloader/facebook?url=${encodeURIComponent(urlInput)}`);
+        const result = await response.json();
+        
+        if (result && (result.status === true || result.url)) {
+            tampilkanMedia({
+                url_media: result.url || result.data?.url,
+                thumbnail: result.thumbnail || ''
+            });
+        } else {
+            throw new Error("Gagal mengambil data dari kedua sumber.");
+        }
+    } catch (err) {
+        loadingBox.classList.add('hidden');
+        alert("Yah, gagal mengambil video. Mungkin link-nya privat atau lagi gangguan server: " + err.message);
+    }
+}
+
+// Fungsi pembantu biar kodenya rapi
+function tampilkanMedia(data) {
+    const loadingBox = document.getElementById('loading-box');
+    const previewContainer = document.getElementById('preview-container');
+    const viewArea = document.getElementById('media-view-area');
+    
+    currentMediaUrl = data.url_media;
+    viewArea.innerHTML = `
+        <div class="p-4 text-center space-y-3">
+            <div class="rounded-xl overflow-hidden bg-black aspect-[16/9] max-h-[350px] mx-auto flex items-center justify-center">
+                <video src="${currentMediaUrl}" controls class="w-full h-full object-contain" poster="${data.thumbnail || ''}"></video>
+            </div>
+            <p class="text-xs text-slate-600 font-medium">Facebook Video / Reels</p>
+        </div>
+    `;
+    loadingBox.classList.add('hidden');
+    previewContainer.classList.remove('hidden');
+}
+
 function generateSertifikatLucu(payload = {}) { return { payload, status: "pending" }; }
 function generateBrat(payload = {}) { return { payload, status: "pending" }; }
 function generateIqc(payload = {}) { return { payload, status: "pending" }; }
