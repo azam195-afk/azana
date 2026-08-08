@@ -62,7 +62,7 @@
         box-shadow: 0 0 25px rgba(58, 175, 169, 0.6);
       }
     </style>
-    
+
     <script>
       tailwind.config = {
         theme: {
@@ -85,14 +85,19 @@
       }
     </script>
   </head>
-        <body class="text-slate-700 font-sans antialiased selection:bg-azana-teal selection:text-azana-white">
+  <body class="text-slate-700 font-sans antialiased selection:bg-azana-teal selection:text-azana-white">
 
     <div id="navbar"></div>
 
     <main>
+      <!-- HERO SECTION DENGAN BACKGROUND ANIMASI NEURAL -->
       <section id="beranda" class="bg-azana-light min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-azana-teal/10 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-azana-tealDark/10 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse delay-1000"></div>
+        
+        <!-- Canvas Efek Neural / Jaringan Bergerak -->
+        <canvas id="neural-bg" class="absolute inset-0 w-full h-full pointer-events-none opacity-40 z-0"></canvas>
+
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-azana-teal/10 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse z-0"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-azana-tealDark/10 rounded-full mix-blend-multiply filter blur-[100px] animate-pulse delay-1000 z-0"></div>
 
         <div class="max-w-5xl mx-auto text-center relative z-10 mt-10">
           <span class="inline-block py-1 px-4 rounded-full bg-azana-light border border-azana-teal/30 text-azana-tealDark text-sm font-semibold tracking-widest mb-6 backdrop-blur-sm shadow-[0_0_10px_rgba(58,175,169,0.15)]">
@@ -105,7 +110,7 @@
           <p class="text-lg md:text-xl text-slate-700 mb-10 max-w-3xl mx-auto font-light leading-relaxed">
             Kami hadir dengan teknologi dan kreativitas untuk memenuhi segala kebutuhan visual Anda. Dari perbaikan foto, desain grafis profesional, hingga editing video sinematik.
           </p>
-    
+          
           <div class="max-w-4xl mx-auto my-4 flex items-center gap-3" aria-label="Pembatas Studio Visual">
             <div class="h-[0.5px] flex-1 bg-gradient-to-r from-transparent via-azana-teal/60 to-azana-tealDark/30"></div>
             <div class="relative px-4 py-1.5 rounded-full bg-azana-light border border-azana-tealDark/30 shadow-[0_0_12px_rgba(58,175,169,0.12)] flex items-center justify-center">
@@ -552,8 +557,70 @@
       </div>
     </footer>
 
-    <!-- Script utama yang di-load asinkron setelah halaman interaktif -->
+    <!-- Script utama & Animasi Neural Background -->
     <script>
+      // Inisialisasi Animasi Neural Background
+      document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById('neural-bg');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+          canvas.width = canvas.parentElement.offsetWidth;
+          canvas.height = canvas.parentElement.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        let particles = [];
+        const particleCount = window.innerWidth < 768 ? 20 : 35;
+
+        for (let i = 0; i < particleCount; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: (Math.random() - 0.5) * 0.6,
+            radius: Math.random() * 1.5 + 1
+          });
+        }
+
+        function animateNeural() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#3AAFA9';
+          ctx.strokeStyle = '#3AAFA9';
+
+          particles.forEach((p, index) => {
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            for (let j = index + 1; j < particles.length; j++) {
+              let p2 = particles[j];
+              let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+              if (dist < 120) {
+                ctx.lineWidth = 0.4;
+                ctx.globalAlpha = 1 - (dist / 120);
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+              }
+            }
+          });
+          ctx.globalAlpha = 1.0;
+          requestAnimationFrame(animateNeural);
+        }
+
+        animateNeural();
+      });
+
       window.addEventListener('DOMContentLoaded', () => {
         fetch('components/navbar.html')
         .then(response => response.text())
@@ -575,7 +642,6 @@
           });
         }
 
-        // Lazy load Google AdSense setelah 3 detik agar tidak memblokir render utama
         setTimeout(() => {
           let adScript = document.createElement('script');
           adScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3077542320658858";
@@ -708,67 +774,6 @@
           initPortfolioSwiper();
         });
       });
-    </script>
-
-    <script>
-  const canvas = document.getElementById('neural-bg');
-  const ctx = canvas.getContext('2d');
-
-  function resizeCanvas() {
-    canvas.width = canvas.parentElement.offsetWidth;
-    canvas.height = canvas.parentElement.offsetHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  let particles = [];
-  const particleCount = window.innerWidth < 768 ? 20 : 40; // Lebih sedikit di HP agar ringan
-
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.8,
-      vy: (Math.random() - 0.5) * 0.8,
-      radius: Math.random() * 2 + 1
-    });
-  }
-
-  function animateNeural() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#3AAFA9';
-    ctx.strokeStyle = '#3AAFA9';
-
-    particles.forEach((p, index) => {
-      p.x += p.vx;
-      p.y += p.vy;
-
-      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Hubungkan garis antar titik terdekat
-      for (let j = index + 1; j < particles.length; j++) {
-        let p2 = particles[j];
-        let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-        if (dist < 100) {
-          ctx.lineWidth = 0.5;
-          ctx.globalAlpha = 1 - (dist / 100);
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.stroke();
-        }
-      }
-    });
-    ctx.globalAlpha = 1.0;
-    requestAnimationFrame(animateNeural);
-  }
-
-  animateNeural();
     </script>
   </body>
 </html>
