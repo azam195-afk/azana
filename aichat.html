@@ -6,6 +6,10 @@
     <title>AI Customer Service - Azana Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Panggil file konfigurasi API lu di sini -->
+    <script src="asset/js/api-config.js"></script>
+
     <style>
         * { box-sizing: border-box; }
         html, body { 
@@ -29,31 +33,23 @@
             pointer-events: none; 
             opacity: 0.6; 
         }
-        
-        /* Header tetap di atas */
-        header {
-            flex-shrink: 0;
-        }
-
-        /* Container chat dibuat flex murni agar bisa scroll dengan sempurna */
+        header { flex-shrink: 0; }
         .chat-container { 
             flex: 1 1 0%;
             min-height: 0;
             overflow-y: auto; 
-            padding: 20px 20px 100px 20px; 
+            padding: 20px 20px 90px 20px; 
             display: flex; 
             flex-direction: column; 
             gap: 15px; 
             scroll-behavior: smooth; 
         }
-        
         .bubble { max-width: 85%; padding: 12px 18px; border-radius: 20px; font-size: 12px; line-height: 1.6; position: relative; word-wrap: break-word; }
         .bubble-user { align-self: flex-end; background: linear-gradient(135deg, #3AAFA9, #2B7A78); color: white; border-bottom-right-radius: 5px; box-shadow: 0 4px 10px rgba(43, 122, 120, 0.2); }
         .bubble-ai { align-self: flex-start; background: #DEF2F1; color: #17252A; border: 1px solid #B7E4E1; border-bottom-left-radius: 5px; box-shadow: 0 4px 10px rgba(58, 175, 169, 0.1); }
-        
+        .bubble-ai p { margin: 0 0 8px 0; }
+        .bubble-ai p:last-child { margin-bottom: 0; }
         .ai-info { font-size: 9px; color: #2B7A78; margin-bottom: 4px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        
-        /* Area input di bawah dan flex-shrink 0 agar ukurannya tidak berubah */
         .input-area { 
             flex-shrink: 0;
             background: #FEFFFF; 
@@ -65,7 +61,6 @@
             z-index: 100; 
             box-shadow: 0 -5px 15px rgba(0,0,0,0.03); 
         }
-        .model-select { background: #DEF2F1; color: #2B7A78; border: 1px solid #B7E4E1; padding: 6px 12px; border-radius: 12px; font-size: 10px; font-weight: bold; outline: none; width: 100%; cursor: pointer; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.362%22%20height%3D%22292.362%22%3E%3Cpath%20fill%3D%22%232B7A78%22%20d%3D%22M287.694%2072.694a1.313%201.313%200%200%200-1.856%200L146.181%20214.356%204.525%2072.694a1.313%201.313%200%200%200-1.856%200%201.313%201.313%200%200%200%200%201.856l143.5%20143.5a1.313%201.313%200%200%200%201.856%200l143.5-143.5a1.313%201.313%200%200%200%200-1.856z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 10px top 55%; background-size: 8px auto; padding-right: 25px; }
         .main-input-row { display: flex; gap: 10px; }
         textarea { flex-grow: 1; background: white; border: 1px solid #B7E4E1; border-radius: 15px; padding: 10px 15px; font-size: 12px; color: #17252A; resize: none; height: 42px; line-height: 1.4; }
         textarea:focus { outline: none; border-color: #3AAFA9; }
@@ -76,28 +71,19 @@
 <body>
     <canvas id="neural-bg"></canvas>
 
-    <!-- Header -->
     <header class="p-4 flex items-center justify-between border-b border-slate-100 bg-[#FEFFFF]/90 backdrop-blur-sm z-10">
         <a href="index.html" class="text-[#2B7A78] hover:text-[#3AAFA9] transition flex items-center gap-2 text-sm font-semibold"><i class="fa-solid fa-arrow-left"></i> KEMBALI</a>
         <div class="text-center">
-            <span class="text-xs tracking-widest text-[#2B7A78] uppercase font-bold">AZANA ASSISTANT (CS)</span>
-            <div id="current-ai-display" class="text-[9px] text-slate-500 mt-0.5">Model: Alisia CS AI</div>
+            <span class="text-xs tracking-widest text-[#2B7A78] uppercase font-bold">ALISIA - AZANA CS</span>
+            <div class="text-[9px] text-slate-500 mt-0.5">Online • AI Powered by Gemini</div>
         </div>
         <div class="w-16"></div>
     </header>
 
-    <!-- Chat Area yang bisa di-scroll secara independen -->
     <div id="chat-container" class="chat-container"></div>
 
-    <!-- Input Area di bawah -->
     <div class="input-area">
-        <select id="ai-model-select" class="model-select" onchange="changeAiModel()">
-            <option value="alisia">Alisia (CS Ramah)</option>
-            <option value="chatgpt">ChatGPT (CS Profesional)</option>
-            <option value="gitagpt">Gita (CS Asisten)</option>
-            <option value="natalie">Natalie (CS Support)</option>
-        </select>
-        <div id="typing-indicator" class="typing-indicator">CS sedang mengetik...</div>
+        <div id="typing-indicator" class="typing-indicator">Alisia sedang mengetik...</div>
         <div class="main-input-row">
             <textarea id="chat-input" placeholder="Tanyakan sesuatu tentang Azana Tools..." onkeydown="handleKeyDown(event)"></textarea>
             <button class="send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
@@ -105,20 +91,23 @@
     </div>
 
     <script>
-        const aiModels = {
-            'alisia': { name: 'Alisia CS', endpoint: '/ai/alisia' },
-            'chatgpt': { name: 'ChatGPT CS', endpoint: '/ai/chatgpt' },
-            'gitagpt': { name: 'Gita CS', endpoint: '/ai/gitagpt' },
-            'natalie': { name: 'Natalie CS', endpoint: '/ai/Natalie' }
-        };
+        // Mengambil API Key Gemini dari file api-config.js
+        const GEMINI_API_KEY = window.AZANA_API_KEYS ? window.AZANA_API_KEYS.GEMINI_CS : "";
 
-        let currentModelKey = 'alisia', activeController = null;
-
-        const websiteContext = "Konteks Website: Azana Tools adalah platform web praktis buatan kreator untuk berbagai tools AI dan utilitas digital gratis, termasuk fitur AI Unblur Foto untuk menjernihkan gambar buram lewat link/proses online, dan ruang AI Chat interaktif dengan berbagai model pilihan. Panggil user dengan sebutan 'Sobat' atau 'Teman'. Jawab pertanyaan user dengan ramah, akurat, gunakan format baris baru (enter/nomor turun ke bawah) jika memberikan poin-poin penjelasan, langsung pada inti pembahasan seputar fitur web ini.";
+        // Instruksi & Pengetahuan mendalam tentang website Azana Tools
+        const systemInstruction = `Kamu adalah Alisia, Customer Service profesional dan ramah untuk website Azana Tools. 
+Panggil pengguna dengan sebutan 'Sobat'. 
+Berikut adalah informasi detail tentang website Azana Tools yang harus kamu ketahui:
+1. Azana Tools adalah platform web praktis yang menyediakan berbagai tools AI dan utilitas digital gratis.
+2. Fitur-fitur di Azana Tools:
+   - AI Unblur Foto: Untuk menjernihkan foto atau gambar yang buram secara online.
+   - Remove BG, Magic Eraser dan Tools Kreatif lainnya untuk mengedit gambar dan media.
+   - Ada juga tools downloader untuk mendownload dri berbagai platform seperti tiktok, Instagram, Facebook, dll
+Tugasmu: Jawab pertanyaan pengguna seputar web ini dengan akurat, ramah, to the point, dan gunakan format enter/nomor (1, 2, 3) jika memberikan langkah-langkah penggunaan. Jangan melenceng dari topik website.`;
 
         window.onload = () => {
             initNodes(); animateNodes();
-            appendAiMessage(aiModels.alisia.name, "Halo Sobat! Selamat datang di Azana Tools. Aku asisten virtual di sini, ada yang bisa aku bantu seputar fitur-fitur web ini?");
+            appendAiMessage("Alisia CS", "Halo Sobat! Selamat datang di Azana Tools. Ada yang bisa aku bantu seputar fitur-fitur di web ini?");
         };
 
         function appendAiMessage(sender, text) {
@@ -127,20 +116,8 @@
             wrapper.className = 'flex flex-col items-start w-full';
             
             const formattedText = text.replace(/\n/g, '<br>');
-
             wrapper.innerHTML = `<div class="ai-info"><i class="fa-solid fa-headset"></i> ${sender.toUpperCase()}</div><div class="bubble bubble-ai">${formattedText}</div>`;
             container.appendChild(wrapper);
-            container.scrollTop = container.scrollHeight;
-        }
-
-        function changeAiModel() {
-            if (activeController) activeController.abort();
-            currentModelKey = document.getElementById('ai-model-select').value;
-            const modelName = aiModels[currentModelKey].name;
-            document.getElementById('current-ai-display').textContent = `Model: ${modelName}`;
-            
-            const container = document.getElementById('chat-container');
-            container.innerHTML += `<div class="text-center text-[9px] text-slate-400 my-1 italic">Beralih ke ${modelName}</div>`;
             container.scrollTop = container.scrollHeight;
         }
 
@@ -148,32 +125,42 @@
             const input = document.getElementById('chat-input'), text = input.value.trim();
             if (!text) return;
 
+            if (!GEMINI_API_KEY) {
+                alert("API Key Gemini belum disetel di file asset/js/api-config.js!");
+                return;
+            }
+
             const container = document.getElementById('chat-container');
             container.innerHTML += `<div class="bubble bubble-user">${text}</div>`;
             input.value = '';
             container.scrollTop = container.scrollHeight;
             
             document.getElementById('typing-indicator').style.display = 'block';
-            activeController = new AbortController();
 
             try {
-                const promptFinal = `${websiteContext} Pertanyaan dari Sobat: "${text}". Berikan jawaban yang relevan, ramah, dan jika ada poin atau nomor gunakan baris baru (enter).`;
+                // Menggunakan endpoint Gemini API dengan system instruction
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [
+                            { role: "user", parts: [{ text: systemInstruction + "\n\nPertanyaan Sobat: " + text }] }
+                        ]
+                    })
+                });
 
-                const res = await fetch(`https://api.nexray.eu.cc${aiModels[currentModelKey].endpoint}?text=${encodeURIComponent(promptFinal)}`, { signal: activeController.signal });
-                const data = await res.json();
-                
+                const data = await response.json();
                 document.getElementById('typing-indicator').style.display = 'none';
-                
-                let reply = "Maaf Sobat, server sedang mengalami gangguan koneksi sebentar.";
-                if (data.status) {
-                    reply = typeof data.result === 'object' ? (data.result.text || JSON.stringify(data.result)) : data.result;
+
+                let reply = "Maaf Sobat, terjadi kendala saat memproses jawaban.";
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    reply = data.candidates[0].content.parts[0].text;
                 }
-                appendAiMessage(aiModels[currentModelKey].name, reply);
-            } catch (err) { 
-                if(err.name !== 'AbortError') {
-                    document.getElementById('typing-indicator').style.display = 'none';
-                    appendAiMessage(aiModels[currentModelKey].name, "Koneksi terganggu, silakan coba tanyakan kembali ya Sobat.");
-                } 
+
+                appendAiMessage("Alisia CS", reply);
+            } catch (err) {
+                document.getElementById('typing-indicator').style.display = 'none';
+                appendAiMessage("Alisia CS", "Koneksi terganggu, silakan coba tanyakan kembali ya Sobat.");
             }
         }
 
