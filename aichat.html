@@ -7,205 +7,38 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-color: #FEFFFF !important;
-            color: #17252A !important;
-            font-family: 'Inter', sans-serif;
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        #neural-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-        /* Modal Popup Overlay */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(23, 37, 42, 0.6);
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-        .modal-card {
-            background: #FEFFFF;
-            border: 1px solid rgba(58, 175, 169, 0.3);
-            box-shadow: 0 15px 35px rgba(58, 175, 169, 0.2);
-            border-radius: 24px;
-            padding: 24px;
-            width: 100%;
-            max-width: 320px;
-            text-align: center;
-        }
-        .chat-container {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-bottom: 90px;
-            scroll-behavior: smooth;
-        }
-        .bubble {
-            max-width: 80%;
-            padding: 12px 18px;
-            border-radius: 20px;
-            font-size: 12px;
-            line-height: 1.5;
-            position: relative;
-            word-wrap: break-word;
-        }
-        .bubble-user {
-            align-self: flex-end;
-            background: linear-gradient(135deg, #3AAFA9, #2B7A78);
-            color: white;
-            border-bottom-right-radius: 5px;
-            box-shadow: 0 4px 10px rgba(43, 122, 120, 0.2);
-        }
-        .bubble-ai {
-            align-self: flex-start;
-            background: #DEF2F1;
-            color: #17252A;
-            border: 1px solid #B7E4E1;
-            border-bottom-left-radius: 5px;
-            box-shadow: 0 4px 10px rgba(58, 175, 169, 0.1);
-        }
-        .ai-info {
-            font-size: 9px;
-            color: #2B7A78;
-            margin-bottom: 4px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: #FEFFFF;
-            padding: 12px 15px;
-            border-top: 1px solid #E0E0E0;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 100;
-        }
-        .top-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .model-select {
-            background: #DEF2F1;
-            color: #2B7A78;
-            border: 1px solid #B7E4E1;
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: bold;
-            outline: none;
-            width: 100%;
-            cursor: pointer;
-            appearance: none;
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.362%22%20height%3D%22292.362%22%3E%3Cpath%20fill%3D%22%232B7A78%22%20d%3D%22M287.694%2072.694a1.313%201.313%200%200%200-1.856%200L146.181%20214.356%204.525%2072.694a1.313%201.313%200%200%200-1.856%200%201.313%201.313%200%200%200%200%201.856l143.5%20143.5a1.313%201.313%200%200%200%201.856%200l143.5-143.5a1.313%201.313%200%200%200%200-1.856z%22%2F%3E%3C%2Fsvg%3E');
-            background-repeat: no-repeat;
-            background-position: right 10px top 55%;
-            background-size: 8px auto;
-            padding-right: 25px;
-        }
-        .model-select:focus {
-            border-color: #3AAFA9;
-        }
-        .main-input-row {
-            display: flex;
-            gap: 10px;
-        }
-        textarea {
-            flex-grow: 1;
-            background: white;
-            border: 1px solid #B7E4E1;
-            border-radius: 15px;
-            padding: 10px 15px;
-            font-size: 12px;
-            color: #17252A;
-            resize: none;
-            height: 42px;
-            line-height: 1.4;
-        }
-        textarea:focus {
-            outline: none;
-            border-color: #3AAFA9;
-        }
-        .send-btn {
-            background: linear-gradient(135deg, #3AAFA9, #2B7A78);
-            color: white;
-            border: none;
-            border-radius: 15px;
-            width: 42px;
-            height: 42px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .send-btn:hover {
-            opacity: 0.9;
-        }
-        .send-btn i {
-            font-size: 15px;
-        }
-        .typing-indicator {
-            font-size: 10px;
-            color: #A7A7A7;
-            margin-left: 5px;
-            display: none;
-            font-style: italic;
-        }
+        body { background-color: #FEFFFF !important; color: #17252A !important; font-family: 'Inter', sans-serif; height: 100vh; margin: 0; display: flex; flex-direction: column; overflow: hidden; }
+        #neural-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(23, 37, 42, 0.6); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal-card { background: #FEFFFF; border: 1px solid rgba(58, 175, 169, 0.3); box-shadow: 0 15px 35px rgba(58, 175, 169, 0.2); border-radius: 24px; padding: 24px; width: 100%; max-width: 320px; text-align: center; }
+        .chat-container { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 90px; scroll-behavior: smooth; }
+        .bubble { max-width: 80%; padding: 12px 18px; border-radius: 20px; font-size: 12px; line-height: 1.5; position: relative; word-wrap: break-word; }
+        .bubble-user { align-self: flex-end; background: linear-gradient(135deg, #3AAFA9, #2B7A78); color: white; border-bottom-right-radius: 5px; box-shadow: 0 4px 10px rgba(43, 122, 120, 0.2); }
+        .bubble-ai { align-self: flex-start; background: #DEF2F1; color: #17252A; border: 1px solid #B7E4E1; border-bottom-left-radius: 5px; box-shadow: 0 4px 10px rgba(58, 175, 169, 0.1); }
+        .ai-info { font-size: 9px; color: #2B7A78; margin-bottom: 4px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .input-area { position: fixed; bottom: 0; left: 0; width: 100%; background: #FEFFFF; padding: 12px 15px; border-top: 1px solid #E0E0E0; display: flex; flex-direction: column; gap: 8px; z-index: 100; }
+        .model-select { background: #DEF2F1; color: #2B7A78; border: 1px solid #B7E4E1; padding: 6px 12px; border-radius: 12px; font-size: 10px; font-weight: bold; outline: none; width: 100%; cursor: pointer; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.362%22%20height%3D%22292.362%22%3E%3Cpath%20fill%3D%22%232B7A78%22%20d%3D%22M287.694%2072.694a1.313%201.313%200%200%200-1.856%200L146.181%20214.356%204.525%2072.694a1.313%201.313%200%200%200-1.856%200%201.313%201.313%200%200%200%200%201.856l143.5%20143.5a1.313%201.313%200%200%200%201.856%200l143.5-143.5a1.313%201.313%200%200%200%200-1.856z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 10px top 55%; background-size: 8px auto; padding-right: 25px; }
+        .main-input-row { display: flex; gap: 10px; }
+        textarea { flex-grow: 1; background: white; border: 1px solid #B7E4E1; border-radius: 15px; padding: 10px 15px; font-size: 12px; color: #17252A; resize: none; height: 42px; line-height: 1.4; }
+        textarea:focus { outline: none; border-color: #3AAFA9; }
+        .send-btn { background: linear-gradient(135deg, #3AAFA9, #2B7A78); color: white; border: none; border-radius: 15px; width: 42px; height: 42px; cursor: pointer; transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; }
+        .typing-indicator { font-size: 10px; color: #A7A7A7; margin-left: 5px; display: none; font-style: italic; }
     </style>
 </head>
 <body class="flex flex-col h-screen relative">
-
     <canvas id="neural-bg"></canvas>
 
-    <!-- Modal Pop-up Nama -->
-    <div id="name-modal" class="modal-overlay">
+    <div id="name-modal" class="modal-overlay" style="display: none;">
         <div class="modal-card">
-            <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-[#DEF2F1] border border-[#3AAFA9]/40 flex items-center justify-center text-[#2B7A78] text-xl shadow-sm">
-                <i class="fa-solid fa-user-pen"></i>
-            </div>
+            <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-[#DEF2F1] border border-[#3AAFA9]/40 flex items-center justify-center text-[#2B7A78] text-xl shadow-sm"><i class="fa-solid fa-user-pen"></i></div>
             <h2 class="text-sm font-extrabold text-[#17252A] mb-1">KENALAN DULU YUK!</h2>
-            <p class="text-[11px] text-slate-500 mb-4">Masukkan nama panggilanmu agar AI bisa menyapamu.</p>
-            <input type="text" id="modal-name-input" placeholder="Ketik namamu di sini..." 
-                class="w-full bg-[#DEF2F1]/50 border border-[#B7E4E1] rounded-xl py-2.5 px-3 text-xs text-[#17252A] placeholder-slate-400 focus:outline-none focus:border-[#3AAFA9] mb-4 text-center font-semibold">
-            <button onclick="submitName()" class="w-full py-2.5 bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] text-white rounded-xl text-xs font-semibold shadow-md shadow-[#3AAFA9]/30 transition hover:opacity-90 cursor-pointer">
-                Mulai Chat <i class="fa-solid fa-arrow-right ml-1"></i>
-            </button>
+            <input type="text" id="modal-name-input" placeholder="Ketik namamu..." class="w-full bg-[#DEF2F1]/50 border border-[#B7E4E1] rounded-xl py-2.5 px-3 text-xs text-[#17252A] mb-4 text-center font-semibold">
+            <button onclick="submitName()" class="w-full py-2.5 bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] text-white rounded-xl text-xs font-semibold shadow-md shadow-[#3AAFA9]/30">Mulai Chat →</button>
         </div>
     </div>
 
     <header class="p-4 flex items-center justify-between border-b border-slate-100 relative z-10 bg-[#FEFFFF]/90 backdrop-blur-sm">
-        <a href="index.html" class="text-[#2B7A78] hover:text-[#3AAFA9] transition flex items-center gap-2 text-sm font-semibold">
-            <i class="fa-solid fa-arrow-left"></i> KEMBALI
-        </a>
+        <a href="index.html" class="text-[#2B7A78] hover:text-[#3AAFA9] transition flex items-center gap-2 text-sm font-semibold"><i class="fa-solid fa-arrow-left"></i> KEMBALI</a>
         <div class="text-center">
             <span class="text-xs tracking-widest text-[#2B7A78] uppercase font-bold">AI CHAT ROOM</span>
             <div id="current-ai-display" class="text-[9px] text-slate-500 mt-0.5">Model: Alisia AI</div>
@@ -213,25 +46,19 @@
         <div class="w-16"></div>
     </header>
 
-    <div id="chat-container" class="chat-container">
-        <!-- Chat akan dimulai setelah modal di-submit -->
-    </div>
+    <div id="chat-container" class="chat-container"></div>
 
     <div class="input-area">
-        <div class="top-controls">
-            <select id="ai-model-select" class="model-select" onchange="changeAiModel()">
-                <option value="alisia">Alisia AI (Cewek)</option>
-                <option value="chatgpt">ChatGPT (Netral)</option>
-                <option value="gitagpt">GitaGPT (Cewek)</option>
-                <option value="natalie">Natalie (Cewek)</option>
-            </select>
-        </div>
+        <select id="ai-model-select" class="model-select" onchange="changeAiModel()">
+            <option value="alisia">Alisia AI (Cewek)</option>
+            <option value="chatgpt">ChatGPT (Netral)</option>
+            <option value="gitagpt">GitaGPT (Cewek)</option>
+            <option value="natalie">Natalie (Cewek)</option>
+        </select>
         <div id="typing-indicator" class="typing-indicator">AI sedang mengetik...</div>
         <div class="main-input-row">
-            <textarea id="chat-input" placeholder="Ketik pesanmu di sini..." onkeydown="handleKeyDown(event)"></textarea>
-            <button class="send-btn" onclick="sendMessage()">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
+            <textarea id="chat-input" placeholder="Ketik pesan..." onkeydown="handleKeyDown(event)"></textarea>
+            <button class="send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
     </div>
 
@@ -243,208 +70,74 @@
             'natalie': { name: 'Natalie', endpoint: '/ai/Natalie' }
         };
 
-        let currentModelKey = 'alisia';
-        let userName = 'Sobat';
+        let currentModelKey = 'alisia', userName = '', activeController = null;
+
+        window.onload = () => {
+            initNodes(); animateNodes();
+            const savedName = localStorage.getItem('azana_user_name');
+            if (savedName) {
+                userName = savedName;
+                appendAiMessage(aiModels.alisia.name, `Halo ${userName}! Senang bertemu kembali.`);
+            } else {
+                document.getElementById('name-modal').style.display = 'flex';
+            }
+        };
 
         function submitName() {
             const inputVal = document.getElementById('modal-name-input').value.trim();
             if (inputVal) {
                 userName = inputVal;
-            }
-            // Tutup modal
-            document.getElementById('name-modal').style.display = 'none';
-
-            // Kirim sapaan awal dari AI menggunakan nama user
-            triggerInitialGreeting();
-        }
-
-        async function triggerInitialGreeting() {
-            const container = document.getElementById('chat-container');
-            const typingIndicator = document.getElementById('typing-indicator');
-            const model = aiModels[currentModelKey];
-
-            typingIndicator.style.display = 'block';
-
-            // Prompt sapaan awal ke AI
-            const greetingPrompt = `Sapa aku dengan nama ${userName}, ucapkan halo dan tanyakan apa yang bisa kamu bantu hari ini dengan gaya ramah.`;
-            const endpoint = `https://api.nexray.eu.cc${model.endpoint}?text=${encodeURIComponent(greetingPrompt)}`;
-
-            try {
-                const response = await fetch(endpoint);
-                if (!response.ok) throw new Error("Gagal memuat sapaan.");
-
-                const data = await response.json();
-                typingIndicator.style.display = 'none';
-
-                let aiResponseText = `Halo ${userName}! Ada yang bisa aku bantu hari ini?`;
-                if (data.status) {
-                    if (typeof data.result === 'object') {
-                        aiResponseText = data.result.text || JSON.stringify(data.result);
-                    } else if (typeof data.result === 'string') {
-                        aiResponseText = data.result;
-                    }
-                }
-
-                appendAiMessage(model.name, aiResponseText);
-            } catch (err) {
-                typingIndicator.style.display = 'none';
-                appendAiMessage(model.name, `Halo ${userName}! Ada yang bisa aku bantu hari ini?`);
+                localStorage.setItem('azana_user_name', userName);
+                document.getElementById('name-modal').style.display = 'none';
+                appendAiMessage(aiModels.alisia.name, `Halo ${userName}! Ada yang bisa aku bantu?`);
             }
         }
 
-        function appendAiMessage(senderName, text) {
+        function appendAiMessage(sender, text) {
             const container = document.getElementById('chat-container');
-            const aiWrapper = document.createElement('div');
-            aiWrapper.className = 'flex flex-col items-start';
-
-            const infoTag = document.createElement('div');
-            infoTag.className = 'ai-info';
-            infoTag.innerHTML = `<i class="fa-solid fa-robot"></i> ${senderName.toUpperCase()}`;
-
-            const aiBubble = document.createElement('div');
-            aiBubble.className = 'bubble bubble-ai';
-            aiBubble.textContent = text;
-
-            aiWrapper.appendChild(infoTag);
-            aiWrapper.appendChild(aiBubble);
-            container.appendChild(aiWrapper);
-            scrollToBottom();
-        }
-
-        function changeAiModel() {
-            currentModelKey = document.getElementById('ai-model-select').value;
-            const model = aiModels[currentModelKey];
-            document.getElementById('current-ai-display').textContent = `Model: ${model.name}`;
-            appendSystemMessage(`Beralih ke ${model.name}`);
-        }
-
-        function appendSystemMessage(text) {
-            const container = document.getElementById('chat-container');
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'text-center text-[9px] text-slate-400 my-1 italic';
-            msgDiv.textContent = text;
-            container.appendChild(msgDiv);
-            scrollToBottom();
-        }
-
-        function scrollToBottom() {
-            const container = document.getElementById('chat-container');
+            const wrapper = document.createElement('div');
+            wrapper.className = 'flex flex-col items-start';
+            wrapper.innerHTML = `<div class="ai-info"><i class="fa-solid fa-robot"></i> ${sender.toUpperCase()}</div><div class="bubble bubble-ai">${text}</div>`;
+            container.appendChild(wrapper);
             container.scrollTop = container.scrollHeight;
         }
 
-        function handleKeyDown(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
-            }
+        function changeAiModel() {
+            if (activeController) activeController.abort();
+            currentModelKey = document.getElementById('ai-model-select').value;
+            document.getElementById('current-ai-display').textContent = `Model: ${aiModels[currentModelKey].name}`;
         }
 
         async function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const typingIndicator = document.getElementById('typing-indicator');
-            const container = document.getElementById('chat-container');
-
-            const text = input.value.trim();
+            const input = document.getElementById('chat-input'), text = input.value.trim();
             if (!text) return;
-
-            // 1. Tampilkan pesan user
-            const userBubble = document.createElement('div');
-            userBubble.className = 'bubble bubble-user';
-            userBubble.textContent = text;
-            container.appendChild(userBubble);
+            const container = document.getElementById('chat-container');
+            container.innerHTML += `<div class="bubble bubble-user">${text}</div>`;
             input.value = '';
-            scrollToBottom();
-
-            // 2. Indikator mengetik
-            typingIndicator.style.display = 'block';
-
-            const contextualText = `Namaku ${userName}. ${text}`;
-            const model = aiModels[currentModelKey];
-            const endpoint = `https://api.nexray.eu.cc${model.endpoint}?text=${encodeURIComponent(contextualText)}`;
-
+            container.scrollTop = container.scrollHeight;
+            document.getElementById('typing-indicator').style.display = 'block';
+            activeController = new AbortController();
             try {
-                const response = await fetch(endpoint);
-                if (!response.ok) throw new Error("Gagal terhubung ke peladen AI.");
-
-                const data = await response.json();
-                typingIndicator.style.display = 'none';
-
-                if (data.status) {
-                    let aiResponseText = "Respon kosong.";
-                    if (typeof data.result === 'object') {
-                        aiResponseText = data.result.text || JSON.stringify(data.result);
-                    } else if (typeof data.result === 'string') {
-                        aiResponseText = data.result;
-                    }
-
-                    appendAiMessage(model.name, aiResponseText);
-                } else {
-                    throw new Error("API mengembalikan status salah.");
-                }
-            } catch (err) {
-                typingIndicator.style.display = 'none';
-                appendSystemMessage("Terjadi kesalahan: " + err.message);
-            }
-            scrollToBottom();
+                const res = await fetch(`https://api.nexray.eu.cc${aiModels[currentModelKey].endpoint}?text=${encodeURIComponent('Namaku ' + userName + '. ' + text)}`, { signal: activeController.signal });
+                const data = await res.json();
+                document.getElementById('typing-indicator').style.display = 'none';
+                appendAiMessage(aiModels[currentModelKey].name, data.result.text || data.result);
+            } catch (err) { if(err.name !== 'AbortError') document.getElementById('typing-indicator').style.display = 'none'; }
         }
+
+        function handleKeyDown(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
     </script>
-
-    <script>
-      const canvas = document.getElementById('neural-bg');
-      const ctx = canvas.getContext('2d');
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', () => { resizeCanvas(); initNodes(); });
-      resizeCanvas();
-      const particlesArray = [];
-      const colors = ['#3AAFA9', '#2B7A78', '#17252A'];
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 1.5 + 0.5;
-          this.speedX = (Math.random() * 0.5) - 0.25;
-          this.speedY = (Math.random() * 0.5) - 0.25;
-          this.color = colors[Math.floor(Math.random() * colors.length)];
+    <script> /* Neural Background Scripts */ 
+        const canvas = document.getElementById('neural-bg'), ctx = canvas.getContext('2d');
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+        const particles = Array.from({length: 80}, () => ({x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, vx: Math.random()-0.5, vy: Math.random()-0.5}));
+        function animateNodes() {
+            ctx.clearRect(0,0, canvas.width, canvas.height);
+            particles.forEach(p => { p.x += p.vx; p.y += p.vy; if(p.x<0||p.x>canvas.width) p.vx*=-1; if(p.y<0||p.y>canvas.height) p.vy*=-1; ctx.fillStyle='#3AAFA9'; ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill(); });
+            requestAnimationFrame(animateNodes);
         }
-        update() {
-          this.x += this.speedX; this.y += this.speedY;
-          if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-          if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-        }
-        draw() {
-          ctx.fillStyle = this.color;
-          ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-        }
-      }
-      function initNodes() {
-        particlesArray.length = 0;
-        let numberOfParticles = (canvas.height * canvas.width) / 15000;
-        if (numberOfParticles > 100) numberOfParticles = 100;
-        for (let i = 0; i < numberOfParticles; i++) { particlesArray.push(new Particle()); }
-      }
-      function animateNodes() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particlesArray.length; i++) {
-          particlesArray[i].update();
-          particlesArray[i].draw();
-          for (let j = i; j < particlesArray.length; j++) {
-            const dx = particlesArray[i].x - particlesArray[j].x;
-            const dy = particlesArray[i].y - particlesArray[j].y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 150) {
-              ctx.beginPath(); ctx.strokeStyle = particlesArray[i].color;
-              ctx.globalAlpha = 0.4 - (distance / 400);
-              ctx.lineWidth = 0.6; ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-              ctx.lineTo(particlesArray[j].x, particlesArray[j].y); ctx.stroke(); ctx.globalAlpha = 1;
-            }
-          }
-        }
-        requestAnimationFrame(animateNodes);
-      }
-      window.onload = function() { initNodes(); animateNodes(); };
+        animateNodes();
     </script>
 </body>
 </html>
