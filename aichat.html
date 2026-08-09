@@ -32,6 +32,7 @@
         <div class="modal-card">
             <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-[#DEF2F1] border border-[#3AAFA9]/40 flex items-center justify-center text-[#2B7A78] text-xl shadow-sm"><i class="fa-solid fa-user-pen"></i></div>
             <h2 class="text-sm font-extrabold text-[#17252A] mb-1">KENALAN DULU YUK!</h2>
+            <p class="text-[11px] text-slate-500 mb-4">Masukkan nama panggilanmu.</p>
             <input type="text" id="modal-name-input" placeholder="Ketik namamu..." class="w-full bg-[#DEF2F1]/50 border border-[#B7E4E1] rounded-xl py-2.5 px-3 text-xs text-[#17252A] mb-4 text-center font-semibold">
             <button onclick="submitName()" class="w-full py-2.5 bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] text-white rounded-xl text-xs font-semibold shadow-md shadow-[#3AAFA9]/30">Mulai Chat →</button>
         </div>
@@ -76,7 +77,7 @@
             initNodes(); animateNodes();
             const savedName = localStorage.getItem('azana_user_name');
             if (savedName) {
-                appendAiMessage(aiModels.alisia.name, `Halo ${savedName}! Senang bertemu kembali.`);
+                appendAiMessage(aiModels.alisia.name, `Halo ${savedName}! Senang bertemu kembali. Ada yang bisa dibantu?`);
             } else {
                 document.getElementById('name-modal').style.display = 'flex';
             }
@@ -87,7 +88,7 @@
             if (inputVal) {
                 localStorage.setItem('azana_user_name', inputVal);
                 document.getElementById('name-modal').style.display = 'none';
-                appendAiMessage(aiModels.alisia.name, `Halo ${inputVal}! Ada yang bisa aku bantu?`);
+                appendAiMessage(aiModels.alisia.name, `Halo ${inputVal}! Ada yang bisa aku bantu hari ini?`);
             }
         }
 
@@ -106,7 +107,6 @@
             const modelName = aiModels[currentModelKey].name;
             document.getElementById('current-ai-display').textContent = `Model: ${modelName}`;
             
-            // Info kecil waktu ganti model biar rapi
             const container = document.getElementById('chat-container');
             container.innerHTML += `<div class="text-center text-[9px] text-slate-400 my-1 italic">Beralih ke ${modelName}</div>`;
             container.scrollTop = container.scrollHeight;
@@ -116,7 +116,6 @@
             const input = document.getElementById('chat-input'), text = input.value.trim();
             if (!text) return;
 
-            // Selalu ambil nama terbaru langsung dari cache browser
             const currentUserName = localStorage.getItem('azana_user_name') || 'Sobat';
 
             const container = document.getElementById('chat-container');
@@ -128,14 +127,16 @@
             activeController = new AbortController();
 
             try {
-                // Paksa AI mengenali nama user di setiap pengiriman pesan
-                const promptFinal = `Panggil aku ${currentUserName}. ${text}`;
+                // Instruksi sistem biar AI lebih nyambung, singkat, dan tidak ceramah
+                const systemRule = `Jawab dengan singkat, santai, dan bahasa gaul. Panggil aku ${currentUserName}. Pesanku: `;
+                const promptFinal = systemRule + text;
+
                 const res = await fetch(`https://api.nexray.eu.cc${aiModels[currentModelKey].endpoint}?text=${encodeURIComponent(promptFinal)}`, { signal: activeController.signal });
                 const data = await res.json();
                 
                 document.getElementById('typing-indicator').style.display = 'none';
                 
-                let reply = "Respon kosong.";
+                let reply = "Duh, servernya lagi ngadat nih bro.";
                 if (data.status) {
                     reply = typeof data.result === 'object' ? (data.result.text || JSON.stringify(data.result)) : data.result;
                 }
@@ -143,6 +144,7 @@
             } catch (err) { 
                 if(err.name !== 'AbortError') {
                     document.getElementById('typing-indicator').style.display = 'none';
+                    appendAiMessage(aiModels[currentModelKey].name, "Koneksi terganggu, coba lagi ya.");
                 } 
             }
         }
