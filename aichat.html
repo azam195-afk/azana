@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Panggil file konfigurasi API lu (Sesuaikan path jika foldernya berbeda) -->
+    <!-- Panggil file konfigurasi API lu -->
     <script src="asset/js/api-config.js"></script>
 
     <style>
@@ -75,7 +75,7 @@
         <a href="index.html" class="text-[#2B7A78] hover:text-[#3AAFA9] transition flex items-center gap-2 text-sm font-semibold"><i class="fa-solid fa-arrow-left"></i> KEMBALI</a>
         <div class="text-center">
             <span class="text-xs tracking-widest text-[#2B7A78] uppercase font-bold">ALISIA - AZANA CS</span>
-            <div class="text-[9px] text-slate-500 mt-0.5">Online • AI Powered by Gemini</div>
+            <div class="text-[9px] text-slate-500 mt-0.5">Online • AI Powered by Mistral</div>
         </div>
         <div class="w-16"></div>
     </header>
@@ -91,30 +91,27 @@
     </div>
 
     <script>
-        // Mengambil API Key dari window.AZANA_API_KEYS di api-config.js
-        function getGeminiKey() {
-            if (window.AZANA_API_KEYS && window.AZANA_API_KEYS.GEMINI_API_KEY) {
-                return window.AZANA_API_KEYS.GEMINI_API_KEY;
+        // Mengambil API Key dari file api-config.js
+        function getMistralKey() {
+            if (window.AZANA_API_KEYS && window.AZANA_API_KEYS.MISTRAL_API_KEY) {
+                return window.AZANA_API_KEYS.MISTRAL_API_KEY;
             }
             return "";
         }
 
-        const systemInstruction = `Kamu adalah Alisia, Customer Service profesional dan ramah untuk website Azana Tools. 
-Panggil pengguna dengan sebutan 'Sobat'. 
-Berikut adalah informasi detail tentang website Azana Tools yang harus kamu ketahui:
-1. Azana Tools adalah platform web praktis yang menyediakan berbagai tools AI dan utilitas digital gratis.
-2. Fitur-fitur utama di Azana Tools:
-   - AI Unblur Foto: Untuk menjernihkan foto atau gambar yang buram secara online.
-   - AI Chat Room: Ruang obrolan interaktif dengan berbagai model asisten AI.
-   - Remove BG & Tools Kreatif lainnya untuk mengedit gambar dan media.
-Tugasmu: Jawab pertanyaan pengguna seputar web ini dengan akurat, ramah, to the point, dan gunakan format baris baru (enter/nomor) jika memberikan langkah-langkah penggunaan. Jangan melenceng dari topik website.`;
+        // Histori chat untuk menjaga memori percakapan dengan Mistral
+        let chatHistory = [
+            {
+                role: "system",
+                content: "Kamu adalah Alisia, Customer Service profesional dan ramah untuk website Azana Tools. Panggil pengguna dengan sebutan 'Sobat'. Informasi tentang Azana Tools: 1. Platform web penyedia tools AI dan utilitas digital gratis. 2. Fitur utama: AI Unblur Foto (menjernihkan foto buram), AI Chat Room (ruang obrolan berbagai model AI), serta tools kreatif lainnya. Jawab pertanyaan dengan akurat, ramah, to the point, dan gunakan format baris baru (enter/nomor) jika memberikan langkah-langkah."
+            }
+        ];
 
-        // Gabungan onload untuk Background dan Sapaan Awal
         window.onload = function() {
             initNodes(); 
             animateNodes();
             
-            // Sapaan sambutan otomatis tanpa perlu chat duluan
+            // Langsung tampilkan pesan sambutan lokal tanpa error
             appendAiMessage("Alisia CS", "Halo Sobat! Selamat datang di Azana Tools. Ada yang bisa aku bantu seputar fitur-fitur di web ini?");
         };
 
@@ -133,9 +130,9 @@ Tugasmu: Jawab pertanyaan pengguna seputar web ini dengan akurat, ramah, to the 
             const input = document.getElementById('chat-input'), text = input.value.trim();
             if (!text) return;
 
-            const apiKey = getGeminiKey();
+            const apiKey = getMistralKey();
             if (!apiKey) {
-                alert("API Key Gemini belum terbaca! Pastikan properti di api-config.js tertulis GEMINI_API_KEY.");
+                alert("Mistral API Key belum terbaca di api-config.js!");
                 return;
             }
 
@@ -146,14 +143,19 @@ Tugasmu: Jawab pertanyaan pengguna seputar web ini dengan akurat, ramah, to the 
             
             document.getElementById('typing-indicator').style.display = 'block';
 
+            // Masukkan pesan user ke histori
+            chatHistory.push({ role: "user", content: text });
+
             try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                const response = await fetch("https://api.mistral.ai/v1/chat/completions", {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
                     body: JSON.stringify({
-                        contents: [
-                            { role: "user", parts: [{ text: systemInstruction + "\n\nPertanyaan Sobat: " + text }] }
-                        ]
+                        model: "mistral-large-latest",
+                        messages: chatHistory
                     })
                 });
 
@@ -161,8 +163,10 @@ Tugasmu: Jawab pertanyaan pengguna seputar web ini dengan akurat, ramah, to the 
                 document.getElementById('typing-indicator').style.display = 'none';
 
                 let reply = "Maaf Sobat, terjadi kendala saat memproses jawaban.";
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    reply = data.candidates[0].content.parts[0].text;
+                if (data.choices && data.choices[0].message) {
+                    reply = data.choices[0].message.content;
+                    // Masukkan jawaban AI ke histori agar percakapan nyambung
+                    chatHistory.push({ role: "assistant", content: reply });
                 }
 
                 appendAiMessage("Alisia CS", reply);
@@ -175,7 +179,6 @@ Tugasmu: Jawab pertanyaan pengguna seputar web ini dengan akurat, ramah, to the 
         function handleKeyDown(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
     </script>
     <script>
-        // Script Neural Background yang aman
         const canvas = document.getElementById('neural-bg'), ctx = canvas.getContext('2d');
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas); resizeCanvas();
