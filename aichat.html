@@ -9,12 +9,22 @@
     <style>
         body { background-color: #FEFFFF !important; color: #17252A !important; font-family: 'Inter', sans-serif; height: 100vh; margin: 0; display: flex; flex-direction: column; overflow: hidden; }
         #neural-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
-        .chat-container { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 90px; scroll-behavior: smooth; }
-        .bubble { max-width: 80%; padding: 12px 18px; border-radius: 20px; font-size: 12px; line-height: 1.5; position: relative; word-wrap: break-word; }
+        
+        /* Area chat diperlebar padding bawahnya agar tidak tertutup input */
+        .chat-container { flex-grow: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 140px; scroll-behavior: smooth; }
+        
+        .bubble { max-width: 85%; padding: 12px 18px; border-radius: 20px; font-size: 12px; line-height: 1.6; position: relative; word-wrap: break-word; }
         .bubble-user { align-self: flex-end; background: linear-gradient(135deg, #3AAFA9, #2B7A78); color: white; border-bottom-right-radius: 5px; box-shadow: 0 4px 10px rgba(43, 122, 120, 0.2); }
         .bubble-ai { align-self: flex-start; background: #DEF2F1; color: #17252A; border: 1px solid #B7E4E1; border-bottom-left-radius: 5px; box-shadow: 0 4px 10px rgba(58, 175, 169, 0.1); }
+        
+        /* Mengatur agar teks bernomor/enter dari AI otomatis turun baris */
+        .bubble-ai p { margin: 0 0 8px 0; }
+        .bubble-ai p:last-child { margin-bottom: 0; }
+        
         .ai-info { font-size: 9px; color: #2B7A78; margin-bottom: 4px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .input-area { position: fixed; bottom: 0; left: 0; width: 100%; background: #FEFFFF; padding: 12px 15px; border-top: 1px solid #E0E0E0; display: flex; flex-direction: column; gap: 8px; z-index: 100; }
+        
+        /* Kotak input bawah diposisikan pas dan aman */
+        .input-area { position: fixed; bottom: 0; left: 0; width: 100%; background: #FEFFFF; padding: 12px 15px; border-top: 1px solid #E0E0E0; display: flex; flex-direction: column; gap: 8px; z-index: 100; box-shadow: 0 -5px 15px rgba(0,0,0,0.03); }
         .model-select { background: #DEF2F1; color: #2B7A78; border: 1px solid #B7E4E1; padding: 6px 12px; border-radius: 12px; font-size: 10px; font-weight: bold; outline: none; width: 100%; cursor: pointer; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.362%22%20height%3D%22292.362%22%3E%3Cpath%20fill%3D%22%232B7A78%22%20d%3D%22M287.694%2072.694a1.313%201.313%200%200%200-1.856%200L146.181%20214.356%204.525%2072.694a1.313%201.313%200%200%200-1.856%200%201.313%201.313%200%200%200%200%201.856l143.5%20143.5a1.313%201.313%200%200%200%201.856%200l143.5-143.5a1.313%201.313%200%200%200%200-1.856z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 10px top 55%; background-size: 8px auto; padding-right: 25px; }
         .main-input-row { display: flex; gap: 10px; }
         textarea { flex-grow: 1; background: white; border: 1px solid #B7E4E1; border-radius: 15px; padding: 10px 15px; font-size: 12px; color: #17252A; resize: none; height: 42px; line-height: 1.4; }
@@ -61,12 +71,10 @@
 
         let currentModelKey = 'alisia', activeController = null;
 
-        // Pengetahuan dasar tentang Website Azana Tools
-        const websiteContext = "Konteks Website: Azana Tools adalah platform web praktis buatan kreator untuk berbagai tools AI dan utilitas digital gratis, termasuk fitur AI Unblur Foto untuk menjernihkan gambar buram lewat link/proses online, dan ruang AI Chat interaktif dengan berbagai model pilihan. Panggil user dengan sebutan 'Sobat' atau 'Teman'. Jawab pertanyaan user dengan ramah, akurat, langsung pada inti pembahasan seputar fitur web ini, dan jangan melenceng.";
+        const websiteContext = "Konteks Website: Azana Tools adalah platform web praktis buatan kreator untuk berbagai tools AI dan utilitas digital gratis, termasuk fitur AI Unblur Foto untuk menjernihkan gambar buram lewat link/proses online, dan ruang AI Chat interaktif dengan berbagai model pilihan. Panggil user dengan sebutan 'Sobat' atau 'Teman'. Jawab pertanyaan user dengan ramah, akurat, gunakan format baris baru (enter/nomor turun ke bawah) jika memberikan poin-poin penjelasan, langsung pada inti pembahasan seputar fitur web ini.";
 
         window.onload = () => {
             initNodes(); animateNodes();
-            // Langsung sapa user sebagai CS
             appendAiMessage(aiModels.alisia.name, "Halo Sobat! Selamat datang di Azana Tools. Aku asisten virtual di sini, ada yang bisa aku bantu seputar fitur-fitur web ini?");
         };
 
@@ -74,7 +82,11 @@
             const container = document.getElementById('chat-container');
             const wrapper = document.createElement('div');
             wrapper.className = 'flex flex-col items-start';
-            wrapper.innerHTML = `<div class="ai-info"><i class="fa-solid fa-headset"></i> ${sender.toUpperCase()}</div><div class="bubble bubble-ai">${text}</div>`;
+            
+            // Format teks agar enter (\n) atau nomor urut otomatis turun baris
+            const formattedText = text.replace(/\n/g, '<br>');
+
+            wrapper.innerHTML = `<div class="ai-info"><i class="fa-solid fa-headset"></i> ${sender.toUpperCase()}</div><div class="bubble bubble-ai">${formattedText}</div>`;
             container.appendChild(wrapper);
             container.scrollTop = container.scrollHeight;
         }
@@ -103,8 +115,7 @@
             activeController = new AbortController();
 
             try {
-                // Menggabungkan konteks website agar AI tidak salah jawab atau melenceng
-                const promptFinal = `${websiteContext} Pertanyaan dari Sobat: "${text}". Berikan jawaban yang relevan, ramah, dan to the point.`;
+                const promptFinal = `${websiteContext} Pertanyaan dari Sobat: "${text}". Berikan jawaban yang relevan, ramah, dan jika ada poin atau nomor gunakan baris baru (enter).`;
 
                 const res = await fetch(`https://api.nexray.eu.cc${aiModels[currentModelKey].endpoint}?text=${encodeURIComponent(promptFinal)}`, { signal: activeController.signal });
                 const data = await res.json();
