@@ -27,6 +27,31 @@
             pointer-events: none;
             opacity: 0.6;
         }
+        /* Modal Popup Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(23, 37, 42, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-card {
+            background: #FEFFFF;
+            border: 1px solid rgba(58, 175, 169, 0.3);
+            box-shadow: 0 15px 35px rgba(58, 175, 169, 0.2);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
         .chat-container {
             flex-grow: 1;
             overflow-y: auto;
@@ -34,7 +59,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            padding-bottom: 120px; /* Space for input area */
+            padding-bottom: 90px;
             scroll-behavior: smooth;
         }
         .bubble {
@@ -87,36 +112,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
         }
-        .model-select, .name-input {
+        .model-select {
             background: #DEF2F1;
             color: #2B7A78;
             border: 1px solid #B7E4E1;
-            padding: 6px 10px;
-            border-radius: 10px;
+            padding: 6px 12px;
+            border-radius: 12px;
             font-size: 10px;
             font-weight: bold;
             outline: none;
-        }
-        .model-select {
-            flex-grow: 1;
+            width: 100%;
             cursor: pointer;
             appearance: none;
             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.362%22%20height%3D%22292.362%22%3E%3Cpath%20fill%3D%22%232B7A78%22%20d%3D%22M287.694%2072.694a1.313%201.313%200%200%200-1.856%200L146.181%20214.356%204.525%2072.694a1.313%201.313%200%200%200-1.856%200%201.313%201.313%200%200%200%200%201.856l143.5%20143.5a1.313%201.313%200%200%200%201.856%200l143.5-143.5a1.313%201.313%200%200%200%200-1.856z%22%2F%3E%3C%2Fsvg%3E');
             background-repeat: no-repeat;
-            background-position: right 8px top 55%;
+            background-position: right 10px top 55%;
             background-size: 8px auto;
             padding-right: 25px;
         }
-        .name-input {
-            width: 120px;
-        }
-        .name-input::placeholder {
-            color: #2B7A78;
-            opacity: 0.7;
-        }
-        .model-select:focus, .name-input:focus {
+        .model-select:focus {
             border-color: #3AAFA9;
         }
         .main-input-row {
@@ -171,6 +186,22 @@
 
     <canvas id="neural-bg"></canvas>
 
+    <!-- Modal Pop-up Nama -->
+    <div id="name-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-[#DEF2F1] border border-[#3AAFA9]/40 flex items-center justify-center text-[#2B7A78] text-xl shadow-sm">
+                <i class="fa-solid fa-user-pen"></i>
+            </div>
+            <h2 class="text-sm font-extrabold text-[#17252A] mb-1">KENALAN DULU YUK!</h2>
+            <p class="text-[11px] text-slate-500 mb-4">Masukkan nama panggilanmu agar AI bisa menyapamu.</p>
+            <input type="text" id="modal-name-input" placeholder="Ketik namamu di sini..." 
+                class="w-full bg-[#DEF2F1]/50 border border-[#B7E4E1] rounded-xl py-2.5 px-3 text-xs text-[#17252A] placeholder-slate-400 focus:outline-none focus:border-[#3AAFA9] mb-4 text-center font-semibold">
+            <button onclick="submitName()" class="w-full py-2.5 bg-gradient-to-r from-[#3AAFA9] to-[#2B7A78] text-white rounded-xl text-xs font-semibold shadow-md shadow-[#3AAFA9]/30 transition hover:opacity-90 cursor-pointer">
+                Mulai Chat <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+        </div>
+    </div>
+
     <header class="p-4 flex items-center justify-between border-b border-slate-100 relative z-10 bg-[#FEFFFF]/90 backdrop-blur-sm">
         <a href="index.html" class="text-[#2B7A78] hover:text-[#3AAFA9] transition flex items-center gap-2 text-sm font-semibold">
             <i class="fa-solid fa-arrow-left"></i> KEMBALI
@@ -183,16 +214,11 @@
     </header>
 
     <div id="chat-container" class="chat-container">
-        <!-- AI Greeting Bubble -->
-        <div class="flex flex-col items-start">
-            <div class="ai-info"><i class="fa-solid fa-robot"></i> ALISIA AI</div>
-            <div class="bubble bubble-ai">Halo! Ketik namamu di kolom atas, lalu sapa aku ya! 😊</div>
-        </div>
+        <!-- Chat akan dimulai setelah modal di-submit -->
     </div>
 
     <div class="input-area">
         <div class="top-controls">
-            <input type="text" id="user-name" class="name-input" placeholder="Namamu..." value="Sobat">
             <select id="ai-model-select" class="model-select" onchange="changeAiModel()">
                 <option value="alisia">Alisia AI (Cewek)</option>
                 <option value="chatgpt">ChatGPT (Netral)</option>
@@ -218,6 +244,72 @@
         };
 
         let currentModelKey = 'alisia';
+        let userName = 'Sobat';
+
+        function submitName() {
+            const inputVal = document.getElementById('modal-name-input').value.trim();
+            if (inputVal) {
+                userName = inputVal;
+            }
+            // Tutup modal
+            document.getElementById('name-modal').style.display = 'none';
+
+            // Kirim sapaan awal dari AI menggunakan nama user
+            triggerInitialGreeting();
+        }
+
+        async function triggerInitialGreeting() {
+            const container = document.getElementById('chat-container');
+            const typingIndicator = document.getElementById('typing-indicator');
+            const model = aiModels[currentModelKey];
+
+            typingIndicator.style.display = 'block';
+
+            // Prompt sapaan awal ke AI
+            const greetingPrompt = `Sapa aku dengan nama ${userName}, ucapkan halo dan tanyakan apa yang bisa kamu bantu hari ini dengan gaya ramah.`;
+            const endpoint = `https://api.nexray.eu.cc${model.endpoint}?text=${encodeURIComponent(greetingPrompt)}`;
+
+            try {
+                const response = await fetch(endpoint);
+                if (!response.ok) throw new Error("Gagal memuat sapaan.");
+
+                const data = await response.json();
+                typingIndicator.style.display = 'none';
+
+                let aiResponseText = `Halo ${userName}! Ada yang bisa aku bantu hari ini?`;
+                if (data.status) {
+                    if (typeof data.result === 'object') {
+                        aiResponseText = data.result.text || JSON.stringify(data.result);
+                    } else if (typeof data.result === 'string') {
+                        aiResponseText = data.result;
+                    }
+                }
+
+                appendAiMessage(model.name, aiResponseText);
+            } catch (err) {
+                typingIndicator.style.display = 'none';
+                appendAiMessage(model.name, `Halo ${userName}! Ada yang bisa aku bantu hari ini?`);
+            }
+        }
+
+        function appendAiMessage(senderName, text) {
+            const container = document.getElementById('chat-container');
+            const aiWrapper = document.createElement('div');
+            aiWrapper.className = 'flex flex-col items-start';
+
+            const infoTag = document.createElement('div');
+            infoTag.className = 'ai-info';
+            infoTag.innerHTML = `<i class="fa-solid fa-robot"></i> ${senderName.toUpperCase()}`;
+
+            const aiBubble = document.createElement('div');
+            aiBubble.className = 'bubble bubble-ai';
+            aiBubble.textContent = text;
+
+            aiWrapper.appendChild(infoTag);
+            aiWrapper.appendChild(aiBubble);
+            container.appendChild(aiWrapper);
+            scrollToBottom();
+        }
 
         function changeAiModel() {
             currentModelKey = document.getElementById('ai-model-select').value;
@@ -249,16 +341,13 @@
 
         async function sendMessage() {
             const input = document.getElementById('chat-input');
-            const nameInput = document.getElementById('user-name');
             const typingIndicator = document.getElementById('typing-indicator');
             const container = document.getElementById('chat-container');
 
             const text = input.value.trim();
-            const userName = nameInput.value.trim() || 'Sobat';
-
             if (!text) return;
 
-            // 1. Tampilkan pesan user ke layar
+            // 1. Tampilkan pesan user
             const userBubble = document.createElement('div');
             userBubble.className = 'bubble bubble-user';
             userBubble.textContent = text;
@@ -266,10 +355,9 @@
             input.value = '';
             scrollToBottom();
 
-            // 2. Munculkan indikator mengetik
+            // 2. Indikator mengetik
             typingIndicator.style.display = 'block';
 
-            // 3. Sisipkan nama user ke dalam prompt agar AI memanggil namanya
             const contextualText = `Namaku ${userName}. ${text}`;
             const model = aiModels[currentModelKey];
             const endpoint = `https://api.nexray.eu.cc${model.endpoint}?text=${encodeURIComponent(contextualText)}`;
@@ -289,20 +377,7 @@
                         aiResponseText = data.result;
                     }
 
-                    const aiWrapper = document.createElement('div');
-                    aiWrapper.className = 'flex flex-col items-start';
-
-                    const infoTag = document.createElement('div');
-                    infoTag.className = 'ai-info';
-                    infoTag.innerHTML = `<i class="fa-solid fa-robot"></i> ${model.name.toUpperCase()}`;
-
-                    const aiBubble = document.createElement('div');
-                    aiBubble.className = 'bubble bubble-ai';
-                    aiBubble.textContent = aiResponseText;
-
-                    aiWrapper.appendChild(infoTag);
-                    aiWrapper.appendChild(aiBubble);
-                    container.appendChild(aiWrapper);
+                    appendAiMessage(model.name, aiResponseText);
                 } else {
                     throw new Error("API mengembalikan status salah.");
                 }
