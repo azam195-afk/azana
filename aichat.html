@@ -70,14 +70,13 @@
             'natalie': { name: 'Natalie', endpoint: '/ai/Natalie' }
         };
 
-        let currentModelKey = 'alisia', userName = '', activeController = null;
+        let currentModelKey = 'alisia', activeController = null;
 
         window.onload = () => {
             initNodes(); animateNodes();
             const savedName = localStorage.getItem('azana_user_name');
             if (savedName) {
-                userName = savedName;
-                appendAiMessage(aiModels.alisia.name, `Halo ${userName}! Senang bertemu kembali.`);
+                appendAiMessage(aiModels.alisia.name, `Halo ${savedName}! Senang bertemu kembali.`);
             } else {
                 document.getElementById('name-modal').style.display = 'flex';
             }
@@ -86,10 +85,9 @@
         function submitName() {
             const inputVal = document.getElementById('modal-name-input').value.trim();
             if (inputVal) {
-                userName = inputVal;
-                localStorage.setItem('azana_user_name', userName);
+                localStorage.setItem('azana_user_name', inputVal);
                 document.getElementById('name-modal').style.display = 'none';
-                appendAiMessage(aiModels.alisia.name, `Halo ${userName}! Ada yang bisa aku bantu?`);
+                appendAiMessage(aiModels.alisia.name, `Halo ${inputVal}! Ada yang bisa aku bantu?`);
             }
         }
 
@@ -105,29 +103,53 @@
         function changeAiModel() {
             if (activeController) activeController.abort();
             currentModelKey = document.getElementById('ai-model-select').value;
-            document.getElementById('current-ai-display').textContent = `Model: ${aiModels[currentModelKey].name}`;
+            const modelName = aiModels[currentModelKey].name;
+            document.getElementById('current-ai-display').textContent = `Model: ${modelName}`;
+            
+            // Info kecil waktu ganti model biar rapi
+            const container = document.getElementById('chat-container');
+            container.innerHTML += `<div class="text-center text-[9px] text-slate-400 my-1 italic">Beralih ke ${modelName}</div>`;
+            container.scrollTop = container.scrollHeight;
         }
 
         async function sendMessage() {
             const input = document.getElementById('chat-input'), text = input.value.trim();
             if (!text) return;
+
+            // Selalu ambil nama terbaru langsung dari cache browser
+            const currentUserName = localStorage.getItem('azana_user_name') || 'Sobat';
+
             const container = document.getElementById('chat-container');
             container.innerHTML += `<div class="bubble bubble-user">${text}</div>`;
             input.value = '';
             container.scrollTop = container.scrollHeight;
+            
             document.getElementById('typing-indicator').style.display = 'block';
             activeController = new AbortController();
+
             try {
-                const res = await fetch(`https://api.nexray.eu.cc${aiModels[currentModelKey].endpoint}?text=${encodeURIComponent('Namaku ' + userName + '. ' + text)}`, { signal: activeController.signal });
+                // Paksa AI mengenali nama user di setiap pengiriman pesan
+                const promptFinal = `Panggil aku ${currentUserName}. ${text}`;
+                const res = await fetch(`https://api.nexray.eu.cc${aiModels[currentModelKey].endpoint}?text=${encodeURIComponent(promptFinal)}`, { signal: activeController.signal });
                 const data = await res.json();
+                
                 document.getElementById('typing-indicator').style.display = 'none';
-                appendAiMessage(aiModels[currentModelKey].name, data.result.text || data.result);
-            } catch (err) { if(err.name !== 'AbortError') document.getElementById('typing-indicator').style.display = 'none'; }
+                
+                let reply = "Respon kosong.";
+                if (data.status) {
+                    reply = typeof data.result === 'object' ? (data.result.text || JSON.stringify(data.result)) : data.result;
+                }
+                appendAiMessage(aiModels[currentModelKey].name, reply);
+            } catch (err) { 
+                if(err.name !== 'AbortError') {
+                    document.getElementById('typing-indicator').style.display = 'none';
+                } 
+            }
         }
 
         function handleKeyDown(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
     </script>
-    <script> /* Neural Background Scripts */ 
+    <script>
         const canvas = document.getElementById('neural-bg'), ctx = canvas.getContext('2d');
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas); resizeCanvas();
