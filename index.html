@@ -61,6 +61,10 @@
       .glow-button:hover {
         box-shadow: 0 0 25px rgba(58, 175, 169, 0.6);
       }
+  /* Menyembunyikan ikon balon chat bawaan Voiceflow */
+  .vfrc-launcher {
+    display: none !important;
+  }
     </style>
 
     <script>
@@ -788,36 +792,30 @@
       });
     </script>
 
-    <script>
-  // Tunda pemuatan Voiceflow selama 3 detik setelah web kebuka, 
-  // atau langsung muat kalau user nge-klik/scroll layar lebih cepet.
-  var voiceflowLoaded = false;
-  
-  function loadVoiceflowScript() {
-    if (voiceflowLoaded) return;
-    voiceflowLoaded = true;
-
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.async = true;
-    script.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
-    script.onload = function () {
+    <script type="text/javascript">
+  (function(d, t) {
+    var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+    v.onload = function() {
       window.voiceflow.chat.load({
         verify: { projectID: '6a703ca3c11516c4e40e120d' },
         url: 'https://general-runtime.voiceflow.com',
         voice: { url: 'https://runtime-api.voiceflow.com' }
       });
-    };
-    document.body.appendChild(script);
+    }
+    v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; v.async = true;
+    s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+
+<script>
+  function bukaChatAlisia() {
+    if (window.voiceflow && window.voiceflow.chat) {
+      window.voiceflow.chat.open();
+    } else {
+      alert("Alisia sedang memuat, coba sebentar lagi ya!");
+    }
   }
-
-  // Muat otomatis setelah 3 detik (biar HP gak berat pas awal render)
-  setTimeout(loadVoiceflowScript, 3000);
-
-  // Atau muat seketika kalau user scroll/sentuh layar
-  window.addEventListener('scroll', loadVoiceflowScript, { once: true });
-  window.addEventListener('mousemove', loadVoiceflowScript, { once: true });
-  window.addEventListener('touchstart', loadVoiceflowScript, { once: true });
-    </script>
+</script>
+    
   </body>
 </html>
