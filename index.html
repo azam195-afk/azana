@@ -789,8 +789,14 @@
     </script>
 
     <script>
-  // Script Voiceflow ditunda muatnya sampai user scroll atau interaksi, biar desktop nggak merah
-  window.addEventListener('scroll', function loadVoiceflow() {
+  // Tunda pemuatan Voiceflow selama 3 detik setelah web kebuka, 
+  // atau langsung muat kalau user nge-klik/scroll layar lebih cepet.
+  var voiceflowLoaded = false;
+  
+  function loadVoiceflowScript() {
+    if (voiceflowLoaded) return;
+    voiceflowLoaded = true;
+
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.async = true;
@@ -803,10 +809,15 @@
       });
     };
     document.body.appendChild(script);
-    
-    // Hapus event listener supaya cuma ke-load sekali
-    window.removeEventListener('scroll', loadVoiceflow);
-  }, { once: true });
+  }
+
+  // Muat otomatis setelah 3 detik (biar HP gak berat pas awal render)
+  setTimeout(loadVoiceflowScript, 3000);
+
+  // Atau muat seketika kalau user scroll/sentuh layar
+  window.addEventListener('scroll', loadVoiceflowScript, { once: true });
+  window.addEventListener('mousemove', loadVoiceflowScript, { once: true });
+  window.addEventListener('touchstart', loadVoiceflowScript, { once: true });
     </script>
   </body>
 </html>
