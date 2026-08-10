@@ -788,20 +788,25 @@
       });
     </script>
 
-    <script type="text/javascript">
-  (function(d, t) {
-      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-      v.onload = function() {
-        window.voiceflow.chat.load({
-          verify: { projectID: '6a783ca3c11516c4e48e120d' },
-          url: 'https://general-runtime.voiceflow.com',
-          voice: {
-            url: "https://runtime-api.voiceflow.com"
-          }
-        });
-      }
-      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-  })(document, 'script');
+    <script>
+  // Script Voiceflow ditunda muatnya sampai user scroll atau interaksi, biar desktop nggak merah
+  window.addEventListener('scroll', function loadVoiceflow() {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.async = true;
+    script.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
+    script.onload = function () {
+      window.voiceflow.chat.load({
+        verify: { projectID: '6a703ca3c11516c4e40e120d' },
+        url: 'https://general-runtime.voiceflow.com',
+        voice: { url: 'https://runtime-api.voiceflow.com' }
+      });
+    };
+    document.body.appendChild(script);
+    
+    // Hapus event listener supaya cuma ke-load sekali
+    window.removeEventListener('scroll', loadVoiceflow);
+  }, { once: true });
     </script>
   </body>
 </html>
