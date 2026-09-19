@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shawal FC - Open List Jersey V3 (Live Cloud)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        input.table-input {
+            background: transparent;
+            border: 1px dashed rgba(255,255,255,0.2);
+            width: 100%;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: inherit;
+        }
+        input.table-input:focus {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-3 md:p-6 flex flex-col items-center">
+
+    <div class="max-w-4xl w-full space-y-6">
+        
+        <!-- Header Info & Ketentuan -->
+        <div class="bg-emerald-950/40 border border-emerald-800/50 rounded-3xl p-5 md:p-6 shadow-xl relative overflow-hidden">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/30 uppercase tracking-wider">Official Squad V3</span>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-white mt-2 tracking-tight">OPEN LIST JERSEY SHAWAL FC V3</h1>
+                    <p class="text-xs text-slate-300 mt-1">Diutamakan untuk member / yang ada di grup Shawal FC. Bisa dicicil demi kelancaran bersama.</p>
+                </div>
+                <div class="flex flex-col gap-2 w-full md:w-auto">
+                    <button onclick="saveDataToCloud()" id="save-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl shadow-lg text-xs tracking-wide transition flex items-center justify-center gap-2">
+                        💾 SIMPAN KE CLOUD
+                    </button>
+                    <span id="sync-status" class="text-[10px] text-emerald-400 text-center font-medium">Status: Siap Sinkron</span>
+                </div>
+            </div>
+
+            <!-- Ketentuan Harga & Pembayaran -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5 pt-4 border-t border-emerald-800/40 text-xs text-slate-300">
+                <div>
+                    <p class="font-bold text-white mb-1">📌 Ketentuan Harga:</p>
+                    <ul class="list-disc list-inside space-y-0.5 text-slate-400">
+                        <li>Lengan Pendek: Rp 160.000</li>
+                        <li>Lengan Panjang: Rp 175.000</li>
+                        <li>Di atas ukuran XL: Tambah Rp 10.000</li>
+                    </ul>
+                </div>
+                <div>
+                    <p class="font-bold text-white mb-1">💳 Pembayaran & DP:</p>
+                    <p class="text-slate-400 mb-1">Wajib DP Rp 100.000 untuk naik produksi.</p>
+                    <p class="text-slate-400 font-mono text-[11px]">DANA: 085771049973 | Mandiri: 1670006757768 (Cash: Mas Kewel)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabel Goalkeeper (GK) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 md:p-6 shadow-xl space-y-3">
+            <div class="flex justify-between items-center">
+                <h2 class="text-sm md:text-base font-bold text-emerald-400 uppercase tracking-wider">⚽ Posisi: Goalkeeper (GK)</h2>
+                <button onclick="addRow('gk')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-700">+ Tambah GK</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+                        <tr>
+                            <th class="p-2.5 w-12 text-center">No</th>
+                            <th class="p-2.5">Tag Name</th>
+                            <th class="p-2.5 text-center w-24">No Punggung</th>
+                            <th class="p-2.5 text-center w-20">Ukuran</th>
+                            <th class="p-2.5">Nama Asli</th>
+                            <th class="p-2.5">Iuran / Keterangan</th>
+                            <th class="p-2.5 text-center w-16">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gk-tbody" class="divide-y divide-slate-800/60 text-slate-300"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabel Player -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 md:p-6 shadow-xl space-y-3">
+            <div class="flex justify-between items-center">
+                <h2 class="text-sm md:text-base font-bold text-emerald-400 uppercase tracking-wider">⚽ Posisi: Player</h2>
+                <button onclick="addRow('player')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-700">+ Tambah Player</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-950 text-slate-400 uppercase text-[10px] border-b border-slate-800">
+                        <tr>
+                            <th class="p-2.5 w-12 text-center">No</th>
+                            <th class="p-2.5">Tag Name</th>
+                            <th class="p-2.5 text-center w-24">No Punggung</th>
+                            <th class="p-2.5 text-center w-20">Ukuran</th>
+                            <th class="p-2.5">Nama Asli</th>
+                            <th class="p-2.5">Iuran / Keterangan</th>
+                            <th class="p-2.5 text-center w-16">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="player-tbody" class="divide-y divide-slate-800/60 text-slate-300"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bagian Sponsorship -->
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 md:p-6 shadow-xl space-y-2">
+            <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">🏆 Sponsorship</h2>
+            <ol class="list-decimal list-inside text-xs text-slate-300 space-y-1">
+                <li><strong>BROTHER BOYS</strong> (Mas Alan) - Depan</li>
+                <li><strong>BAKSO GEPENG</strong> (Mas Lahul) - Belakang</li>
+                <li><strong>SEMPOL FAMILY</strong> (Mas Mail) - Lengan</li>
+            </ol>
+        </div>
+
+        <div class="text-center text-[11px] text-slate-500 pb-6">
+            Shawal FC V3 &bull; Connected to JSONBin Cloud
+        </div>
+    </div>
+
+    <!-- Script Integrasi Cloud & Tabel Interaktif -->
+    <script>
+        // Kunci dan ID Cloud JSONBin yang sudah lu buat sebelumnya
+        const BIN_ID = "6ae6099ec621060572e42bc5";
+        const MASTER_KEY = "$2a$10$48xNQj8hLMhsZlJwntPfkOSMtvOfjwZLJaildqTMGYzfktnETndVO";
+
+        // Data awal default sesuai list lu
+        let appData = {
+            gk: [
+                { tag: "LIJUN", no: "96", size: "XL", realName: "IRFAN", note: "" },
+                { tag: "KRIWIL (Lengan Panjang)", no: "69", size: "XXL", realName: "Acil", note: "" },
+                { tag: "ZAKZ", no: "40", size: "L", realName: "zaki", note: "" }
+            ],
+            player: [
+                { tag: "L HILL", no: "10", size: "M", realName: "HILMI", note: "" },
+                { tag: "KEWELL", no: "12", size: "M", realName: "TADO", note: "" },
+                { tag: "KOSONG", no: "8", size: "M", realName: "TADO", note: "" },
+                { tag: "NUBICA", no: "19", size: "L", realName: "NAJIB", note: "" },
+                { tag: "KARENINA", no: "17", size: "M", realName: "MAP", note: "" },
+                { tag: "YAKHU", no: "9", size: "L", realName: "YARHAM", note: "" },
+                { tag: "YUMNA", no: "18", size: "L", realName: "mail", note: "" },
+                { tag: "YA UMRI", no: "99", size: "XL", realName: "nono", note: "" },
+                { tag: "SHEPIK", no: "21", size: "M", realName: "Syafiq", note: "" },
+                { tag: "88 (Lengan Panjang)", no: "", size: "XL", realName: "hamad", note: "" },
+                { tag: "RIN", no: "16", size: "L", realName: "hirin", note: "" },
+                { tag: "LANDUNG (Lengan Panjang)", no: "13", size: "L", realName: "lana", note: "" },
+                { tag: "AZANA", no: "63", size: "M", realName: "azam", note: "" },
+                { tag: "LHAM", no: "15", size: "M", realName: "ilham", note: "" },
+                { tag: "ICAENG", no: "24", size: "M", realName: "IHSAN", note: "" },
+                { tag: "A.LKMN", no: "6", size: "M", realName: "agil gans", note: "" },
+                { tag: "ATU'", no: "5", size: "M", realName: "andi", note: "" },
+                { tag: "petuL", no: "30", size: "L", realName: "", note: "" },
+                { tag: "nying nying", no: "32", size: "M", realName: "ajiz", note: "" },
+                { tag: "NMECHA", no: "22", size: "M", realName: "Alpin (Pendek)", note: "160✅" },
+                { tag: "RE' (Lengan Panjang)", no: "70", size: "M", realName: "", note: "" },
+                { tag: "HELENA", no: "26", size: "M", realName: "dedi (Pendek)", note: "" },
+                { tag: "KEENAN' ZIO", no: "31", size: "L", realName: "zaenal", note: "" },
+                { tag: "HANANIN", no: "79", size: "XXL", realName: "HIBAN", note: "" },
+                { tag: "TUYING AL'FARUQ", no: "90", size: "M", realName: "", note: "Lengan Panjang" },
+                { tag: "HAUZAAN", no: "26", size: "XL", realName: "", note: "Lengan Panjang" },
+                { tag: "geber", no: "89", size: "L", realName: "", note: "Lengan Pendek" },
+                { tag: "MR TATAK", no: "7", size: "L", realName: "nazin", note: "" },
+                { tag: "SYEM", no: "20", size: "L", realName: "", note: "Lengan Pendek" },
+                { tag: "TAKASHI", no: "11", size: "L", realName: "hirin", note: "Lengan Panjang" },
+                { tag: "soca", no: "23", size: "XL", realName: "abu", note: "Lengan Pendek" },
+                { tag: "N.UDD", no: "91", size: "L", realName: "udin", note: "Lengan Pendek" },
+                { tag: "AREYY", no: "29", size: "L", realName: "Arii", note: "Lengan Pendek" },
+                { tag: "ABAH YAYA", no: "57", size: "", realName: "Ust hasan", note: "Lengan Panjang" },
+                { tag: "VIIE", no: "4", size: "M", realName: "wafi", note: "" },
+                { tag: "CHAQIQI", no: "27", size: "M", realName: "khaqiqi", note: "" },
+                { tag: "TAMAA", no: "04", size: "L", realName: "ar&", note: "" },
+                { tag: "ARUMMAISHA", no: "06", size: "L", realName: "Reni", note: "Lengan Panjang" },
+                { tag: "Azmi", no: "25", size: "M", realName: "", note: "" },
+                { tag: "ALWY", no: "67", size: "L", realName: "tayem", note: "" },
+                { tag: "Rafael", no: "34", size: "L", realName: "", note: "Lengan Pendek" },
+                { tag: "BYANN", no: "27", size: "", realName: "ABYAN", note: "Lengan Pendek" },
+                { tag: "Setiawan", no: "37", size: "L", realName: "", note: "Lengan Pendek" },
+                { tag: "SATURN`", no: "14", size: "M", realName: "Yogi", note: "Lengan Pendek" },
+                { tag: "MAE", no: "151", size: "M", realName: "maesur", note: "Lengan Pendek" },
+                { tag: "halali", no: "2", size: "M", realName: "", note: "Lengan Pendek" },
+                { tag: "arabela", no: "2", size: "M", realName: "", note: "Lengan Panjang" },
+                { tag: "JIMIN", no: "28", size: "L", realName: "jiman", note: "" },
+                { tag: "DESSS", no: "39", size: "XXL", realName: "Nesta", note: "" },
+                { tag: "AKHID", no: "45", size: "", realName: "didi", note: "" },
+                { tag: "HABIBILLAH", no: "44", size: "XL", realName: "hekal", note: "" },
+                { tag: "AKYAS", no: "83", size: "M", realName: "pikri lut", note: "Lengan Panjang" },
+                { tag: "ANGGA", no: "27", size: "L", realName: "tamim", note: "" },
+                { tag: "ZAENN", no: "25", size: "XL", realName: "Mas ato", note: "" },
+                { tag: "BANG ZAE", no: "32", size: "L", realName: "jenul", note: "" },
+                { tag: "ell", no: "35", size: "M", realName: "khapid", note: "" },
+                { tag: "njulsky", no: "99", size: "", realName: "Nyusul", note: "" },
+                { tag: "MUQORROBIN", no: "86", size: "M", realName: "Robin", note: "" },
+                { tag: "KHMDI", no: "28", size: "S", realName: "Hamdi", note: "" },
+                { tag: "M.yamin", no: "27", size: "XL", realName: "misbah", note: "" },
+                { tag: "NAFAIS", no: "04", size: "S", realName: "daffa", note: "" },
+                { tag: "FAHRI", no: "21", size: "M", realName: "", note: "" },
+                { tag: "FAHMI", no: "11", size: "XL", realName: "", note: "" },
+                { tag: "ALDI", no: "36", size: "XL", realName: "", note: "" }
+            ]
+        };
+
+        // Fungsi Load Data dari Cloud saat halaman dibuka
+        async function loadDataFromCloud() {
+            const statusEl = document.getElementById('sync-status');
+            statusEl.innerText = "Memuat data dari cloud...";
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': MASTER_KEY }
+                });
+                const result = await response.json();
+                if (result && result.record && result.record.gk) {
+                    appData = result.record;
+                    statusEl.innerText = "Data sinkron dengan cloud ✅";
+                }
+            } catch (error) {
+                console.error("Gagal ambil data:", error);
+                statusEl.innerText = "Menggunakan data lokal (Offline)";
+            }
+            renderTables();
+        }
+
+        // Render tabel ke HTML
+        function renderTables() {
+            renderTbody('gk', appData.gk);
+            renderTbody('player', appData.player);
+        }
+
+        function renderTbody(type, list) {
+            const tbody = document.getElementById(`${type}-tbody`);
+            tbody.innerHTML = '';
+            list.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-800/40";
+                tr.innerHTML = `
+                    <td class="p-2.5 text-center text-slate-500 font-mono">${index + 1}</td>
+                    <td class="p-2.5"><input type="text" class="table-input" value="${item.tag || ''}" onchange="updateData('${type}', ${index}, 'tag', this.value)"></td>
+                    <td class="p-2.5 text-center"><input type="text" class="table-input text-center" value="${item.no || ''}" onchange="updateData('${type}', ${index}, 'no', this.value)"></td>
+                    <td class="p-2.5 text-center"><input type="text" class="table-input text-center uppercase" value="${item.size || ''}" onchange="updateData('${type}', ${index}, 'size', this.value)"></td>
+                    <td class="p-2.5"><input type="text" class="table-input" value="${item.realName || ''}" onchange="updateData('${type}', ${index}, 'realName', this.value)"></td>
+                    <td class="p-2.5"><input type="text" class="table-input" value="${item.note || ''}" onchange="updateData('${type}', ${index}, 'note', this.value)"></td>
+                    <td class="p-2.5 text-center">
+                        <button onclick="deleteRow('${type}', ${index})" class="text-red-400 hover:text-red-300 font-bold px-2 py-1 text-xs">✕</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Update nilai saat user mengetik
+        function updateData(type, index, field, value) {
+            appData[type][index][field] = value;
+            document.getElementById('sync-status').innerText = "Belum disimpan ⚠️";
+        }
+
+        // Tambah baris kosong baru
+        function addRow(type) {
+            appData[type].push({ tag: "", no: "", size: "", realName: "", note: "" });
+            renderTables();
+            document.getElementById('sync-status').innerText = "Baris baru ditambahkan (Belum disimpan) ⚠️";
+        }
+
+        // Hapus baris
+        function deleteRow(type, index) {
+            if(confirm("Hapus baris ini?")) {
+                appData[type].splice(index, 1);
+                renderTables();
+                document.getElementById('sync-status').innerText = "Data dihapus (Belum disimpan) ⚠️";
+            }
+        }
+
+        // Fungsi Simpan ke Cloud (JSONBin)
+        async function saveDataToCloud() {
+            const btn = document.getElementById('save-btn');
+            const statusEl = document.getElementById('sync-status');
+            btn.innerText = "MENYIMPAN...";
+            statusEl.innerText = "Mengirim data ke cloud...";
+            
+            try {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': MASTER_KEY
+                    },
+                    body: JSON.stringify(appData)
+                });
+                
+                if (response.ok) {
+                    btn.innerText = "💾 SIMPAN KE CLOUD";
+                    statusEl.innerText = "Berhasil disimpan! Semua orang kini melihat data terbaru ✅";
+                    alert("Data berhasil disimpan ke Cloud! Siapa pun yang buka link ini sekarang akan melihat data terbarunya.");
+                } else {
+                    throw new Error("Gagal menyimpan ke server");
+                }
+            } catch (error) {
+                console.error(error);
+                btn.innerText = "💾 SIMPAN KE CLOUD";
+                statusEl.innerText = "Gagal menyimpan, periksa koneksi ❌";
+                alert("Gagal menyimpan ke cloud. Coba lagi ya, cuy!");
+            }
+        }
+
+        // Jalankan saat pertama kali dibuka
+        loadDataFromCloud();
+    </script>
+</body>
+</html>
