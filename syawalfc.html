@@ -290,8 +290,9 @@
 </div>
 
 <script>
-    const BIN_ID = "6ae6099ec621060572e42bc5";
-    const MASTER_KEY = "$2a$10$48xNQj8hLMhsZlJwntPfkOSMtvOfjwZLJaildqTMGYzfktnETndVO";
+    // Konfigurasi Cloud JSONBin Sesuai Data Asli Lu
+    const BIN_ID = "6aae6819ffd5d16053190184";
+    const MASTER_KEY = "$2a$10$YVvkGX.Kv/zhwb28Wts8ReVFmBR24fq2t9LW9iX3wcAuwlBNKEsNG";
 
     let appData = {
         gk: [
@@ -443,7 +444,8 @@
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Master-Key': MASTER_KEY
+                    'X-Master-Key': MASTER_KEY,
+                    'X-Bin-Versioning': 'false'
                 },
                 body: JSON.stringify(appData)
             });
@@ -453,13 +455,15 @@
                 statusEl.innerText = "Status: Berhasil disimpan! Semua orang kini melihat data terbaru ✅";
                 alert("Data berhasil disimpan ke Cloud! Siapa pun yang membuka link ini sekarang akan melihat data terbarunya.");
             } else {
-                throw new Error("Gagal menyimpan");
+                const errData = await response.json();
+                console.error("JSONBin Error:", errData);
+                throw new Error("Gagal menyimpan dari server");
             }
         } catch (error) {
             console.error(error);
             btn.innerText = "💾 Simpan Data ke Cloud";
-            statusEl.innerText = "Status: Gagal menyimpan, periksa koneksi ❌";
-            alert("Gagal menyimpan ke cloud. Coba klik simpan sekali lagi ya, cuy!");
+            statusEl.innerText = "Status: Gagal menyimpan (Cek koneksi/API Key) ❌";
+            alert("Gagal menyimpan ke cloud. Pastikan Master Key dan Bin ID sudah benar.");
         }
     }
 
