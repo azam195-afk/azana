@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azana GameBoy - Offline Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        /* Tombol pilihan tetap rapat dan tidak melebar di layar HP. */
+        .game-select-btn { white-space: nowrap; }
+        @media (max-width: 420px) {
+            body { padding: 6px !important; }
+            .game-select-btn {
+                font-size: 8px;
+                padding: 8px 9px;
+                letter-spacing: 0;
+            }
+        }
+        body { font-family: 'Press Start 2P', monospace; background-color: #0b0f19; color: #fff; }
+        .retro-lcd {
+            background-color: #9ead86;
+            color: #2b3324;
+            border: 6px solid #4a523d;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .retro-cell {
+            border: 1px solid rgba(43, 51, 36, 0.12);
+        }
+        .retro-cell.filled {
+            background-color: #1f2618;
+            border: 1px solid #11150e;
+        }
+        .retro-cell.snake-head {
+            background-color: #1f2618;
+            border: 1px solid #11150e;
+        }
+        .retro-cell.snake-body {
+            background-color: #3a4a2a;
+            border: 1px solid #1f2618;
+        }
+        .retro-cell.food {
+            background-color: #4a2a2a;
+            border: 1px solid #2a1a1a;
+        }
+        .retro-cell.player {
+            background-color: #1f2618;
+            border: 1px solid #11150e;
+        }
+        .retro-cell.player-wing {
+            background-color: #2a3a1a;
+            border: 1px solid #1a2a0a;
+        }
+        .retro-cell.bullet {
+            background-color: #3a3a1a;
+            border: 1px solid #2a2a0a;
+        }
+        .retro-cell.enemy {
+            background-color: #4a1a1a;
+            border: 1px solid #2a0a0a;
+        }
+
+        /* Gaya D-Pad Salib Khas GameBoy Asli */
+        .dpad-container {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            flex: 0 0 140px;
+            background-color: #1e293b;
+            touch-action: manipulation;
+        }
+        .dpad-btn {
+            background-color: #111827;
+            border: 1px solid #334155;
+            position: absolute;
+            transition: background 0.1s;
+        }
+        .dpad-btn:active {
+            background-color: #030712;
+        }
+        .dpad-up { top: 0; left: 46px; width: 48px; height: 48px; border-radius: 8px 8px 0 0; }
+        .dpad-down { bottom: 0; left: 46px; width: 48px; height: 48px; border-radius: 0 0 8px 8px; }
+        .dpad-left { top: 46px; left: 0; width: 48px; height: 48px; border-radius: 8px 0 0 8px; }
+        .dpad-right { top: 46px; right: 0; width: 48px; height: 48px; border-radius: 0 8px 8px 0; }
+        .dpad-center { top: 46px; left: 46px; width: 48px; height: 48px; background-color: #1a2234; z-index: 10; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: inset 0 2px 4px rgba(0,0,0,0.6); }
+        .dpad-center::before { content: ''; width: 18px; height: 18px; border-radius: 50%; background-color: #ffffff; box-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
+        /* Tiga tombol pilih game di atas GameBoy */
+        .game-select-btn {
+            background: #334155;
+            border: 2px solid #1e293b;
+            color: #facc15;
+            font-size: 10px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+            letter-spacing: 1px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: inset 0 -3px 0 #0f172a;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        .game-select-btn.active {
+            background: #facc15;
+            color: #1e293b;
+            box-shadow: inset 0 -3px 0 #ca8a04;
+            border-color: #facc15;
+        }
+        .game-select-btn:active {
+            transform: scale(0.95);
+        }
+        .snake-mode-btn {
+            background: #334155;
+            border: 1px solid #1e293b;
+            color: #facc15;
+            font-size: 6px;
+            padding: 4px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: inset 0 -2px 0 #0f172a;
+            touch-action: manipulation;
+        }
+        .snake-mode-btn.active {
+            background: #facc15;
+            color: #1e293b;
+            border-color: #facc15;
+        }
+
+        /* Snake board luas dengan sel kecil agar ruang gerak lebih banyak */
+        #snake-board {
+            display: none;
+            grid-template-columns: repeat(16, 1fr);
+            grid-template-rows: repeat(16, 1fr);
+            width: 320px;
+            height: 320px;
+            max-width: 100%;
+            background-color: #8b9b75;
+            flex-shrink: 0;
+        }
+
+        /* Snake menampilkan skor, best, dan mode di bawah grid. */
+        #snake-hud { display: none !important; }
+        #lcd.snake-mode {
+            flex-direction: column;
+            justify-content: center !important;
+            align-items: center;
+            gap: 8px;
+        }
+        #lcd.snake-mode #snake-board {
+            order: 1;
+        }
+        #lcd.snake-mode #snake-hud {
+            display: flex !important;
+            position: static;
+            order: 2;
+            width: 320px;
+            max-width: 100%;
+            flex-shrink: 0;
+            padding: 0 4px;
+            align-items: center;
+        }
+        #lcd.snake-mode #snake-hud > div:first-child {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        #snake-board .retro-cell {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Shooter memakai arena lebih lebar dengan kotak lebih kecil */
+        #board {
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(20, 1fr);
+        }
+        #board.shooter-board {
+            grid-template-columns: repeat(16, 1fr);
+            grid-template-rows: repeat(24, 1fr);
+            width: 200px;
+            height: 336px;
+            max-width: 100%;
+        }
+        #side-panel.shooter-side-panel {
+            width: 88px;
+            margin-left: 8px;
+            padding-left: 0;
+            font-size: 8px;
+        }
+        #side-panel.shooter-side-panel #shooter-lives {
+            letter-spacing: 0;
+            font-size: 9px;
+        }
+
+        .game-over-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(158, 173, 134, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        @keyframes blink-enemy {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes blink-offline {
+            0%, 100% { opacity: 1; color: #ef4444; }
+            50% { opacity: 0.25; color: #991b1b; }
+        }
+
+        .offline-status {
+            color: #ef4444;
+            animation: blink-offline 1s steps(2, start) infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start p-1">
+
+    <!-- Three game-select buttons above the GameBoy -->
+    <div class="flex items-center justify-center gap-1 mb-1 mt-4 w-full flex-wrap">
+        <button id="game-btn-0" class="game-select-btn active" onclick="selectGame(0)">TETRIS</button>
+        <button id="game-btn-1" class="game-select-btn" onclick="selectGame(1)">SNAKE</button>
+        <button id="game-btn-2" class="game-select-btn" onclick="selectGame(2)">SHOOTER</button>
+    </div>
+
+    <div class="bg-[#1e293b] p-6 rounded-[40px] shadow-2xl border-4 border-slate-700 max-w-sm w-full flex flex-col items-center">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between w-full mb-3">
+            <h1 class="text-[10px] text-slate-400 tracking-widest uppercase font-bold">Azana GameBoy</h1>
+            <div class="space-y-1 text-[8px] text-slate-700 text-right">
+                <p class="offline-status">📶 OFFLINE</p>
+                <p id="sound-status">🔊 ON</p>
+            </div>
+        </div>
+
+        <!-- LCD Screen -->
+        <div id="lcd" class="retro-lcd p-3 rounded-2xl w-full flex mb-5 relative" style="min-height: 400px;">
+
+            <!-- Tetris Board (10x20) & Shooter Board (16x24) -->
+            <div id="board" class="grid grid-cols-10 gap-0 w-[180px] h-[360px] bg-[#8b9b75] flex-shrink-0"></div>
+
+            <!-- Snake Board (10x10, 1:1) — full height LCD -->
+            <div id="snake-board" class="grid grid-cols-10 gap-0 bg-[#8b9b75]"></div>
+
+            <!-- Score & Level mini di pojok kiri atas snake -->
+            <div id="snake-hud" class="hidden absolute top-2 left-3 text-[9px] z-20 flex items-start justify-between">
+                <div>
+                    <p class="text-slate-700">SKOR <span id="snake-score" class="font-bold">0</span></p>
+                    <p class="text-slate-700">BEST <span id="snake-best" class="font-bold">0</span></p>
+                </div>
+                <div class="flex gap-1 pr-1">
+                    <button id="snake-easy-btn" class="snake-mode-btn active" onclick="setSnakeMode('EASY')">EASY</button>
+                    <button id="snake-hard-btn" class="snake-mode-btn" onclick="setSnakeMode('HARD')">HARD</button>
+                </div>
+            </div>
+
+            <!-- Side panel (for Tetris) — with gap from grid -->
+            <div class="flex flex-col justify-between text-[9px] w-28 ml-4 pl-2" id="side-panel">
+                <div id="next-panel">
+                    <p class="text-slate-600 mb-1">NEXT</p>
+                    <div id="next-piece" class="grid grid-cols-4 gap-0 w-14 h-14 bg-[#8b9b75] p-1"></div>
+                </div>
+                <div>
+                    <p class="text-slate-600">SCORE</p>
+                    <p id="score" class="text-xs font-bold">0</p>
+                    <p class="text-slate-600 mt-1">BEST <span id="best-score" class="font-bold">0</span></p>
+                </div>
+                <div>
+                    <p class="text-slate-600">LEVEL</p>
+                    <p id="level" class="text-xs font-bold">1</p>
+                </div>
+                <div id="shooter-lives-panel" class="hidden">
+                    <p class="text-slate-600">NYAWA</p>
+                    <p id="shooter-lives" class="text-[10px] font-bold tracking-tight whitespace-nowrap">♥ ♥ ♥ ♥</p>
+                </div>
+            </div>
+
+            <!-- Ready overlay -->
+            <div id="ready-screen" class="game-over-overlay hidden">
+                <p class="text-sm font-bold text-[#2b3324] mb-2">READY?</p>
+                <p class="text-[8px] text-[#2b3324] mb-3">BEST: <span id="ready-best-score">0</span></p>
+                <button onclick="startGame()" class="bg-[#2b3324] text-[#9ead86] px-4 py-2 rounded text-[9px] font-bold shadow hover:bg-black">MULAI</button>
+            </div>
+
+            <!-- Game Over overlay -->
+            <div id="game-over-screen" class="game-over-overlay hidden">
+                <p class="text-sm font-bold text-red-900 mb-2 animate-pulse">GAME OVER</p>
+                <p class="text-[9px] text-[#2b3324] mb-1">SKOR: <span id="final-score">0</span></p>
+                <p class="text-[8px] text-[#2b3324] mb-3">BEST: <span id="final-best-score">0</span></p>
+                <button onclick="restartAfterGameOver()" class="bg-[#2b3324] text-[#9ead86] px-4 py-2 rounded text-[9px] font-bold shadow hover:bg-black">MAIN LAGI</button>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="w-full flex justify-between items-center px-2">
+            
+            <div class="dpad-container shadow-lg rounded-xl">
+                <button id="btn-up" class="dpad-btn dpad-up text-[10px] text-slate-400 flex items-center justify-center">▲</button>
+                <button id="btn-down" class="dpad-btn dpad-down text-[10px] text-slate-400 flex items-center justify-center" title="Bawah">▼</button>
+                <button id="btn-left" class="dpad-btn dpad-left text-[10px] text-slate-400 flex items-center justify-center">◀</button>
+                <button id="btn-right" class="dpad-btn dpad-right text-[10px] text-slate-400 flex items-center justify-center">▶</button>
+                <button id="btn-center" class="dpad-btn dpad-center" title="Aksi" aria-label="Aksi"></button>
+            </div>
+
+            <div class="flex flex-col space-y-2 items-end pr-1">
+                <div class="flex space-x-3">
+                    <div class="flex flex-col items-center">
+                        <button onclick="toggleSound()" class="w-12 h-12 bg-rose-700 hover:bg-rose-600 rounded-full shadow-lg border-2 border-rose-900 text-sm font-bold flex items-center justify-center text-white touch-manipulation">🔊</button>
+                        <span class="text-[8px] text-slate-400 mt-1 uppercase font-semibold">sound</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <button onclick="resetGame()" class="w-12 h-12 bg-amber-500 hover:bg-amber-400 rounded-full shadow-lg border-2 border-amber-700 text-sm font-bold flex items-center justify-center text-slate-950 touch-manipulation">🔄</button>
+                        <span class="text-[8px] text-slate-400 mt-1 uppercase font-semibold">reset</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ====== AUDIO ======
+        let audioCtx = null;
+        function playBeep(type) {
+            if (!soundOn) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = audioCtx.createOscillator();
+                let gain = audioCtx.createGain();
+                osc.type = 'square';
+                let now = audioCtx.currentTime;
+                if (type === 'move') { osc.frequency.setValueAtTime(300, now); gain.gain.setValueAtTime(0.05, now); osc.start(now); osc.stop(now + 0.04); }
+                else if (type === 'rotate') { osc.frequency.setValueAtTime(500, now); gain.gain.setValueAtTime(0.05, now); osc.start(now); osc.stop(now + 0.05); }
+                else if (type === 'drop') { osc.frequency.setValueAtTime(200, now); gain.gain.setValueAtTime(0.08, now); osc.start(now); osc.stop(now + 0.08); }
+                else if (type === 'clear') { osc.frequency.setValueAtTime(600, now); osc.frequency.setValueAtTime(900, now + 0.08); gain.gain.setValueAtTime(0.08, now); osc.start(now); osc.stop(now + 0.2); }
+                else if (type === 'gameover') { osc.frequency.setValueAtTime(400, now); osc.frequency.setValueAtTime(250, now + 0.15); osc.frequency.setValueAtTime(150, now + 0.3); gain.gain.setValueAtTime(0.1, now); osc.start(now); osc.stop(now + 0.5); }
+                else if (type === 'shoot') { osc.frequency.setValueAtTime(800, now); gain.gain.setValueAtTime(0.05, now); osc.start(now); osc.stop(now + 0.03); }
+                else if (type === 'hit') { osc.frequency.setValueAtTime(200, now); osc.frequency.setValueAtTime(100, now + 0.05); gain.gain.setValueAtTime(0.08, now); osc.start(now); osc.stop(now + 0.1); }
+                else if (type === 'eat') { osc.frequency.setValueAtTime(400, now); osc.frequency.setValueAtTime(600, now + 0.05); gain.gain.setValueAtTime(0.06, now); osc.start(now); osc.stop(now + 0.1); }
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+            } catch(e) {}
+        }
+
+        let soundOn = true;
+        function toggleSound() {
+            soundOn = !soundOn;
+            document.getElementById('sound-status').innerText = soundOn ? "🔊 ON" : "🔇 OFF";
+            playBeep('move');
+        }
+
+        // ====== GAME SELECT (3 tombol) ======
+        const GAMES = ['TETRIS', 'SNAKE', 'SHOOTER'];
+        let currentGameIndex = 0;
+        let currentGame = 'TETRIS';
+
+        function selectGame(index) {
+            // Update tombol active
+            document.querySelectorAll('.game-select-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            currentGameIndex = index;
+            currentGame = GAMES[index];
+            resetGame();
+        }
+
+        // ====== BOARD SETUP ======
+        const ROWS = 20;
+        const COLS = 10;
+        const SHOOTER_ROWS = 24;
+        const SHOOTER_COLS = 16;
+        const SNAKE_ROWS = 16;
+        const SNAKE_COLS = 16;
+        const boardContainer = document.getElementById('board');
+        const snakeBoardContainer = document.getElementById('snake-board');
+
+        function rebuildBoard(rows, cols) {
+            boardContainer.innerHTML = '';
+            boardContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            boardContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'retro-cell w-full h-full';
+                    cell.id = `cell-${r}-${c}`;
+                    boardContainer.appendChild(cell);
+                }
+            }
+        }
+        rebuildBoard(ROWS, COLS);
+
+        function rebuildSnakeBoard() {
+            snakeBoardContainer.innerHTML = '';
+            for (let r = 0; r < SNAKE_ROWS; r++) {
+                for (let c = 0; c < SNAKE_COLS; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'retro-cell w-full h-full';
+                    cell.id = `snake-cell-${r}-${c}`;
+                    snakeBoardContainer.appendChild(cell);
+                }
+            }
+        }
+        rebuildSnakeBoard();
+
+        // Next piece container
+        const nextEl = document.getElementById('next-piece');
+        function rebuildNext() {
+            nextEl.innerHTML = '';
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 4; c++) {
+                    const nCell = document.createElement('div');
+                    nCell.className = 'retro-cell w-full h-[14px]';
+                    nCell.id = `next-${r}-${c}`;
+                    nextEl.appendChild(nCell);
+                }
+            }
+        }
+        rebuildNext();
+
+        function clearBoardDisplay(rows = ROWS, cols = COLS) {
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const cell = document.getElementById(`cell-${r}-${c}`);
+                    if (cell) {
+                        cell.className = 'retro-cell w-full h-full';
+                    }
+                }
+            }
+        }
+
+        function clearSnakeBoardDisplay() {
+            for (let r = 0; r < SNAKE_ROWS; r++) {
+                for (let c = 0; c < SNAKE_COLS; c++) {
+                    const cell = document.getElementById(`snake-cell-${r}-${c}`);
+                    if (cell) {
+                        cell.className = 'retro-cell w-full h-full';
+                    }
+                }
+            }
+        }
+
+        function clearNextDisplay() {
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 4; c++) {
+                    const nCell = document.getElementById(`next-${r}-${c}`);
+                    if (nCell) nCell.className = 'retro-cell w-full h-[14px]';
+                }
+            }
+        }
+
+        function drawCell(r, c, className) {
+            const cell = document.getElementById(`cell-${r}-${c}`);
+            if (cell) {
+                cell.className = `retro-cell w-full h-full ${className}`;
+            }
+        }
+
+        function drawSnakeCell(r, c, className) {
+            const cell = document.getElementById(`snake-cell-${r}-${c}`);
+            if (cell) {
+                cell.className = `retro-cell w-full h-full ${className}`;
+            }
+        }
+
+        // ====== SHARED STATE ======
+        let isGameOver = false;
+        let gameTimer = null;
+        let score = 0;
+        let level = 1;
+        const BEST_SCORE_KEY = 'azana-gameboy-best-scores';
+
+        function getBestScores() {
+            try { return JSON.parse(localStorage.getItem(BEST_SCORE_KEY)) || {}; }
+            catch (e) { return {}; }
+        }
+
+        function getBestScore() {
+            return getBestScores()[currentGame] || 0;
+        }
+
+        function updateBestScoreDisplay() {
+            const best = getBestScore();
+            document.getElementById('best-score').innerText = best;
+            document.getElementById('ready-best-score').innerText = best;
+            document.getElementById('final-best-score').innerText = best;
+        }
+
+        // ====== TETRIS ======
+        const TETROMINOES = [
+            { name: 'I', color: 'filled', shape: [[1, 1, 1, 1]] },
+            { name: 'J', color: 'filled', shape: [[1, 0, 0], [1, 1, 1]] },
+            { name: 'L', color: 'filled', shape: [[0, 0, 1], [1, 1, 1]] },
+            { name: 'O', color: 'filled', shape: [[1, 1], [1, 1]] },
+            { name: 'S', color: 'filled', shape: [[0, 1, 1], [1, 1, 0]] },
+            { name: 'T', color: 'filled', shape: [[0, 1, 0], [1, 1, 1]] },
+            { name: 'Z', color: 'filled', shape: [[1, 1, 0], [0, 1, 1]] }
+        ];
+        let tetrisBoard = [];
+        let currentPiece = null;
+        let nextPiece = null;
+        let dropCounter = 0;
+        let lastTime = 0;
+        let tetrisFrameId = null;
+        let tetrisMoveHoldTimer = null;
+        let tetrisHeldDirection = null;
+
+        function stopTetrisMoveHold() {
+            if (tetrisMoveHoldTimer !== null) {
+                clearInterval(tetrisMoveHoldTimer);
+                tetrisMoveHoldTimer = null;
+            }
+            tetrisHeldDirection = null;
+        }
+
+        function startTetrisMoveHold(direction) {
+            stopTetrisMoveHold();
+            tetrisHeldDirection = direction;
+            moveTetris(direction);
+            tetrisMoveHoldTimer = setInterval(() => {
+                if (tetrisHeldDirection !== null) moveTetris(tetrisHeldDirection);
+            }, 120);
+        }
+
+        function createTetrisBoard() {
+            return Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+        }
+
+        function randomPiece() {
+            const source = TETROMINOES[Math.floor(Math.random() * TETROMINOES.length)];
+            return {
+                name: source.name,
+                color: source.color,
+                shape: source.shape.map(row => row.slice()),
+                x: Math.floor((COLS - source.shape[0].length) / 2),
+                y: 0
+            };
+        }
+
+        function rotateMatrix(matrix) {
+            return matrix[0].map((_, column) => matrix.map(row => row[column]).reverse());
+        }
+
+        function collides(piece, offsetX = 0, offsetY = 0, shape = piece.shape) {
+            return shape.some((row, y) => row.some((value, x) => {
+                if (!value) return false;
+                const boardX = piece.x + x + offsetX;
+                const boardY = piece.y + y + offsetY;
+                return boardX < 0 || boardX >= COLS || boardY >= ROWS ||
+                    (boardY >= 0 && tetrisBoard[boardY][boardX]);
+            }));
+        }
+
+        function drawTetris() {
+            clearBoardDisplay(ROWS, COLS);
+            tetrisBoard.forEach((row, y) => row.forEach((value, x) => {
+                if (value) drawCell(y, x, 'filled');
+            }));
+            if (!currentPiece) return;
+            currentPiece.shape.forEach((row, y) => row.forEach((value, x) => {
+                if (value && currentPiece.y + y >= 0) {
+                    drawCell(currentPiece.y + y, currentPiece.x + x, currentPiece.color);
+                }
+            }));
+        }
+
+        function drawNextPiece() {
+            clearNextDisplay();
+            if (!nextPiece) return;
+            nextPiece.shape.forEach((row, y) => row.forEach((value, x) => {
+                const cell = document.getElementById(`next-${y}-${x}`);
+                if (value && cell) cell.className = 'retro-cell w-full h-[14px] filled';
+            }));
+        }
+
+        function updateTetrisHud() {
+            document.getElementById('score').innerText = score;
+            document.getElementById('level').innerText = level;
+            updateBestScoreDisplay();
+        }
+
+        function moveTetris(dx) {
+            if (isGameOver || !currentPiece || currentGame !== 'TETRIS') return;
+            if (!collides(currentPiece, dx, 0)) {
+                currentPiece.x += dx;
+                playBeep('move');
+                drawTetris();
+            }
+        }
+
+        function rotateTetris() {
+            if (isGameOver || !currentPiece || currentGame !== 'TETRIS') return;
+            const rotated = rotateMatrix(currentPiece.shape);
+            for (const nudge of [0, -1, 1, -2, 2]) {
+                if (!collides(currentPiece, nudge, 0, rotated)) {
+                    currentPiece.x += nudge;
+                    currentPiece.shape = rotated;
+                    playBeep('rotate');
+                    drawTetris();
+                    return;
+                }
+            }
+        }
+
+        function dropTetris(manual = false) {
+            if (isGameOver || !currentPiece || currentGame !== 'TETRIS') return;
+            if (!collides(currentPiece, 0, 1)) {
+                currentPiece.y++;
+                if (manual) score++;
+            } else {
+                lockTetrisPiece();
+            }
+            dropCounter = 0;
+            updateTetrisHud();
+            drawTetris();
+        }
+
+        function lockTetrisPiece() {
+            currentPiece.shape.forEach((row, y) => row.forEach((value, x) => {
+                if (value && currentPiece.y + y >= 0) tetrisBoard[currentPiece.y + y][currentPiece.x + x] = 1;
+            }));
+            clearTetrisLines();
+            currentPiece = nextPiece || randomPiece();
+            nextPiece = randomPiece();
+            drawNextPiece();
+            if (collides(currentPiece)) endGame();
+            playBeep('drop');
+        }
+
+        function clearTetrisLines() {
+            let lines = 0;
+            tetrisBoard = tetrisBoard.filter(row => {
+                if (row.every(Boolean)) { lines++; return false; }
+                return true;
+            });
+            while (tetrisBoard.length < ROWS) tetrisBoard.unshift(Array(COLS).fill(0));
+            if (lines) {
+                // Skor hanya bertambah ketika baris benar-benar penuh dan pecah.
+                score += [0, 100, 300, 500, 800][lines] * level;
+                level = Math.floor(score / 1000) + 1;
+                updateTetrisHud();
+                playBeep('clear');
+            }
+        }
+
+        function restartTetrisTimer() {
+            if (tetrisFrameId !== null) {
+                cancelAnimationFrame(tetrisFrameId);
+                tetrisFrameId = null;
+            }
+            clearInterval(gameTimer);
+            gameTimer = null;
+        }
+
+        const BASE_DROP_INTERVAL = 1000; // 1000ms = kecepatan awal 100%
+
+        function getDropInterval() {
+            // Level 1 = 100%; setiap level membuat balok 3% lebih cepat.
+            return Math.max(120, BASE_DROP_INTERVAL / Math.pow(1.03, level - 1));
+        }
+
+        function tetrisLoop(time = 0) {
+            if (isGameOver || currentGame !== 'TETRIS') {
+                tetrisFrameId = null;
+                return;
+            }
+            if (time - lastTime >= getDropInterval()) {
+                dropTetris();
+                lastTime = time;
+            }
+            tetrisFrameId = requestAnimationFrame(tetrisLoop);
+        }
+
+        function startGame() {
+            document.getElementById('ready-screen').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.add('hidden');
+            if (currentGame === 'TETRIS') {
+                isGameOver = false;
+                tetrisBoard = createTetrisBoard();
+                score = 0;
+                level = 1;
+                currentPiece = randomPiece();
+                nextPiece = randomPiece();
+                updateTetrisHud();
+                drawNextPiece();
+                drawTetris();
+                restartTetrisTimer();
+                lastTime = performance.now();
+                tetrisFrameId = requestAnimationFrame(tetrisLoop);
+            } else if (currentGame === 'SNAKE') {
+                startSnake();
+            } else if (currentGame === 'SHOOTER') {
+                startShooter();
+            }
+        }
+
+        function endGame() {
+            if (isGameOver) return;
+            isGameOver = true;
+            restartTetrisTimer();
+            clearInterval(snakeTimer);
+            snakeTimer = null;
+            if (currentGame === 'SHOOTER') {
+                stopShooterLoop();
+                stopShooterMoveHolds();
+            }
+            const scores = getBestScores();
+            if (score > (scores[currentGame] || 0)) {
+                scores[currentGame] = score;
+                localStorage.setItem(BEST_SCORE_KEY, JSON.stringify(scores));
+            }
+            document.getElementById('final-score').innerText = score;
+            if (currentGame === 'SNAKE') updateSnakeHud();
+            else updateTetrisHud();
+            document.getElementById('game-over-screen').classList.remove('hidden');
+            playBeep('gameover');
+        }
+
+        // ====== SNAKE ======
+        let snake = [];
+        let snakeFood = { x: 8, y: 8 };
+        let snakeDirection = { x: 1, y: 0 };
+        let snakeNextDirection = { x: 1, y: 0 };
+        let snakeTimer = null;
+        let snakeMode = 'EASY';
+
+        function setSnakeMode(mode) {
+            snakeMode = mode;
+            document.getElementById('snake-easy-btn').classList.toggle('active', mode === 'EASY');
+            document.getElementById('snake-hard-btn').classList.toggle('active', mode === 'HARD');
+            if (currentGame === 'SNAKE' && !document.getElementById('ready-screen').classList.contains('hidden')) updateSnakeHud();
+        }
+
+        function randomSnakeFood() {
+            let food;
+            do {
+                food = { x: Math.floor(Math.random() * SNAKE_COLS), y: Math.floor(Math.random() * SNAKE_ROWS) };
+            } while (snake.some(part => part.x === food.x && part.y === food.y));
+            return food;
+        }
+
+        function updateSnakeHud() {
+            document.getElementById('snake-score').innerText = score;
+            document.getElementById('snake-best').innerText = getBestScore();
+            updateBestScoreDisplay();
+        }
+
+        function drawSnake() {
+            clearSnakeBoardDisplay();
+            snake.forEach((part, index) => drawSnakeCell(part.y, part.x, index === 0 ? 'snake-head' : 'snake-body'));
+            drawSnakeCell(snakeFood.y, snakeFood.x, 'food');
+        }
+
+        function setSnakeDirection(dx, dy) {
+            if (snakeDirection.x + dx === 0 && snakeDirection.y + dy === 0) return;
+            snakeNextDirection = { x: dx, y: dy };
+        }
+
+        function snakeStep() {
+            if (isGameOver || currentGame !== 'SNAKE') return;
+            snakeDirection = snakeNextDirection;
+            const head = snake[0];
+            let next = { x: head.x + snakeDirection.x, y: head.y + snakeDirection.y };
+            const hitWall = next.x < 0 || next.x >= SNAKE_COLS || next.y < 0 || next.y >= SNAKE_ROWS;
+            if (hitWall && snakeMode === 'EASY') {
+                next.x = (next.x + SNAKE_COLS) % SNAKE_COLS;
+                next.y = (next.y + SNAKE_ROWS) % SNAKE_ROWS;
+            }
+            const hitBody = snake.some(part => part.x === next.x && part.y === next.y);
+            if ((hitWall && snakeMode === 'HARD') || hitBody) { endGame(); return; }
+            snake.unshift(next);
+            if (next.x === snakeFood.x && next.y === snakeFood.y) {
+                score += 10;
+                level = Math.floor(score / 50) + 1;
+                snakeFood = randomSnakeFood();
+                playBeep('eat');
+                updateSnakeHud();
+                clearInterval(snakeTimer);
+                // Setiap makanan membuat ular 3% lebih cepat dari kecepatan awal.
+                snakeTimer = setInterval(snakeStep, Math.max(55, 260 / Math.pow(1.03, snake.length - 3)));
+            } else snake.pop();
+            drawSnake();
+        }
+
+        function initSnake() {
+            clearInterval(snakeTimer);
+            snake = [{ x: 7, y: 7 }, { x: 6, y: 7 }, { x: 5, y: 7 }];
+            snakeDirection = { x: 1, y: 0 };
+            snakeNextDirection = { x: 1, y: 0 };
+            snakeFood = randomSnakeFood();
+            score = 0;
+            level = 1;
+            isGameOver = false;
+            updateSnakeHud();
+            drawSnake();
+        }
+
+        function startSnake() {
+            document.getElementById('ready-screen').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.add('hidden');
+            initSnake();
+            snakeTimer = setInterval(snakeStep, 260);
+        }
+
+        // ====== SHOOTER ======
+        // Pesawat: bentuk 4 blok (1 depan, 3 belakang)
+        // Musuh: turun perlahan dari atas dan makin cepat tiap level
+        // Nyawa: 4, nabrak musuh -> -1 nyawa, nyawa 0 -> game over
+        // Tembak: spasi/center/tombol tengah -> peluru naik
+        // Score: setiap musuh kena tembak +10
+        let shooterPlayer = { x: 7, y: 20 }; // posisi kepala pesawat (blok depan)
+        const PLAYER_SHAPE = [[0,1,0],[1,1,1]]; // 1 blok depan, 3 blok belakang
+        let shooterBullets = [];
+        let shooterEnemies = [];
+        let shooterLives = 4;
+        let shooterHits = 0;
+        let shooterLoopId = null;
+        let shooterLastTime = 0;
+        let shooterEnemyTimer = 0;
+        let shooterDir = 0; // -1 kiri, 1 kanan, 0 diam
+        let shooterShooting = false;
+        let shooterShotCooldown = 0;
+        let shooterMoveTimer = 0;
+        let shooterVerticalMoveTimer = 0;
+        let shooterMoveDelay = 120;
+        let shooterHorizontalHoldTimer = null;
+        let shooterVerticalHoldTimer = null;
+        let shooterVerticalDir = 0;
+
+        function initShooter() {
+            shooterPlayer = { x: 7, y: 20 };
+            shooterBullets = [];
+            shooterEnemies = [];
+            shooterLives = 4;
+            shooterHits = 0;
+            shooterDir = 0;
+            shooterShooting = false;
+            shooterShotCooldown = 0;
+            shooterMoveTimer = 0;
+            shooterVerticalMoveTimer = 0;
+            shooterVerticalDir = 0;
+            stopShooterMoveHolds();
+            score = 0;
+            level = 1;
+            isGameOver = false;
+            shooterEnemyTimer = 0;
+            document.getElementById('shooter-lives').innerText = '♥ ♥ ♥ ♥';
+            updateTetrisHud();
+            drawShooter();
+        }
+
+        function spawnShooterEnemy() {
+            const x = Math.floor(Math.random() * (SHOOTER_COLS - 4)) + 2;
+            const y = 0;
+            shooterEnemies.push({ x, y, hp: 1 });
+        }
+
+        function drawShooter() {
+            clearBoardDisplay(SHOOTER_ROWS, SHOOTER_COLS);
+            // Gambar pesawat
+            const px = shooterPlayer.x;
+            const py = shooterPlayer.y;
+            // Baris 0 (depan): 1 blok di tengah
+            if (py >= 0 && py < SHOOTER_ROWS && px >= 0 && px < SHOOTER_COLS) {
+                drawCell(py, px, 'player');
+            }
+            // Baris 1 (belakang): tepat 3 blok
+            const sy = py + 1;
+            for (let dx = -1; dx <= 1; dx++) {
+                const cx = px + dx;
+                if (sy >= 0 && sy < SHOOTER_ROWS && cx >= 0 && cx < SHOOTER_COLS) {
+                    drawCell(sy, cx, 'player-wing');
+                }
+            }
+            // Gambar peluru
+            shooterBullets.forEach(b => {
+                if (b.y >= 0 && b.y < SHOOTER_ROWS && b.x >= 0 && b.x < SHOOTER_COLS) {
+                    drawCell(b.y, b.x, 'bullet');
+                }
+            });
+            // Gambar musuh (1 blok per musuh)
+            shooterEnemies.forEach(e => {
+                if (e.y >= 0 && e.y < SHOOTER_ROWS && e.x >= 0 && e.x < SHOOTER_COLS) {
+                    drawCell(e.y, e.x, 'enemy');
+                }
+            });
+        }
+
+        function updateShooter(dt) {
+            if (isGameOver || currentGame !== 'SHOOTER') return;
+
+            // Gerakan Shooter memakai interval yang sama: selalu tepat satu blok per langkah.
+
+            // Tembak otomatis jika tombol tembak ditahan (setiap ~300ms)
+            shooterShotCooldown -= dt;
+            if (shooterShooting && shooterShotCooldown <= 0) {
+                shooterBullets.push({ x: shooterPlayer.x, y: shooterPlayer.y - 1 });
+                shooterShotCooldown = 0.3;
+                playBeep('shoot');
+            }
+
+            // Gerak peluru ke atas
+            shooterBullets = shooterBullets.filter(b => {
+                b.y--;
+                return b.y >= 0;
+            });
+
+            // Spawn musuh berkala; awalnya lambat dan makin sering tiap level.
+            shooterEnemyTimer += dt;
+            const spawnInterval = Math.max(0.9, 2.4 - (level - 1) * 0.08);
+            if (shooterEnemyTimer >= spawnInterval && shooterEnemies.length < 6) {
+                shooterEnemyTimer = 0;
+                spawnShooterEnemy();
+            }
+
+            // Musuh turun berdasarkan waktu, bukan setiap frame.
+            // Level 1 = 100%; setiap level berikutnya membuat musuh 3% lebih cepat.
+            const enemyStepInterval = Math.max(0.16, 0.9 / Math.pow(1.03, level - 1));
+            shooterEnemies.forEach(e => {
+                e.dropTimer = (e.dropTimer || 0) + dt;
+                while (e.dropTimer >= enemyStepInterval) {
+                    e.dropTimer -= enemyStepInterval;
+                    e.y++;
+                }
+            });
+
+            // Deteksi tabrakan peluru dengan musuh
+            let hitScore = 0;
+            let hitCount = 0;
+            shooterBullets = shooterBullets.filter(b => {
+                let hit = false;
+                shooterEnemies = shooterEnemies.filter(e => {
+                    if (b.x === e.x && b.y === e.y) {
+                        hit = true;
+                        hitCount++;
+                        hitScore += 10;
+                        return false; // musuh mati
+                    }
+                    return true;
+                });
+                return !hit;
+            });
+            if (hitScore) {
+                score += hitScore;
+                shooterHits += hitCount;
+                // Setiap 4 target yang ditembak menaikkan satu level.
+                level = Math.floor(shooterHits / 4) + 1;
+                updateTetrisHud();
+                playBeep('hit');
+            }
+
+            // Deteksi tabrakan pesawat dengan musuh
+            shooterEnemies = shooterEnemies.filter(e => {
+                const py = shooterPlayer.y;
+                const px = shooterPlayer.x;
+                // Area pesawat: baris py (1 blok) dan py+1 (3 blok dari px-1 sampai px+1)
+                const playerCells = [];
+                playerCells.push([py, px]);
+                for (let dx = -1; dx <= 1; dx++) playerCells.push([py + 1, px + dx]);
+                // Cek apakah posisi musuh (e.y, e.x) ada di playerCells
+                const collided = playerCells.some(([r, c]) => r === e.y && c === e.x);
+                if (collided) {
+                    shooterLives--;
+                    const hearts = '♥ '.repeat(Math.max(0, shooterLives)).trim();
+                    document.getElementById('shooter-lives').innerText = hearts || '♥ ♥ ♥ ♥';
+                    playBeep('hit');
+                    if (shooterLives <= 0) {
+                        endGame();
+                    }
+                    return false; // musuh hilang setelah nabrak
+                }
+                return true;
+            });
+
+            // Hapus musuh yang sudah di bawah
+            shooterEnemies = shooterEnemies.filter(e => e.y < SHOOTER_ROWS - 1);
+
+            drawShooter();
+        }
+
+        function shooterLoop(time = 0) {
+            if (isGameOver || currentGame !== 'SHOOTER') {
+                shooterLoopId = null;
+                return;
+            }
+            const dt = (time - shooterLastTime) / 1000;
+            shooterLastTime = time;
+            updateShooter(dt);
+            shooterLoopId = requestAnimationFrame(shooterLoop);
+        }
+
+        function startShooter() {
+            document.getElementById('ready-screen').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.add('hidden');
+            initShooter();
+            shooterLastTime = performance.now();
+            shooterLoopId = requestAnimationFrame(shooterLoop);
+        }
+
+        function stopShooterLoop() {
+            if (shooterLoopId) {
+                cancelAnimationFrame(shooterLoopId);
+                shooterLoopId = null;
+            }
+        }
+
+        function moveShooterHorizontal(direction) {
+            if (currentGame !== 'SHOOTER' || isGameOver) return;
+            const nextX = shooterPlayer.x + direction;
+            if (nextX >= 1 && nextX <= SHOOTER_COLS - 2) {
+                shooterPlayer.x = nextX;
+                drawShooter();
+            }
+        }
+
+        function moveShooterVertical(direction) {
+            if (currentGame !== 'SHOOTER' || isGameOver) return;
+            const nextY = shooterPlayer.y + direction;
+            if (nextY >= 1 && nextY <= SHOOTER_ROWS - 3) {
+                shooterPlayer.y = nextY;
+                drawShooter();
+            }
+        }
+
+        function stopShooterMoveHolds() {
+            clearInterval(shooterHorizontalHoldTimer);
+            clearInterval(shooterVerticalHoldTimer);
+            shooterHorizontalHoldTimer = null;
+            shooterVerticalHoldTimer = null;
+            shooterDir = 0;
+            shooterVerticalDir = 0;
+        }
+
+        function shooterMoveLeft(active) {
+            if (active) {
+                shooterDir = -1;
+                moveShooterHorizontal(-1);
+                clearInterval(shooterHorizontalHoldTimer);
+                shooterHorizontalHoldTimer = setInterval(() => moveShooterHorizontal(-1), shooterMoveDelay);
+            } else if (shooterDir === -1) {
+                clearInterval(shooterHorizontalHoldTimer);
+                shooterHorizontalHoldTimer = null;
+                shooterDir = 0;
+            }
+        }
+        function shooterMoveRight(active) {
+            if (active) {
+                shooterDir = 1;
+                moveShooterHorizontal(1);
+                clearInterval(shooterHorizontalHoldTimer);
+                shooterHorizontalHoldTimer = setInterval(() => moveShooterHorizontal(1), shooterMoveDelay);
+            } else if (shooterDir === 1) {
+                clearInterval(shooterHorizontalHoldTimer);
+                shooterHorizontalHoldTimer = null;
+                shooterDir = 0;
+            }
+        }
+        function shooterMoveVertical(dy, active) {
+            if (currentGame !== 'SHOOTER' || isGameOver) return;
+            if (active) {
+                shooterVerticalDir = dy;
+                moveShooterVertical(dy);
+                clearInterval(shooterVerticalHoldTimer);
+                shooterVerticalHoldTimer = setInterval(() => moveShooterVertical(dy), shooterMoveDelay);
+            } else if (shooterVerticalDir === dy) {
+                clearInterval(shooterVerticalHoldTimer);
+                shooterVerticalHoldTimer = null;
+                shooterVerticalDir = 0;
+            }
+        }
+        function shooterShoot(active) {
+            shooterShooting = active;
+        }
+
+        function restartAfterGameOver() {
+            document.getElementById('ready-screen').classList.add('hidden');
+            document.getElementById('game-over-screen').classList.add('hidden');
+            if (currentGame === 'TETRIS') {
+                startGame();
+            } else if (currentGame === 'SNAKE') {
+                startSnake();
+            } else {
+                startShooter();
+            }
+        }
+
+        function resetGame() {
+            restartTetrisTimer();
+            stopTetrisMoveHold();
+            stopShooterLoop();
+            isGameOver = false;
+            score = 0;
+            level = 1;
+            currentPiece = null;
+            nextPiece = null;
+            shooterEnemies = [];
+            shooterBullets = [];
+            stopShooterMoveHolds();
+            shooterShooting = false;
+            tetrisBoard = createTetrisBoard();
+            document.getElementById('board').classList.remove('shooter-board');
+            document.getElementById('board').style.display = 'grid';
+            clearInterval(snakeTimer);
+            snakeTimer = null;
+            document.getElementById('snake-board').style.display = 'none';
+            document.getElementById('snake-hud').classList.add('hidden');
+            document.getElementById('side-panel').classList.remove('hidden', 'shooter-side-panel');
+            document.getElementById('next-panel').classList.remove('hidden');
+            document.getElementById('shooter-lives-panel').classList.add('hidden');
+            document.getElementById('lcd').classList.remove('snake-mode');
+            if (currentGame === 'SNAKE') {
+                document.getElementById('board').style.display = 'none';
+                document.getElementById('snake-board').style.display = 'grid';
+                document.getElementById('snake-hud').classList.remove('hidden');
+                document.getElementById('side-panel').classList.add('hidden');
+                document.getElementById('lcd').classList.add('snake-mode');
+                initSnake();
+            } else if (currentGame === 'SHOOTER') {
+                rebuildBoard(SHOOTER_ROWS, SHOOTER_COLS);
+                document.getElementById('board').classList.add('shooter-board');
+                document.getElementById('shooter-lives-panel').classList.remove('hidden');
+                document.getElementById('side-panel').classList.add('shooter-side-panel');
+                document.getElementById('next-panel').classList.add('hidden');
+                initShooter();
+            } else {
+                rebuildBoard(ROWS, COLS);
+            }
+            updateTetrisHud();
+            clearNextDisplay();
+            clearBoardDisplay();
+            document.getElementById('game-over-screen').classList.add('hidden');
+            document.getElementById('ready-screen').classList.remove('hidden');
+        }
+
+        function hardDrop() {
+            if (isGameOver || !currentPiece || currentGame !== 'TETRIS') return;
+            while (!collides(currentPiece, 0, 1)) {
+                currentPiece.y++;
+            }
+            lockTetrisPiece();
+            updateTetrisHud();
+            drawTetris();
+            playBeep('drop');
+        }
+
+        function handleAction(action, pressed = true) {
+            if (document.getElementById('ready-screen').classList.contains('hidden') === false) {
+                if (pressed) startGame();
+                return;
+            }
+            if (currentGame === 'SNAKE') {
+                if (pressed) {
+                    if (action === 'left') setSnakeDirection(-1, 0);
+                    if (action === 'right') setSnakeDirection(1, 0);
+                    if (action === 'up') setSnakeDirection(0, -1);
+                    if (action === 'down') setSnakeDirection(0, 1);
+                }
+                return;
+            }
+            if (currentGame === 'SHOOTER') {
+                if (action === 'left') shooterMoveLeft(pressed);
+                else if (action === 'right') shooterMoveRight(pressed);
+                else if (action === 'center') shooterShoot(pressed);
+                else if (action === 'up') shooterMoveVertical(-1, pressed);
+                else if (action === 'down') shooterMoveVertical(1, pressed);
+                return;
+            }
+            // TETRIS: kiri/kanan bergerak sekali lalu terus saat ditahan.
+            if (action === 'left' || action === 'right') {
+                if (pressed) startTetrisMoveHold(action === 'left' ? -1 : 1);
+                else stopTetrisMoveHold();
+                return;
+            }
+            if (!pressed) return;
+            if (action === 'down') hardDrop();
+            if (action === 'up') rotateTetris();
+            if (action === 'center') rotateTetris();
+        }
+
+        document.addEventListener('keydown', event => {
+            const keys = { ArrowLeft: 'left', ArrowRight: 'right', ArrowDown: 'down', ArrowUp: 'up', ' ': 'center', Enter: 'center' };
+            if (keys[event.key]) {
+                event.preventDefault();
+                handleAction(keys[event.key], true);
+            }
+            if (event.key === 'z' || event.key === 'Z') {
+                event.preventDefault();
+                handleAction('center', true);
+            }
+        });
+        document.addEventListener('keyup', event => {
+            const keys = { ArrowLeft: 'left', ArrowRight: 'right', ArrowDown: 'down', ArrowUp: 'up', ' ': 'center', Enter: 'center' };
+            if (keys[event.key]) {
+                event.preventDefault();
+                handleAction(keys[event.key], false);
+            }
+            if (event.key === 'z' || event.key === 'Z') {
+                event.preventDefault();
+                handleAction('center', false);
+            }
+        });
+        [['btn-left', 'left'], ['btn-right', 'right'], ['btn-down', 'down'], ['btn-up', 'up'], ['btn-center', 'center']]
+            .forEach(([id, action]) => {
+                const el = document.getElementById(id);
+                el.addEventListener('mousedown', (e) => { e.preventDefault(); handleAction(action, true); });
+                el.addEventListener('mouseup', (e) => { e.preventDefault(); handleAction(action, false); });
+                el.addEventListener('mouseleave', (e) => { handleAction(action, false); });
+                el.addEventListener('touchstart', (e) => { e.preventDefault(); handleAction(action, true); }, { passive: false });
+                el.addEventListener('touchend', (e) => { e.preventDefault(); handleAction(action, false); }, { passive: false });
+                el.addEventListener('touchcancel', (e) => { handleAction(action, false); });
+            });
+
+        resetGame();
+    </script>
+</body>
+</html>
