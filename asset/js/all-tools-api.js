@@ -10,32 +10,32 @@ async function downloadTikTok(url) {
     
     try {
         const cleanUrl = url.trim();
-        // Menggunakan endpoint resmi TikWM dengan format JSON
-        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
+        // Menggunakan CORS proxy agar tembus dari browser azana.my.id ke TikWM
+        const targetUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
+        const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
         
         const response = await fetch(apiUrl);
-        
-        // Memastikan respons benar-benar ada isinya sebelum di-parse ke JSON
-        const textResponse = await response.text();
-        if (!textResponse) {
+        const resJson = await response.json();
+
+        if (!resJson.contents) {
             throw new Error("Server downloader memberikan respons kosong.");
         }
 
-        const resJson = JSON.parse(textResponse);
+        const dataJson = JSON.parse(resJson.contents);
 
-        if (resJson.code === 0 && resJson.data) {
-            const data = resJson.data;
+        if (dataJson.code === 0 && dataJson.data) {
+            const data = dataJson.data;
             return {
                 status: "success",
                 platform: "tiktok",
                 url: cleanUrl,
                 title: data.title || "Video TikTok Tanpa Watermark",
-                author: data.author?.nickname || data.author?.unique_id || "Creator",
+                author: data.author?.nickname || "Creator",
                 video_hd: data.hdplay || data.play, 
                 audio_mp3: data.music
             };
         } else {
-            throw new Error(resJson.msg || "Gagal mengambil data dari server TikTok.");
+            throw new Error(dataJson.msg || "Gagal mengambil data dari server TikTok.");
         }
     } catch (error) {
         console.error("Error TikTok API:", error);
