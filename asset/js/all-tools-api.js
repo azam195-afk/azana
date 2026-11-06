@@ -9,22 +9,15 @@ async function downloadTikTok(url) {
     }
     
     try {
+        // Membersihkan dan memastikan URL terpampang valid untuk di-fetch
         const cleanUrl = url.trim();
-        // Menggunakan CORS proxy agar tembus dari browser azana.my.id ke TikWM
-        const targetUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
-        const apiUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
         
         const response = await fetch(apiUrl);
         const resJson = await response.json();
 
-        if (!resJson.contents) {
-            throw new Error("Server downloader memberikan respons kosong.");
-        }
-
-        const dataJson = JSON.parse(resJson.contents);
-
-        if (dataJson.code === 0 && dataJson.data) {
-            const data = dataJson.data;
+        if (resJson.code === 0 && resJson.data) {
+            const data = resJson.data;
             return {
                 status: "success",
                 platform: "tiktok",
@@ -35,7 +28,7 @@ async function downloadTikTok(url) {
                 audio_mp3: data.music
             };
         } else {
-            throw new Error(dataJson.msg || "Gagal mengambil data dari server TikTok.");
+            throw new Error(resJson.msg || "Gagal mengambil data dari server TikTok.");
         }
     } catch (error) {
         console.error("Error TikTok API:", error);
