@@ -9,26 +9,28 @@ async function downloadTikTok(url) {
     }
     
     try {
-        // Membersihkan dan memastikan URL terpampang valid untuk di-fetch
         const cleanUrl = url.trim();
-        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
+        // Menggunakan API Nexray yang stabil untuk TikTok
+        const apiUrl = `https://api.nexray.eu.cc/downloader/tiktok?url=${encodeURIComponent(cleanUrl)}`;
         
         const response = await fetch(apiUrl);
         const resJson = await response.json();
 
-        if (resJson.code === 0 && resJson.data) {
-            const data = resJson.data;
+        // Menyesuaikan struktur respons dari Nexray API
+        const data = resJson.data || resJson;
+
+        if (resJson.status === true || resJson.success || data.nowm || data.url || data.video_hd) {
             return {
                 status: "success",
                 platform: "tiktok",
                 url: cleanUrl,
-                title: data.title || "Video TikTok Tanpa Watermark",
-                author: data.author?.nickname || "Creator",
-                video_hd: data.hdplay || data.play, 
-                audio_mp3: data.music
+                title: data.title || data.caption || "Video TikTok Tanpa Watermark",
+                author: data.author?.nickname || data.author || "Creator",
+                video_hd: data.nowm || data.video_hd || data.url || data.hd, 
+                audio_mp3: data.audio || data.music || data.audio_mp3
             };
         } else {
-            throw new Error(resJson.msg || "Gagal mengambil data dari server TikTok.");
+            throw new Error(resJson.message || "Gagal mengambil data dari server TikTok.");
         }
     } catch (error) {
         console.error("Error TikTok API:", error);
