@@ -10,27 +10,32 @@ async function downloadTikTok(url) {
     
     try {
         const cleanUrl = url.trim();
-        // Menggunakan API Nexray yang stabil untuk TikTok
-        const apiUrl = `https://api.nexray.eu.cc/downloader/tiktok?url=${encodeURIComponent(cleanUrl)}`;
+        // Menggunakan endpoint resmi TikWM dengan format JSON
+        const apiUrl = `https://www.tikwm.com/api/?url=${encodeURIComponent(cleanUrl)}`;
         
         const response = await fetch(apiUrl);
-        const resJson = await response.json();
+        
+        // Memastikan respons benar-benar ada isinya sebelum di-parse ke JSON
+        const textResponse = await response.text();
+        if (!textResponse) {
+            throw new Error("Server downloader memberikan respons kosong.");
+        }
 
-        // Menyesuaikan struktur respons dari Nexray API
-        const data = resJson.data || resJson;
+        const resJson = JSON.parse(textResponse);
 
-        if (resJson.status === true || resJson.success || data.nowm || data.url || data.video_hd) {
+        if (resJson.code === 0 && resJson.data) {
+            const data = resJson.data;
             return {
                 status: "success",
                 platform: "tiktok",
                 url: cleanUrl,
-                title: data.title || data.caption || "Video TikTok Tanpa Watermark",
-                author: data.author?.nickname || data.author || "Creator",
-                video_hd: data.nowm || data.video_hd || data.url || data.hd, 
-                audio_mp3: data.audio || data.music || data.audio_mp3
+                title: data.title || "Video TikTok Tanpa Watermark",
+                author: data.author?.nickname || data.author?.unique_id || "Creator",
+                video_hd: data.hdplay || data.play, 
+                audio_mp3: data.music
             };
         } else {
-            throw new Error(resJson.message || "Gagal mengambil data dari server TikTok.");
+            throw new Error(resJson.msg || "Gagal mengambil data dari server TikTok.");
         }
     } catch (error) {
         console.error("Error TikTok API:", error);
